@@ -29,6 +29,24 @@ class Entity:
         replacements = [] if replacements is None else replacements
         self.replacements = set(replacements)
 
+    def __eq__(self, other) -> bool:
+        same_name = self.name == other.name
+        same_value = self.value == other.value
+        same_position = (self.start == other.start) and (self.end == other.end)
+        same_replacements = self.replacements == other.replacements
+        if same_name and same_value and same_position and same_replacements:
+            return True
+        return False
+
+    def __repr__(self):
+        return "<Entity {}: {} at {} - {}, with replacements: {}>".format(
+            self.name,
+            self.value,
+            self.start,
+            self.end,
+            ', '.join(list(self.replacements)),
+        )
+
     def no_replacements(self) -> bool:
         return len(self.replacements) == 0
 
@@ -61,6 +79,9 @@ class Intent:
     def __init__(self, intent: str) -> None:
         self.intent = intent
 
+    def __repr__(self):
+        return self.intent
+
     def __hash__(self):
         return hash(self.intent)
 
@@ -74,7 +95,7 @@ class Datum:
             entities: List[Entity] = None,
         ) -> None:
         self.utterance = utterance
-        self.intents = [] if intents is None else intents
+        self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)
 
         # check entity has correct value and position
@@ -88,6 +109,36 @@ class Datum:
             next_entity = self.entities[idx + 1]
             if overlap(entity, next_entity):
                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError('can only compare datum to datum')
+        same_utterance = self.utterance == other.utterance
+        same_intents = False
+        if len(self.intents) == len(other.intents):
+            for self_intent, other_intent in zip(self.intents, other.intents):
+                if self_intent != other_intent:
+                    continue
+            else:
+                same_intents = True
+
+        same_entities = False
+        if len(self.entities) == len(other.entities):
+            for self_entity, other_entity in zip(self.entities, other.entities):
+                if self_entity != other_entity:
+                    continue
+            else:
+                same_entities = True
+        if same_utterance and same_intents and same_entities:
+            return True
+        return False
+
+    def __repr__(self):
+        return "<Datum {} {} with entities: {}>".format(
+            self.utterance,
+            self.intents,
+            self.entities,
+        )
 
     def has_entities(self) -> bool:
         return len(self.entities) > 0
