@@ -123,6 +123,84 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent_tx['end'], entity['end'])
         self.assertNotIn('replacements', ent_tx)
 
+    def test_equal(self):
+        ent1 = Entity(
+            name='LOC',
+            value='紐約',
+            start=1,
+            end=2,
+            replacements=['台北'],
+        )
+        ent2 = Entity(
+            name='LOC',
+            value='紐約',
+            start=1,
+            end=2,
+            replacements=['台北'],
+        )
+        self.assertEqual(ent1, ent2)
+
+    def test_not_equal(self):
+        ent = Entity(
+            name='LOC',
+            value='紐約',
+            start=1,
+            end=2,
+            replacements=['台北'],
+        )
+        ent_diff_name = Entity(
+            name='LOC_2',
+            value='紐約',
+            start=1,
+            end=2,
+            replacements=['台北'],
+        )
+        ent_diff_value = Entity(
+            name='LOC',
+            value='新加坡',
+            start=1,
+            end=2,
+            replacements=['台北'],
+        )
+        ent_diff_start = Entity(
+            name='LOC',
+            value='紐約',
+            start=0,
+            end=2,
+            replacements=['台北'],
+        )
+        ent_diff_end = Entity(
+            name='LOC',
+            value='紐約',
+            start=1,
+            end=3,
+            replacements=['台北'],
+        )
+        ent_diff_replacements = Entity(
+            name='LOC',
+            value='紐約',
+            start=1,
+            end=2,
+            replacements=['台北', 'KIX'],
+        )
+        self.assertNotEqual(ent, ent_diff_name)
+        self.assertNotEqual(ent, ent_diff_value)
+        self.assertNotEqual(ent, ent_diff_start)
+        self.assertNotEqual(ent, ent_diff_end)
+        self.assertNotEqual(ent, ent_diff_replacements)
+
+    def test_raise_error_if_compare_different_type(self):
+        ent = Entity(
+            name='LOC',
+            value='紐約',
+            start=1,
+            end=2,
+            replacements=['台北'],
+        )
+        ent_diff_type = object()
+        with self.assertRaises(TypeError):
+            ent == ent_diff_type
+
 
 class ElementDatumTestCase(TestCase):
 
@@ -230,3 +308,79 @@ class ElementDatumTestCase(TestCase):
             ],
         )
         self.assertFalse(datum.has_intents())
+
+    def test_same_utterance(self):
+        utterance = '我想訂明天從紐約飛到新加坡的機票'
+        entities = [
+            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='出發地', value='紐約', start=6, end=8),
+        ]
+        intents = [
+            Intent(intent='訂機票'),
+        ]
+        datum = Datum(
+            utterance=utterance,
+            intents=intents,
+            entities=entities,
+        )
+        datum2 = Datum(
+            utterance=utterance,
+        )
+        self.assertTrue(datum.has_same_utterance_as(datum2))
+
+    def test_same_intents(self):
+        utterance = '我想訂明天從紐約飛到新加坡的機票'
+        utterance2 = '我想訂機票'
+        entities = [
+            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='出發地', value='紐約', start=6, end=8),
+        ]
+        intents = [
+            Intent(intent='訂機票'),
+        ]
+        intents2 = [
+            Intent(intent='訂機票'),
+        ]
+        datum = Datum(
+            utterance=utterance,
+            intents=intents,
+            entities=entities,
+        )
+        datum2 = Datum(
+            utterance=utterance2,
+            intents=intents2,
+        )
+        self.assertTrue(datum.has_same_intents_as(datum2))
+
+    def test_same_entities(self):
+        utterance = '我想訂明天從紐約飛到新加坡的機票'
+        utterance2 = '我想查明天從紐約飛往新加坡的機票'
+        entities = [
+            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='出發地', value='紐約', start=6, end=8),
+        ]
+        entities2 = [
+            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='出發地', value='紐約', start=6, end=8),
+        ]
+        intents = [
+            Intent(intent='訂機票'),
+        ]
+        intents2 = [
+            Intent(intent='查機票'),
+        ]
+        datum = Datum(
+            utterance=utterance,
+            intents=intents,
+            entities=entities,
+        )
+        datum2 = Datum(
+            utterance=utterance2,
+            intents=intents2,
+            entities=entities2,
+        )
+        self.assertTrue(datum.has_same_entities_as(datum2))

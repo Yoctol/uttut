@@ -30,6 +30,8 @@ class Entity:
         self.replacements = set(replacements)
 
     def __eq__(self, other) -> bool:
+        if not isinstance(other, self.__class__):
+            raise TypeError('can only compare entity to entity')
         same_name = self.name == other.name
         same_value = self.value == other.value
         same_position = (self.start == other.start) and (self.end == other.end)
@@ -85,13 +87,16 @@ class Intent:
     def __hash__(self):
         return hash(self.intent)
 
+    def __eq__(self, other):
+        return self.intent == other.intent
+
 
 class Datum:
 
     def __init__(
             self,
             utterance: str,
-            intents: List[Intent],
+            intents: List[Intent] = None,
             entities: List[Entity] = None,
         ) -> None:
         self.utterance = utterance
@@ -113,25 +118,15 @@ class Datum:
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             raise TypeError('can only compare datum to datum')
-        same_utterance = self.utterance == other.utterance
-        same_intents = False
-        if len(self.intents) == len(other.intents):
-            for self_intent, other_intent in zip(self.intents, other.intents):
-                if self_intent != other_intent:
-                    continue
-            else:
-                same_intents = True
 
-        same_entities = False
-        if len(self.entities) == len(other.entities):
-            for self_entity, other_entity in zip(self.entities, other.entities):
-                if self_entity != other_entity:
-                    continue
-            else:
-                same_entities = True
-        if same_utterance and same_intents and same_entities:
+        if not self.has_same_utterance_as(other):
+            return False
+        elif not self.has_same_intents_as(other):
+            return False
+        elif not self.has_same_entities_as(other):
+            return False
+        else:
             return True
-        return False
 
     def __repr__(self):
         return "<Datum {} {} with entities: {}>".format(
@@ -139,6 +134,22 @@ class Datum:
             self.intents,
             self.entities,
         )
+
+    def has_same_utterance_as(self, other):
+        return self.utterance == other.utterance
+
+    def has_same_intents_as(self, other):
+        return set(self.intents) == set(other.intents)
+
+    def has_same_entities_as(self, other):
+        same_entities = False
+        if len(self.entities) == len(other.entities):
+            for self_entity, other_entity in zip(self.entities, other.entities):
+                if self_entity != other_entity:
+                    break
+            else:
+                same_entities = True
+        return same_entities
 
     def has_entities(self) -> bool:
         return len(self.entities) > 0
