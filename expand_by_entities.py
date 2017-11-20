@@ -82,7 +82,7 @@ def expand_by_entities(datum: Datum) -> List[Datum]:
         entities = _aggregate_entities(parts, included_entities_with_index)
         new_datum = Datum(
             utterance=utterance,
-            intents=datum.intents,  # TODO: pass in a copy, make it immutable
+            intents=datum.copy_intents(),
             entities=entities,
         )
         result.append(new_datum)

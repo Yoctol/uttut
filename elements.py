@@ -157,6 +157,9 @@ class Datum:
     def has_intents(self) -> bool:
         return len(self.intents) > 0
 
+    def copy_intents(self) -> List[Intent]:
+        return [Intent(intent.intent) for intent in self.intents]
+
     @classmethod
     def load_from_legacy_shape(cls, utterance_obj):
         utterance = utterance_obj['utterance']
