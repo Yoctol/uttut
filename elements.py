@@ -78,17 +78,17 @@ class Entity:
 
 class Intent:
 
-    def __init__(self, intent: str) -> None:
-        self.intent = intent
+    def __init__(self, name: str) -> None:
+        self.name = name
 
     def __repr__(self):
-        return self.intent
+        return self.name
 
     def __hash__(self):
-        return hash(self.intent)
+        return hash(self.name)
 
     def __eq__(self, other):
-        return self.intent == other.intent
+        return self.name == other.name
 
 
 class Datum:
@@ -158,7 +158,7 @@ class Datum:
         return len(self.intents) > 0
 
     def copy_intents(self) -> List[Intent]:
-        return [Intent(intent.intent) for intent in self.intents]
+        return [Intent(intent.name) for intent in self.intents]
 
     @classmethod
     def load_from_legacy_shape(cls, utterance_obj):

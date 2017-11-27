@@ -16,7 +16,7 @@ class ElementIntentTestCase(TestCase):
     def test_init(self):
         intent_name = 'INTENT1'
         intent = Intent(intent_name)
-        self.assertEqual(intent.intent, intent_name)
+        self.assertEqual(intent.name, intent_name)
 
 
 class ElementEntityTestCase(TestCase):
@@ -252,7 +252,7 @@ class ElementDatumTestCase(TestCase):
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
-            Intent(intent='訂機票'),
+            Intent(name='訂機票'),
         ]
         datum = Datum(
             utterance=utterance,
@@ -317,7 +317,7 @@ class ElementDatumTestCase(TestCase):
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
-            Intent(intent='訂機票'),
+            Intent(name='訂機票'),
         ]
         datum = Datum(
             utterance=utterance,
@@ -338,10 +338,10 @@ class ElementDatumTestCase(TestCase):
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
-            Intent(intent='訂機票'),
+            Intent(name='訂機票'),
         ]
         intents2 = [
-            Intent(intent='訂機票'),
+            Intent(name='訂機票'),
         ]
         datum = Datum(
             utterance=utterance,
@@ -368,10 +368,10 @@ class ElementDatumTestCase(TestCase):
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
-            Intent(intent='訂機票'),
+            Intent(name='訂機票'),
         ]
         intents2 = [
-            Intent(intent='查機票'),
+            Intent(name='查機票'),
         ]
         datum = Datum(
             utterance=utterance,

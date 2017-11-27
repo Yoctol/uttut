@@ -21,7 +21,7 @@ class ExpandByEntitiesTestCase(TestCase):
             Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
         ]
         self.intents = [
-            Intent(intent='訂機票'),
+            Intent(name='訂機票'),
         ]
         self.datum = Datum(
             utterance=self.utterance,
@@ -70,12 +70,12 @@ class ExpandByEntitiesTestCase(TestCase):
             ],
         ]
         self.expected_intents = [
-            [Intent(intent='訂機票')],
-            [Intent(intent='訂機票')],
-            [Intent(intent='訂機票')],
-            [Intent(intent='訂機票')],
-            [Intent(intent='訂機票')],
-            [Intent(intent='訂機票')],
+            [Intent(name='訂機票')],
+            [Intent(name='訂機票')],
+            [Intent(name='訂機票')],
+            [Intent(name='訂機票')],
+            [Intent(name='訂機票')],
+            [Intent(name='訂機票')],
         ]
         self.expected_data = []
         for utt, ents, ints in zip(
