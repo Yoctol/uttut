@@ -43,7 +43,7 @@ def clean_partitioned_utterance_n_entities(
         partitioned_utterance: list,
         partitioned_entities: list,
         tokenizer: object,
-        filter_: object = None,
+        str_filter: object = None,
         need_start_end: bool = False,
         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
     ) -> (List, List):
@@ -63,7 +63,7 @@ def clean_partitioned_utterance_n_entities(
         part_of_tokenized_utterance = _filter_n_tokenize(
             sentence=part_of_utterance,
             tokenizer=tokenizer,
-            filter_=filter_,
+            str_filter=str_filter,
         )
         num_tokenized = len(part_of_tokenized_utterance)
         if num_tokenized > 0:
@@ -89,9 +89,9 @@ def clean_partitioned_utterance_n_entities(
 def _filter_n_tokenize(
         sentence: str,
         tokenizer: object,
-        filter_=None,
+        str_filter=None,
     ):
-    if filter_ is not None:
-        return tokenizer.lcut(filter_(sentence))
+    if str_filter is not None:
+        return tokenizer.lcut(str_filter(sentence))
     else:
         return tokenizer.lcut(sentence)

@@ -106,7 +106,7 @@ class HandlePartitionedUtteranceNEntitiesTestCase(TestCase):
             partitioned_utterance=['::家豪;;大大!!喜歡吃*^#^*',
                                    '{*豪大*}', '@@雞@排@@', '!!*@*!!'],
             partitioned_entities=['DONT_CARE', 'brand', 'food', 'DONT_CARE'],
-            filter_=self.example_filter,
+            str_filter=self.example_filter,
             tokenizer=self.example_tokenizer,
         )
         self.assertEqual(
