@@ -13,15 +13,15 @@ def gen_partitioned_utterance_n_entities(
     partitioned_utterance = []
     partitioned_entities = []
 
-    for entity_obj in datum.entities:
-        if start != entity_obj.start:
+    for entity in datum.entities:
+        if start != entity.start:
             partitioned_utterance += [
-                utterance[start: entity_obj.start]]
+                utterance[start: entity.start]]
             partitioned_entities.append(not_entity)
         partitioned_utterance += [
-            utterance[entity_obj.start: entity_obj.end]]
-        partitioned_entities.append(entity_obj.name)
-        start = entity_obj.end
+            utterance[entity.start: entity.end]]
+        partitioned_entities.append(entity.name)
+        start = entity.end
 
     if datum.entities[-1].end != len(utterance):
         partitioned_utterance += [utterance[start:]]
@@ -56,16 +56,14 @@ def clean_partitioned_utterance_n_entities(
             ),
         )
 
-    def filter_n_tokenize(sentence):
-        if filter_ is not None:
-            return tokenizer.lcut(filter_(sentence))
-        else:
-            return tokenizer.lcut(sentence)
-
     tokenized_utterance = []
     entities = []
     for part_of_utterance, entity in zip(partitioned_utterance, partitioned_entities):
-        part_of_tokenized_utterance = filter_n_tokenize(part_of_utterance)
+        part_of_tokenized_utterance = _filter_n_tokenize(
+            sentence=part_of_utterance,
+            tokenizer=tokenizer,
+            filter_=filter_,
+        )
         num_tokenized = len(part_of_tokenized_utterance)
         if num_tokenized > 0:
             part_of_entities = [entity] * num_tokenized
@@ -76,5 +74,23 @@ def clean_partitioned_utterance_n_entities(
             tokenized_utterance += part_of_tokenized_utterance
             entities += part_of_entities
 
-    assert len(tokenized_utterance) == len(entities)
+    if len(tokenized_utterance) != len(entities):
+        raise KeyError(
+            'Number of segments of tokenized utterance and entities is not equal',
+            'tokenized_utterance = {}, \n entities = {}'.format(
+                tokenized_utterance, entities,
+            ),
+        )
+
     return tokenized_utterance, entities
+
+
+def _filter_n_tokenize(
+        sentence: str,
+        tokenizer: object,
+        filter_=None,
+    ):
+    if filter_ is not None:
+        return tokenizer.lcut(filter_(sentence))
+    else:
+        return tokenizer.lcut(sentence)
