@@ -35,7 +35,7 @@ class GetUniqueEntitiesTestCase(TestCase):
             need_start_end=True,
         )
         self.assertEqual(
-            set(['brand', 'brand_start', 'brand_end',
-                 'food', 'food_start', 'food_end']),
+            set(['brand', 'brand_START', 'brand_END',
+                 'food', 'food_START', 'food_END']),
             set(result),
         )

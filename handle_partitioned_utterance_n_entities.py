@@ -1,11 +1,12 @@
 from typing import List
 
 from uttut.elements import Datum
+from uttut import ENTITY_LABEL
 
 
 def gen_partitioned_utterance_n_entities(
         datum: Datum,
-        not_entity: str = 'DONT_CARE',
+        not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
     ) -> (List[List[str]], List[List[str]]):
 
     start = 0
@@ -44,7 +45,7 @@ def clean_partitioned_utterance_n_entities(
         tokenizer: object,
         filter_: object = None,
         need_start_end: bool = False,
-        not_entity: str = 'DONT_CARE',
+        not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
     ) -> (List, List):
 
     if len(partitioned_utterance) != len(partitioned_entities):
@@ -69,8 +70,8 @@ def clean_partitioned_utterance_n_entities(
             part_of_entities = [entity] * num_tokenized
             if need_start_end is True:
                 if (entity != not_entity) & (num_tokenized > 1):
-                    part_of_entities[0] = entity + '_start'
-                    part_of_entities[-1] = entity + '_end'
+                    part_of_entities[0] = entity + ENTITY_LABEL['SUFFIX_START']
+                    part_of_entities[-1] = entity + ENTITY_LABEL['SUFFIX_END']
             tokenized_utterance += part_of_tokenized_utterance
             entities += part_of_entities
 

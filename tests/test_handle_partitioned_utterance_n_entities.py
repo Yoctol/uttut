@@ -97,8 +97,8 @@ class HandlePartitionedUtteranceNEntitiesTestCase(TestCase):
         self.assertEqual(
             (['家', '豪', '大', '大', '喜', '歡', '吃', '豪', '大', '雞', '排'],
              ['DONT_CARE', 'DONT_CARE', 'DONT_CARE', 'DONT_CARE',
-              'DONT_CARE', 'DONT_CARE', 'DONT_CARE', 'brand_start', 'brand_end',
-              'food_start', 'food_end']),
+              'DONT_CARE', 'DONT_CARE', 'DONT_CARE', 'brand_START', 'brand_END',
+              'food_START', 'food_END']),
             result,
         )
 
