@@ -14,19 +14,23 @@ def gen_partitioned_utterance_n_entities(
     partitioned_utterance = []
     partitioned_entities = []
 
-    for entity in datum.entities:
-        if start != entity.start:
+    if datum.has_entities():
+        for entity in datum.entities:
+            if start != entity.start:
+                partitioned_utterance += [
+                    utterance[start: entity.start]]
+                partitioned_entities.append(not_entity)
             partitioned_utterance += [
-                utterance[start: entity.start]]
-            partitioned_entities.append(not_entity)
-        partitioned_utterance += [
-            utterance[entity.start: entity.end]]
-        partitioned_entities.append(entity.name)
-        start = entity.end
+                utterance[entity.start: entity.end]]
+            partitioned_entities.append(entity.name)
+            start = entity.end
 
-    if datum.entities[-1].end != len(utterance):
-        partitioned_utterance += [utterance[start:]]
-        partitioned_entities.append(not_entity)
+        if datum.entities[-1].end != len(utterance):
+            partitioned_utterance += [utterance[start:]]
+            partitioned_entities.append(not_entity)
+    else:
+        partitioned_utterance = [utterance]
+        partitioned_entities = [not_entity]
 
     if len(partitioned_utterance) != len(partitioned_entities):
         raise KeyError(
