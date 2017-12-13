@@ -8,3 +8,7 @@ class EntityPositionError(UttutBaseException):
 
 class EntityOverlapping(UttutBaseException):
     pass
+
+
+class DifferentUtterance(UttutBaseException):
+    pass
