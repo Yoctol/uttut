@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from uttut.elements import Datum, Entity
 from uttut import ENTITY_LABEL
@@ -7,7 +7,7 @@ from uttut import ENTITY_LABEL
 def _gen_partitioned_utterance_n_entities(
         datum: Datum,
         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
-    ) -> (List[List[str]], List[List[str]]):
+    ) -> Tuple[List[List[str]], List[List[str]]]:
 
     start = 0
     utterance = datum.utterance
@@ -47,7 +47,7 @@ def normalize_datum(
         datum: Datum,
         text_normalizer: object = None,
         not_entity=ENTITY_LABEL['NOT_ENTITY'],
-    ) -> (Datum, List[dict]):
+    ) -> Tuple[Datum, List[dict]]:
 
     if text_normalizer is None:
         return datum, None
