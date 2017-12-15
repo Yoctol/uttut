@@ -32,6 +32,7 @@ class NormalizeDatumTestCase(TestCase):
                        replacements=['漢堡', '薯條', '滷肉飯']),
             ],
         )
+        self.fake_text_normalizer = FakeTextNormalizer()
 
     def test__gen_partitioned_utterance_n_entities(self):
         result = _gen_partitioned_utterance_n_entities(
@@ -50,7 +51,7 @@ class NormalizeDatumTestCase(TestCase):
             result,
         )
 
-    def test_normalize_datum(self):
+    def test_normalize_datum_without_normalizer(self):
         result = normalize_datum(
             datum=self.example_datum,
             text_normalizer=None,
@@ -63,7 +64,8 @@ class NormalizeDatumTestCase(TestCase):
             self.example_datum,
             result[0],
         )
-        self.fake_text_normalizer = FakeTextNormalizer()
+
+    def test_normalize_datum_with_fake_normalizer(self):
         result = normalize_datum(
             datum=self.example_datum,
             text_normalizer=self.fake_text_normalizer,
@@ -76,6 +78,8 @@ class NormalizeDatumTestCase(TestCase):
             self.example_datum,
             result[0],
         )
+
+    def test_normalize_datum_with_mocked_fake_normalizer(self):
         self.fake_text_normalizer.normalize = Mock(return_value=('', None))
         normalize_datum(
             datum=self.example_datum,
