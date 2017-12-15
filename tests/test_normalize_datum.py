@@ -16,7 +16,7 @@ from ..normalize_datum import (
 class FakeTextNormalizer(object):
 
     def normalize(self, sentence):
-        return sentence, None
+        return sentence, [{'have_meta': 'no'}]
 
 
 class NormalizeDatumTestCase(TestCase):
@@ -71,7 +71,7 @@ class NormalizeDatumTestCase(TestCase):
             text_normalizer=self.fake_text_normalizer,
         )
         self.assertEqual(
-            None,
+            [{'have_meta': 'no'}],
             result[1],
         )
         self.assertEqual(
