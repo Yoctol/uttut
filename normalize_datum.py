@@ -59,7 +59,7 @@ def normalize_datum(
         return Datum(
             utterance=normalized_utterance,
             intents=datum.intents,
-        ), None
+        ), meta
     else:
         partitioned_utterance, partitioned_entities = \
             _gen_partitioned_utterance_n_entities(
