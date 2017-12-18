@@ -103,3 +103,85 @@ def normalize_datum(
         intents=datum.intents,
         entities=entities,
     ), meta
+
+
+def denormalize_datum(
+        datum: Datum,
+        meta: List[dict],
+        text_normalizer: object = None,
+        not_entity=ENTITY_LABEL['NOT_ENTITY'],
+    ) -> Datum:
+
+    if text_normalizer is None:
+        return datum
+
+    denormalized_utterance = text_normalizer.denormalize(
+        sentence=datum.utterance,
+        meta=meta,
+    )
+    if not datum.entities:
+        return Datum(
+            utterance=denormalized_utterance,
+            intents=datum.intents,
+        )
+    else:
+        partitioned_utterance, partitioned_entities = \
+            _gen_partitioned_utterance_n_entities(
+                datum=datum,
+                not_entity=not_entity,
+            )
+
+        utterance_with_wall = '|IamtheWALL|'.join(partitioned_utterance)
+        denormalized_utterance_with_wall = text_normalizer.denormalize(
+            sentence=utterance_with_wall,
+            meta=meta,
+        )
+        partitioned_denormalized_utterance = \
+            denormalized_utterance_with_wall.split('|IamtheWALL|')
+
+        if len(partitioned_utterance) != len(partitioned_denormalized_utterance):
+            raise KeyError(
+                'Something wrong during denormalize',
+                'partitioned_utterance is {}'.format(partitioned_utterance),
+                'after denormalize = {}'.format(
+                    partitioned_denormalized_utterance),
+            )
+
+        begin_ind = 0
+        entities_ind = 0
+        entities = []
+        for denormalized_segment, entity in zip(
+            partitioned_denormalized_utterance,
+            partitioned_entities,
+        ):
+            start = denormalized_utterance.find(
+                denormalized_segment,
+                begin_ind,
+            )
+            if start == -1:
+                raise KeyError(
+                    'String match fails, str = {}, substr = {}'.format(
+                        denormalized_utterance,
+                        denormalized_segment,
+                    ),
+                )
+
+            begin_ind = start + len(denormalized_segment)
+
+            if entity != not_entity:
+                entities.append(
+                    Entity(
+                        name=entity,
+                        value=denormalized_segment,
+                        start=start,
+                        end=begin_ind,
+                        replacements=datum.entities[entities_ind].replacements,
+                    ),
+                )
+                entities_ind += 1
+
+    return Datum(
+        utterance=denormalized_utterance,
+        intents=datum.intents,
+        entities=entities,
+    )

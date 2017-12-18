@@ -10,6 +10,7 @@ from uttut.elements import (
 from ..normalize_datum import (
     _gen_partitioned_utterance_n_entities,
     normalize_datum,
+    denormalize_datum,
 )
 
 
@@ -17,6 +18,9 @@ class FakeTextNormalizer(object):
 
     def normalize(self, sentence):
         return sentence, [{'have_meta': 'no'}]
+
+    def denormalize(self, sentence, meta):
+        return sentence
 
 
 class NormalizeDatumTestCase(TestCase):
@@ -91,5 +95,42 @@ class NormalizeDatumTestCase(TestCase):
                 call(sentence='家豪大大喜歡吃'),
                 call(sentence='豪大'),
                 call(sentence='雞排'),
+            ],
+        )
+
+    def test_denormalize_datum_without_normalizer(self):
+        result = denormalize_datum(
+            datum=self.example_datum,
+            meta=[{'_food_': '雞排'}],
+            text_normalizer=None,
+        )
+        self.assertEqual(
+            self.example_datum,
+            result,
+        )
+
+    def test_denormalize_datum_with_fake_normalizer(self):
+        result = denormalize_datum(
+            datum=self.example_datum,
+            meta=[{'_food_': '雞排'}],
+            text_normalizer=self.fake_text_normalizer,
+        )
+        self.assertEqual(
+            self.example_datum,
+            result,
+        )
+
+    def test_denormalize_datum_with_mocked_fake_normalizer(self):
+        self.fake_text_normalizer.denormalize = Mock(
+            return_value=('家豪大大喜歡吃|IamtheWALL|豪大|IamtheWALL|雞排'))
+        denormalize_datum(
+            datum=self.example_datum,
+            meta=[{'_food_': '雞排'}],
+            text_normalizer=self.fake_text_normalizer,
+        )
+        self.fake_text_normalizer.denormalize.assert_has_calls(
+            [
+                call(meta=[{'_food_': '雞排'}], sentence='家豪大大喜歡吃豪大雞排'),
+                call(meta=[{'_food_': '雞排'}], sentence='家豪大大喜歡吃|IamtheWALL|豪大|IamtheWALL|雞排'),
             ],
         )
