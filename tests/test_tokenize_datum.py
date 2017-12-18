@@ -57,6 +57,6 @@ class TokenizeDatumTestCase(TestCase):
             tokenizer=self.fake_tokenizer,
         )
         self.assertEqual(
-            ['DONT_CARE', 'brand', 'food', 'food'],
+            ['DONT_CARE', 'brand', 'brand', 'food'],
             result[1],
         )

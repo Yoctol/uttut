@@ -33,7 +33,8 @@ def tokenize_datum(
     for token in tokenized_utterance:
         entity_stat = Counter(
             entity_array[begin_ind: begin_ind + len(token)],
-        ).most_common()
+        )
+        entity_stat = sorted(entity_stat.items(), key=lambda x: (-x[1], x[0]))
         if (entity_stat[0][0] == not_entity) and (len(entity_stat) > 1):
             entities.append(entity_stat[1][0])
         else:
