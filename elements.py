@@ -163,7 +163,12 @@ class Datum:
     @classmethod
     def load_from_legacy_shape(cls, utterance_obj):
         utterance = utterance_obj['utterance']
-        intents = [Intent(utterance_obj['intent'])]  # legacy shape has only one intent
+        intents = []
+        if isinstance(utterance_obj['intent'], str):
+            intents.append(Intent(utterance_obj['intent']))
+        elif isinstance(utterance_obj['intent'], list):
+            for intent in utterance_obj['intent']:
+                intents.append(Intent(intent))
         entities = None
         if utterance_obj.get('entities') is not None:
             entities = []

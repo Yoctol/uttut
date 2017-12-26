@@ -100,7 +100,8 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent_tx['name'], entity['name'])
         self.assertEqual(ent_tx['start'], entity['start'])
         self.assertEqual(ent_tx['end'], entity['end'])
-        self.assertEqual(set(ent_tx['replacements']), set(entity['replacements']))
+        self.assertEqual(set(ent_tx['replacements']),
+                         set(entity['replacements']))
 
     def test_to_legacy_entity_no_replacement(self):
         name = 'LOC'
@@ -247,8 +248,10 @@ class ElementDatumTestCase(TestCase):
     def test_entities_correct_order_in_datum(self):
         utterance = '我想訂明天從紐約飛到新加坡的機票'
         entities = [
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='目的地', value='新加坡', start=10,
+                   end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3,
+                   end=5, replacements=['下禮拜二']),
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
@@ -261,9 +264,11 @@ class ElementDatumTestCase(TestCase):
         )
 
         expected_entities = [
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='日期', value='明天', start=3,
+                   end=5, replacements=['下禮拜二']),
             Entity(name='出發地', value='紐約', start=6, end=8),
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='目的地', value='新加坡', start=10,
+                   end=13, replacements=['斯堪地那維亞', 'KIX']),
         ]
         for result_entity, expected_entity in zip(datum.entities, expected_entities):
             self.assertEqual(result_entity.name, expected_entity.name)
@@ -312,8 +317,10 @@ class ElementDatumTestCase(TestCase):
     def test_same_utterance(self):
         utterance = '我想訂明天從紐約飛到新加坡的機票'
         entities = [
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='目的地', value='新加坡', start=10,
+                   end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3,
+                   end=5, replacements=['下禮拜二']),
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
@@ -333,8 +340,10 @@ class ElementDatumTestCase(TestCase):
         utterance = '我想訂明天從紐約飛到新加坡的機票'
         utterance2 = '我想訂機票'
         entities = [
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='目的地', value='新加坡', start=10,
+                   end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3,
+                   end=5, replacements=['下禮拜二']),
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
@@ -358,13 +367,17 @@ class ElementDatumTestCase(TestCase):
         utterance = '我想訂明天從紐約飛到新加坡的機票'
         utterance2 = '我想查明天從紐約飛往新加坡的機票'
         entities = [
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='目的地', value='新加坡', start=10,
+                   end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3,
+                   end=5, replacements=['下禮拜二']),
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         entities2 = [
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(name='目的地', value='新加坡', start=10,
+                   end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(name='日期', value='明天', start=3,
+                   end=5, replacements=['下禮拜二']),
             Entity(name='出發地', value='紐約', start=6, end=8),
         ]
         intents = [
@@ -384,3 +397,18 @@ class ElementDatumTestCase(TestCase):
             entities=entities2,
         )
         self.assertTrue(datum.has_same_entities_as(datum2))
+
+    def test_load_from_legacy_multi_intents(self):
+        result = Datum.load_from_legacy_shape(
+            utterance_obj={
+                'utterance': '豆漿很好喝, 但打不出奶泡',
+                'intent': ['preference', 'guidance'],
+            },
+        )
+        self.assertEqual(
+            Datum(
+                utterance='豆漿很好喝, 但打不出奶泡',
+                intents=[Intent('preference'), Intent('guidance')],
+            ),
+            result,
+        )
