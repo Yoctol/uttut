@@ -166,8 +166,8 @@ class Datum:
         intents = []
         if isinstance(utterance_obj['intent'], str):
             intents.append(Intent(utterance_obj['intent']))
-        elif isinstance(utterance_obj['intent'], list):
-            for intent in utterance_obj['intent']:
+        elif isinstance(utterance_obj['intent'], dict):
+            for intent in utterance_obj['intent']['names']:
                 intents.append(Intent(intent))
         entities = None
         if utterance_obj.get('entities') is not None:

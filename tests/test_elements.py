@@ -402,7 +402,7 @@ class ElementDatumTestCase(TestCase):
         result = Datum.load_from_legacy_shape(
             utterance_obj={
                 'utterance': '豆漿很好喝, 但打不出奶泡',
-                'intent': ['preference', 'guidance'],
+                'intent': {'names': ['preference', 'guidance']},
             },
         )
         self.assertEqual(
