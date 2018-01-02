@@ -28,16 +28,25 @@ def tokenize_datum(
         datum=datum,
         not_entity=not_entity,
     )
+    utterance = datum.utterance
     entities = []
     begin_ind = 0
     for token in tokenized_utterance:
-        entity_stat = Counter(
-            entity_array[begin_ind: begin_ind + len(token)],
+        start = utterance.find(token, begin_ind)
+        if start != -1:
+            entity_stat = Counter(
+                entity_array[start: start + len(token)],
+            )
+            entity_stat = sorted(entity_stat.items(), key=lambda x: (-x[1], x[0]))
+            if (entity_stat[0][0] == not_entity) and (len(entity_stat) > 1):
+                entities.append(entity_stat[1][0])
+            else:
+                entities.append(entity_stat[0][0])
+            begin_ind = start + len(token)
+        raise ValueError(
+            'Substring <{}> can not be found in string <{}>.'.format(
+                token,
+                utterance,
+            ),
         )
-        entity_stat = sorted(entity_stat.items(), key=lambda x: (-x[1], x[0]))
-        if (entity_stat[0][0] == not_entity) and (len(entity_stat) > 1):
-            entities.append(entity_stat[1][0])
-        else:
-            entities.append(entity_stat[0][0])
-        begin_ind += len(token)
     return tokenized_utterance, entities
