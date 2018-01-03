@@ -79,7 +79,9 @@ def normalize_datum(
             )
             if start == -1:
                 raise KeyError(
-                    'String match fails, str = {}, substr = {}'.format(
+                    'String match fails when normalizing datum, '
+                    'original datum = {}, str = {}, substr = {}'.format(
+                        datum,
                         normalized_utterance,
                         normalized_segment,
                     ),
