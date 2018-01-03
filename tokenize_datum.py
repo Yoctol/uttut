@@ -43,10 +43,11 @@ def tokenize_datum(
             else:
                 entities.append(entity_stat[0][0])
             begin_ind = start + len(token)
-        raise ValueError(
-            'Substring <{}> can not be found in string <{}>.'.format(
-                token,
-                utterance,
-            ),
-        )
+        else:
+            raise ValueError(
+                'Substring <{}> can not be found in string <{}>.'.format(
+                    token,
+                    utterance,
+                ),
+            )
     return tokenized_utterance, entities
