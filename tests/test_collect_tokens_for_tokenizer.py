@@ -82,7 +82,7 @@ class CollectTokensForTokenizerTestCase(TestCase):
                             start=1,
                             end=2,
                             value='B',
-                            replacements=['B1', 'B2', 'B3']
+                            replacements=['B1', 'B2', 'B3'],
                         ),
                     ],
                 ),
