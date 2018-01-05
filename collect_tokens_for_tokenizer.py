@@ -61,3 +61,15 @@ def collect_tokens_for_tokenizer(data: List[Datum])-> List[str]: # noqa
         del output[' ']
 
     return sorted(output.items(), key=lambda x: x[1], reverse=True)
+
+
+def get_tokens_from_replacements(data: List[Datum]) -> List[str]:
+    unique_entities = []
+    tokens = []
+    for datum in data:
+        if datum.has_entities():
+            for entity in datum.entities:
+                if entity.name not in unique_entities:
+                    tokens.append(list(entity.replacements))
+                    unique_entities.append(entity.name)
+    return set(sum(tokens, []))

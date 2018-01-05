@@ -8,6 +8,7 @@ from ..elements import (
 from ..collect_tokens_for_tokenizer import (
     collect_tokens_for_tokenizer,
     longest_common_substring,
+    get_tokens_from_replacements,
 )
 
 
@@ -69,3 +70,49 @@ class CollectTokensForTokenizerTestCase(TestCase):
             s2='鷹流拉麵很好吃',
         )
         self.assertEqual('拉麵', result)
+
+    def test_get_tokens_from_replacements(self):
+        result = get_tokens_from_replacements(
+            data=[
+                Datum(
+                    utterance='AB',
+                    entities=[
+                        Entity(
+                            name='1',
+                            start=1,
+                            end=2,
+                            value='B',
+                            replacements=['B1', 'B2', 'B3']
+                        ),
+                    ],
+                ),
+                Datum(
+                    utterance='CD',
+                    entities=[
+                        Entity(
+                            name='2',
+                            start=1,
+                            end=2,
+                            value='D',
+                            replacements=['D1', 'D2', 'D3'],
+                        ),
+                    ],
+                ),
+                Datum(
+                    utterance='CE',
+                    entities=[
+                        Entity(
+                            name='2',
+                            start=1,
+                            end=2,
+                            value='E',
+                            replacements=['E1', 'E2', 'E3'],
+                        ),
+                    ],
+                ),
+            ],
+        )
+        self.assertEqual(
+            set(['B1', 'B2', 'B3', 'D1', 'D2', 'D3']),
+            result,
+        )
