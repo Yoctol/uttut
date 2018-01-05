@@ -20,10 +20,16 @@ def _get_entity_array(
 def tokenize_datum(
         datum: Datum,
         tokenizer: object,
+        lcut_params: dict = None,
         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
     ) -> (List[str], List[str]):
 
-    tokenized_utterance = tokenizer.lcut(datum.utterance)
+    if lcut_params is None:
+        lcut_params = {'sentence': datum.utterance}
+    else:
+        lcut_params['sentence'] = datum.utterance
+
+    tokenized_utterance = tokenizer.lcut(**lcut_params)
     entity_array = _get_entity_array(
         datum=datum,
         not_entity=not_entity,
