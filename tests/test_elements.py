@@ -412,3 +412,92 @@ class ElementDatumTestCase(TestCase):
             ),
             result,
         )
+
+    def test_to_dict(self):
+        utterance = "我想訂明天從紐約飛到新加坡的機票"
+        intent_names = ['preference', 'guidance']
+        entity_name = '目的地'
+        entity_start = 10
+        entity_end = 13
+        entity_replacements = ['斯堪地那維亞', 'KIX']
+        expected = {
+            'utterance': utterance,
+            'intent': {'names': intent_names},
+            'entities': [
+                {
+                    'name': entity_name,
+                    'start': entity_start,
+                    'end': entity_end - 1,
+                    'replacements': entity_replacements,
+                },
+            ],
+        }
+        entity = Entity(
+            name=entity_name,
+            value='新加坡',
+            start=entity_start,
+            end=entity_end,
+            replacements=entity_replacements,
+        )
+        actual = Datum(
+            utterance=utterance,
+            intents=[Intent(name=name) for name in intent_names],
+            entities=[entity],
+        ).to_dict()
+        self.assertEqual(
+            Datum.from_dict(expected),
+            Datum.from_dict(actual),
+        )
+
+    def test_to_dict_without_entities(self):
+        utterance = "我想訂明天從紐約飛到新加坡的機票"
+        intent_names = ['preference', 'guidance']
+
+        expected = {
+            'utterance': utterance,
+            'intent': {'names': intent_names},
+        }
+        actual = Datum(
+            utterance=utterance,
+            intents=[Intent(name=name) for name in intent_names],
+            entities=[],
+        ).to_dict()
+        self.assertEqual(
+            Datum.from_dict(expected),
+            Datum.from_dict(actual),
+        )
+
+    def test_to_dict_without_intents(self):
+        utterance = "我想訂明天從紐約飛到新加坡的機票"
+        entity_name = '目的地'
+        entity_start = 10
+        entity_end = 13
+        entity_replacements = ['斯堪地那維亞', 'KIX']
+        expected = {
+            'utterance': utterance,
+            'intent': {'names': []},
+            'entities': [
+                {
+                    'name': entity_name,
+                    'start': entity_start,
+                    'end': entity_end - 1,
+                    'replacements': entity_replacements,
+                },
+            ],
+        }
+        entity = Entity(
+            name=entity_name,
+            value='新加坡',
+            start=entity_start,
+            end=entity_end,
+            replacements=entity_replacements,
+        )
+        actual = Datum(
+            utterance=utterance,
+            intents=[],
+            entities=[entity],
+        ).to_dict()
+        self.assertEqual(
+            Datum.from_dict(expected),
+            Datum.from_dict(actual),
+        )

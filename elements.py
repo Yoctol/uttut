@@ -179,3 +179,12 @@ class Datum:
             intents=intents,
             entities=entities,
         )
+
+    def to_dict(self) -> dict:
+        result = {
+            'utterance': self.utterance,
+            'intent': {'names': [intent.name for intent in self.intents]},
+        }
+        if len(self.entities) > 0:
+            result['entities'] = [entity.to_dict() for entity in self.entities]
+        return result
