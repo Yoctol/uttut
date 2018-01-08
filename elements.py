@@ -52,7 +52,7 @@ class Entity:
     def no_replacements(self) -> bool:
         return len(self.replacements) == 0
 
-    def to_legacy_entity(self) -> dict:
+    def to_dict(self) -> dict:
         result = {
             'name': self.name,
             'start': self.start,
@@ -63,7 +63,7 @@ class Entity:
         return result
 
     @classmethod
-    def from_legacy_entity(cls, entity: dict, utterance: str):
+    def from_dict(cls, entity: dict, utterance: str):
         new_end = entity['end'] + 1
         entity_value = utterance[entity['start']: new_end]
         replacements = entity.get('replacements')
@@ -173,7 +173,7 @@ class Datum:
         if utterance_obj.get('entities') is not None:
             entities = []
             for entity in utterance_obj['entities']:
-                entities.append(Entity.from_legacy_entity(entity, utterance_obj['utterance']))
+                entities.append(Entity.from_dict(entity, utterance_obj['utterance']))
         return cls(
             utterance=utterance,
             intents=intents,

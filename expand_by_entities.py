@@ -16,7 +16,7 @@ __all__ = [
 
 
 def partition_by_entities(datum: Datum) -> Tuple[List[dict], List[dict]]:
-    entities = [entity.to_legacy_entity() for entity in datum.entities]
+    entities = [entity.to_dict() for entity in datum.entities]
     new_entities, parts = gen_partitioned_utterance(
         sorted_entities=entities,
         utterance=datum.utterance,

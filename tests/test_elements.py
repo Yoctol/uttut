@@ -40,7 +40,7 @@ class ElementEntityTestCase(TestCase):
         )
         self.assertFalse(ent.no_replacements())
 
-    def test_from_legacy_entity(self):
+    def test_from_dict(self):
         name = 'LOC'
         start = 1
         end = 2
@@ -52,7 +52,7 @@ class ElementEntityTestCase(TestCase):
             'end': end,
             'replacements': replacements,
         }
-        ent = Entity.from_legacy_entity(entity, utterance)
+        ent = Entity.from_dict(entity, utterance)
         self.assertIsInstance(ent, Entity)
         self.assertEqual(ent.value, '紐約')
         self.assertEqual(ent.name, 'LOC')
@@ -60,7 +60,7 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent.end, end + 1)
         self.assertEqual(ent.replacements, set(replacements))
 
-    def test_from_legacy_entity_no_replacements(self):
+    def test_from_dict_no_replacements(self):
         name = 'LOC'
         start = 1
         end = 2
@@ -70,7 +70,7 @@ class ElementEntityTestCase(TestCase):
             'start': start,
             'end': end,
         }
-        ent = Entity.from_legacy_entity(entity, utterance)
+        ent = Entity.from_dict(entity, utterance)
         self.assertIsInstance(ent, Entity)
         self.assertEqual(ent.value, '紐約')
         self.assertEqual(ent.name, 'LOC')
@@ -78,7 +78,7 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent.end, end + 1)
         self.assertEqual(ent.replacements, set([]))
 
-    def test_to_legacy_entity(self):
+    def test_to_dict(self):
         name = 'LOC'
         start = 1
         end = 2
@@ -96,14 +96,14 @@ class ElementEntityTestCase(TestCase):
             end=end + 1,
             replacements=replacements,
         )
-        ent_tx = ent.to_legacy_entity()
+        ent_tx = ent.to_dict()
         self.assertEqual(ent_tx['name'], entity['name'])
         self.assertEqual(ent_tx['start'], entity['start'])
         self.assertEqual(ent_tx['end'], entity['end'])
         self.assertEqual(set(ent_tx['replacements']),
                          set(entity['replacements']))
 
-    def test_to_legacy_entity_no_replacement(self):
+    def test_to_dict_no_replacement(self):
         name = 'LOC'
         start = 1
         end = 2
@@ -118,7 +118,7 @@ class ElementEntityTestCase(TestCase):
             start=start,
             end=end + 1,
         )
-        ent_tx = ent.to_legacy_entity()
+        ent_tx = ent.to_dict()
         self.assertEqual(ent_tx['name'], entity['name'])
         self.assertEqual(ent_tx['start'], entity['start'])
         self.assertEqual(ent_tx['end'], entity['end'])
