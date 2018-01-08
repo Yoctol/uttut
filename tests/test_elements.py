@@ -399,7 +399,7 @@ class ElementDatumTestCase(TestCase):
         self.assertTrue(datum.has_same_entities_as(datum2))
 
     def test_load_from_legacy_multi_intents(self):
-        result = Datum.load_from_legacy_shape(
+        result = Datum.from_dict(
             utterance_obj={
                 'utterance': '豆漿很好喝, 但打不出奶泡',
                 'intent': {'names': ['preference', 'guidance']},

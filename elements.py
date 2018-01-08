@@ -161,7 +161,7 @@ class Datum:
         return [Intent(intent.name) for intent in self.intents]
 
     @classmethod
-    def load_from_legacy_shape(cls, utterance_obj):
+    def from_dict(cls, utterance_obj):
         utterance = utterance_obj['utterance']
         intents = []
         if isinstance(utterance_obj['intent'], str):
