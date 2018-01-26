@@ -69,6 +69,38 @@ class ExpandByEntitiesTestCase(TestCase):
                 Entity(name='目的地', value='KIX', start=12, end=15, replacements=['新加坡', '斯堪地那維亞']),
             ],
         ]
+        self.expected_entity_wo_replacements_lists = [
+            [
+                Entity(name='日期', value='明天', start=3, end=5),
+                Entity(name='出發地', value='紐約', start=6, end=8),
+                Entity(name='目的地', value='新加坡', start=10, end=13),
+            ],
+            [
+                Entity(name='日期', value='下禮拜二', start=3, end=7),
+                Entity(name='出發地', value='紐約', start=8, end=10),
+                Entity(name='目的地', value='新加坡', start=12, end=15),
+            ],
+            [
+                Entity(name='日期', value='明天', start=3, end=5),
+                Entity(name='出發地', value='紐約', start=6, end=8),
+                Entity(name='目的地', value='斯堪地那維亞', start=10, end=16),
+            ],
+            [
+                Entity(name='日期', value='下禮拜二', start=3, end=7),
+                Entity(name='出發地', value='紐約', start=8, end=10),
+                Entity(name='目的地', value='斯堪地那維亞', start=12, end=18),
+            ],
+            [
+                Entity(name='日期', value='明天', start=3, end=5),
+                Entity(name='出發地', value='紐約', start=6, end=8),
+                Entity(name='目的地', value='KIX', start=10, end=13),
+            ],
+            [
+                Entity(name='日期', value='下禮拜二', start=3, end=7),
+                Entity(name='出發地', value='紐約', start=8, end=10),
+                Entity(name='目的地', value='KIX', start=12, end=15),
+            ],
+        ]
         self.expected_intents = [
             [Intent(name='訂機票')],
             [Intent(name='訂機票')],
@@ -78,9 +110,11 @@ class ExpandByEntitiesTestCase(TestCase):
             [Intent(name='訂機票')],
         ]
         self.expected_data = []
-        for utt, ents, ints in zip(
+        self.expected_data_without_replacement = []
+        for utt, ents, ents_wo_re, ints in zip(
                 self.expected_utterances,
                 self.expected_entity_lists,
+                self.expected_entity_wo_replacements_lists,
                 self.expected_intents,
             ):
             self.expected_data.append(Datum(
@@ -88,15 +122,29 @@ class ExpandByEntitiesTestCase(TestCase):
                 entities=ents,
                 intents=ints,
             ))
+            self.expected_data_without_replacement.append(Datum(
+                utterance=utt,
+                entities=ents_wo_re,
+                intents=ints,
+            ))
 
     def test_correct_result(self):
-        result = expand_by_entities(self.datum)
+        result = expand_by_entities(self.datum, include_replacements=True)
 
         # correct expand numbers
         self.assertEqual(6, len(result))
         for idx, datum in enumerate(result):
             with self.subTest(datum_idx=idx):
                 self.assertIn(datum, self.expected_data)
+
+    def test_correct_result_wo_replacement(self):
+        result = expand_by_entities(self.datum, include_replacements=False)
+
+        # correct expand numbers
+        self.assertEqual(6, len(result))
+        for idx, datum in enumerate(result):
+            with self.subTest(datum_idx=idx):
+                self.assertIn(datum, self.expected_data_without_replacement)
 
     def test_partition_by_entities(self):
         entities, parts = partition_by_entities(self.datum)
