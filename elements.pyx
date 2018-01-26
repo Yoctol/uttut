@@ -1,4 +1,5 @@
 from typing import List, Iterable
+cimport cython
 
 from .exceptions import (
     EntityOverlapping,
@@ -12,30 +13,43 @@ from .utils import (
 )
 
 
-class Entity:
+
+cdef class Entity:
+
+    cdef public str name
+    cdef public str value
+    cdef public int start
+    cdef public int end
+    cdef public set replacements
+    cdef public set replacements_with_self
+    cdef public int index
 
     def __init__(
             self,
-            name: str,
-            value: str,
-            start: int,
-            end: int,
+            str name,
+            str value,
+            int start,
+            int end,
             replacements: Iterable[str] = None,
         ) -> None:
+        self.index = -1
+
         self.name = name
         self.value = value
         self.start = start
         self.end = end
-        replacements = [] if replacements is None else replacements
-        self.replacements = set(replacements)
+        cdef list _replacements = [] if replacements is None else list(replacements)
+        self.replacements = set(_replacements)
+        _replacements.append(self.value)
+        self.replacements_with_self = set(_replacements)
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other):
         if not isinstance(other, self.__class__):
             raise TypeError('can only compare entity to entity')
-        same_name = self.name == other.name
-        same_value = self.value == other.value
-        same_position = (self.start == other.start) and (self.end == other.end)
-        same_replacements = self.replacements == other.replacements
+        cdef bint same_name = self.name == other.name
+        cdef bint  same_value = self.value == other.value
+        cdef bint same_position = (self.start == other.start) and (self.end == other.end)
+        cdef bint same_replacements = self.replacements == other.replacements
         if same_name and same_value and same_position and same_replacements:
             return True
         return False
@@ -52,6 +66,9 @@ class Entity:
     def no_replacements(self) -> bool:
         return len(self.replacements) == 0
 
+    def n_replacements(self):
+        return len(self.replacements) + 1
+
     def to_dict(self) -> dict:
         result = {
             'name': self.name,
@@ -63,7 +80,7 @@ class Entity:
         return result
 
     @classmethod
-    def from_dict(cls, entity: dict, utterance: str):
+    def from_dict(cls, dict entity, str utterance):
         new_end = entity['end'] + 1
         entity_value = utterance[entity['start']: new_end]
         replacements = entity.get('replacements')
@@ -76,9 +93,11 @@ class Entity:
         )
 
 
-class Intent:
+cdef class Intent:
 
-    def __init__(self, name: str) -> None:
+    cdef public str name
+
+    def __init__(self, str name):
         self.name = name
 
     def __repr__(self):
@@ -95,10 +114,10 @@ class Datum:
 
     def __init__(
             self,
-            utterance: str,
-            intents: List[Intent] = None,
-            entities: List[Entity] = None,
-        ) -> None:
+            str utterance,
+            list intents = None,  # : List[Intent] = None,
+            list entities = None,  # : List[Entity] = None,
+        ):
         self.utterance = utterance
         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)
@@ -151,10 +170,10 @@ class Datum:
                 same_entities = True
         return same_entities
 
-    def has_entities(self) -> bool:
+    def has_entities(self):
         return len(self.entities) > 0
 
-    def has_intents(self) -> bool:
+    def has_intents(self):
         return len(self.intents) > 0
 
     def copy_intents(self) -> List[Intent]:
