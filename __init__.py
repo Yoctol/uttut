@@ -1,3 +1,5 @@
+import pyximport
+pyximport.install()
 from .elements import Datum  # noqa
 
 ENTITY_LABEL = {
