@@ -1,5 +1,5 @@
 # cython: profile=True
-# cython: linetrace=True
+# cython: linetrace=False
 import random
 from typing import List, Tuple
 import numpy as np
@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-cdef int greatest_common_divisor(int x, int y):
+cdef int greatest_common_divisor(int x, int y) nogil:
     """This function implements the Euclidian algorithm
     to find G.C.D. of two numbers"""
     while y:
@@ -22,7 +22,7 @@ cdef int greatest_common_divisor(int x, int y):
     return x
 
 
-cdef int least_common_multiple(int x, int y):
+cdef int least_common_multiple(int x, int y) nogil:
     """This function takes two
     integers and returns the L.C.M."""
 
@@ -126,10 +126,10 @@ def partition_by_entities(datum: Datum) -> Tuple[List[dict], List[dict]]:
     return new_entities, parts
 
 
-def _include_orig_value(
+cdef _include_orig_value(
         entities_with_index: List[Entity],
         parts: List[str],
-    ) -> List[dict]:
+    ):
     new_entities = entities_with_index.copy()
     for entity in new_entities:
         target_idx = entity['index']
@@ -184,7 +184,7 @@ cdef _aggregate_entities(
     return entities
 
 
-cpdef expand_by_entities(datum, include_replacements=False):
+cpdef expand_by_entities(datum, bint include_replacements=False):
     if not datum.has_entities():
         return [datum]
     entities_with_index, parts = partition_by_entities(datum)

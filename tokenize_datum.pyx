@@ -1,3 +1,5 @@
+# cython: profile=True
+# cython: linetrace=False
 from typing import List
 
 from uttut.elements import Datum
@@ -22,7 +24,7 @@ def tokenize_datum(
         tokenizer: object,
         lcut_params: dict = None,
         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
-    ) -> (List[str], List[str]):
+    ):
 
     if lcut_params is None:
         lcut_params = {'sentence': datum.utterance}

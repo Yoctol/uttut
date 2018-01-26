@@ -47,7 +47,7 @@ cdef class Entity:
         if not isinstance(other, self.__class__):
             raise TypeError('can only compare entity to entity')
         cdef bint same_name = self.name == other.name
-        cdef bint  same_value = self.value == other.value
+        cdef bint same_value = self.value == other.value
         cdef bint same_position = (self.start == other.start) and (self.end == other.end)
         cdef bint same_replacements = self.replacements == other.replacements
         if same_name and same_value and same_position and same_replacements:

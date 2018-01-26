@@ -1,3 +1,5 @@
+# cython: profile=True
+# cython: linetrace=False
 from typing import List, Tuple
 
 from uttut.elements import Datum, Entity
@@ -7,7 +9,7 @@ from uttut import ENTITY_LABEL
 def _gen_partitioned_utterance_n_entities(
         datum: Datum,
         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
-    ) -> Tuple[List[List[str]], List[List[str]]]:
+    ):
 
     start = 0
     utterance = datum.utterance
@@ -43,11 +45,19 @@ def _gen_partitioned_utterance_n_entities(
     return partitioned_utterance, partitioned_entities
 
 
-def normalize_datum(
+cpdef normalize_datum(
         datum: Datum,
-        text_normalizer: object = None,
+        text_normalizer=None,
         not_entity=ENTITY_LABEL['NOT_ENTITY'],
-    ) -> Tuple[Datum, List[dict]]:
+    ):
+    cdef int idx
+    cdef int n_parts
+    cdef int begin_ind
+    cdef int start
+    cdef list entities
+    cdef str normalized_segment
+    cdef int entities_ind
+    cdef str normalized_utterance
 
     if text_normalizer is None:
         return datum, None
@@ -55,7 +65,7 @@ def normalize_datum(
     normalized_utterance, meta = text_normalizer.normalize(
         sentence=datum.utterance,
     )
-    if not datum.entities:
+    if not datum.has_entities():
         return Datum(
             utterance=normalized_utterance,
             intents=datum.intents,
@@ -69,7 +79,11 @@ def normalize_datum(
         begin_ind = 0
         entities = []
         entities_ind = 0
-        for segment, entity in zip(partitioned_utterance, partitioned_entities):
+        n_parts = len(partitioned_utterance)
+        for idx in range(n_parts):
+        # for segment, entity in zip(partitioned_utterance, partitioned_entities):
+            segment = partitioned_utterance[idx]
+            entity = partitioned_entities[idx]
             normalized_segment, _ = text_normalizer.normalize(
                 sentence=segment,
             )
