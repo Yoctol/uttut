@@ -94,13 +94,15 @@ cpdef normalize_datum(
             if start == -1:
                 raise KeyError(
                     'String match fails when normalizing datum, '
-                    'original datum = {}, str = {}, substr = {}'.format(
-                        datum,
+                    'original utterance = {},\n normalized_utterance = {},\n'.format(
+                        datum.utterance,
                         normalized_utterance,
-                        normalized_segment,
+                    ),
+                    'utterance split by entity = {},\n entities = {}.\n'.format(
+                        partitioned_utterance,
+                        partitioned_entities,
                     ),
                 )
-
             begin_ind = start + len(normalized_segment)
             if entity != not_entity:
                 entities.append(
