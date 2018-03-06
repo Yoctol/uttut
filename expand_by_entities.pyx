@@ -59,19 +59,10 @@ cdef list augment_single_partition_utterances(
         )
 
         lcm = least_common_multiple_for_list_of_number(n_replacements)
-
-        #### TODO: NEED BETTER THRESHOLD
-        if lcm > 5000:
-            data_size = int(5000 + np.sqrt(lcm - 5000))
-            if data_size < complete_set_size:
-                data_size = complete_set_size
-        else:
-            data_size = lcm
-
         output = _augment_partition_utterance_number_less_than_lcm(
             partitioned_utterance=partitioned_utterance,
             sorted_entities=sorted_entities,
-            data_size=data_size,
+            data_size=lcm,
         )
     else:
         output = [partitioned_utterance]
