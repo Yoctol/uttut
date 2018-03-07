@@ -3,6 +3,8 @@ from unittest import TestCase
 from ..expand_by_entities import (
     expand_by_entities,
     partition_by_entities,
+    augment_single_partition_utterances,
+    augment_single_partition_utterances_with_upper_bound,
 )
 from ..elements import (
     Datum,
@@ -128,8 +130,26 @@ class ExpandByEntitiesTestCase(TestCase):
                 intents=ints,
             ))
 
-    def test_correct_result(self):
-        result = expand_by_entities(self.datum, include_replacements=True)
+    def test_correct_result_original_augmentation_method(self):
+        result = expand_by_entities(
+            self.datum,
+            augment_method=augment_single_partition_utterances,
+            include_replacements=True,
+        )
+
+        # correct expand numbers
+        self.assertEqual(6, len(result))
+        for idx, datum in enumerate(result):
+            with self.subTest(datum_idx=idx):
+                self.assertIn(datum, self.expected_data)
+
+    def test_correct_result_augmentation_with_upper_bound(self):
+        result = expand_by_entities(
+            self.datum,
+            augment_method=augment_single_partition_utterances_with_upper_bound,
+            augment_params={"upper_bound": 50},
+            include_replacements=True,
+        )
 
         # correct expand numbers
         self.assertEqual(6, len(result))
@@ -138,7 +158,11 @@ class ExpandByEntitiesTestCase(TestCase):
                 self.assertIn(datum, self.expected_data)
 
     def test_correct_result_wo_replacement(self):
-        result = expand_by_entities(self.datum, include_replacements=False)
+        result = expand_by_entities(
+            self.datum,
+            augment_method=augment_single_partition_utterances,
+            include_replacements=False,
+        )
 
         # correct expand numbers
         self.assertEqual(6, len(result))
