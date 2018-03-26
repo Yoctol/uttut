@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.test import TestCase
+from unittest import TestCase
 
 from uttut.elements import (
     Datum,

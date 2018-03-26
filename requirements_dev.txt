@@ -1,0 +1,2 @@
+flake8-config-yoctol==0.0.9
+-e .
