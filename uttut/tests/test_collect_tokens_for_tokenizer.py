@@ -11,6 +11,12 @@ from ..collect_tokens_for_tokenizer import (
     get_tokens_from_replacements,
 )
 
+class FakeTokenizer:
+    def lcut(self, sentence, *__, **___):
+        return list(sentence)
+
+FAKE_TOKENIZER = FakeTokenizer()
+
 
 class CollectTokensForTokenizerTestCase(TestCase):
 
@@ -62,7 +68,7 @@ class CollectTokensForTokenizerTestCase(TestCase):
         ]
 
     def test_collect_tokens_for_tokenizer(self):
-        collect_tokens_for_tokenizer(self.data)
+        collect_tokens_for_tokenizer(self.data, tokenizer=FAKE_TOKENIZER)
 
     def test_longest_common_substring(self):
         result = longest_common_substring(

@@ -2,9 +2,6 @@ from typing import List
 from collections import Counter
 
 from uttut.elements import Datum
-from nlu.tokenizers import CustomJiebaTokenizer
-
-TOKENIZER = CustomJiebaTokenizer()
 
 
 def longest_common_substring(s1: str, s2: str):
@@ -22,7 +19,7 @@ def longest_common_substring(s1: str, s2: str):
     return s1[x_longest - longest: x_longest]
 
 
-def collect_tokens_for_tokenizer(data: List[Datum])-> List[str]: # noqa
+def collect_tokens_for_tokenizer(data: List[Datum], tokenizer)-> List[str]: # noqa
     tokens = []
     for datum in data:
         if datum.entities is not None:
@@ -31,7 +28,7 @@ def collect_tokens_for_tokenizer(data: List[Datum])-> List[str]: # noqa
                 tokens.append(list(entity.replacements))
     unique_tokens = set(sum(tokens, []))
 
-    raw_minimal_tokens = TOKENIZER.lcut(' '.join(unique_tokens))
+    raw_minimal_tokens = tokenizer.lcut(' '.join(unique_tokens))
 
     tokens2frequency = Counter(raw_minimal_tokens).most_common()
 
