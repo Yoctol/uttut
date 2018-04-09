@@ -3,12 +3,12 @@ from typing import List
 from uttut.elements import Datum, Intent, Entity
 
 
-SUB_PROG = re.compile(r'<.*?>')
-FINDALL_PROG = re.compile(r'<(.*?)>(.*?)</')
+SUB_PROG = re.compile(r"<[^\<\>]*?>(?P<KEEP>[^\<\>]*?)</[^\<\>]*?>")
+FINDALL_PROG = re.compile(r"<([^\<\>]*?)>([^\<\>]*?)</")
 
 
-def remove_annotation(annotated_sentence: str):
-    return SUB_PROG.sub('', annotated_sentence)
+def remove_annotation(annotated_utterance: str):
+    return SUB_PROG.sub("\g<KEEP>", annotated_utterance)
 
 
 def transform_annotated_sentence_to_entity_object(
