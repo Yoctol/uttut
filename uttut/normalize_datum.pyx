@@ -149,13 +149,13 @@ def denormalize_datum(
                 not_entity=not_entity,
             )
 
-        utterance_with_wall = '|IamtheWALL|'.join(partitioned_utterance)
+        utterance_with_wall = 'WALL'.join(partitioned_utterance)
         denormalized_utterance_with_wall = text_normalizer.denormalize(
             sentence=utterance_with_wall,
             meta=meta,
         )
         partitioned_denormalized_utterance = \
-            denormalized_utterance_with_wall.split('|IamtheWALL|')
+            denormalized_utterance_with_wall.split('WALL')
 
         if len(partitioned_utterance) != len(partitioned_denormalized_utterance):
             raise KeyError(

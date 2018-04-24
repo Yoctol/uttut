@@ -771,7 +771,7 @@ static const char *__pyx_f[] = {
 struct __pyx_opt_args_5uttut_15normalize_datum_normalize_datum;
 
 /* "uttut/normalize_datum.pyx":49
- * 
+ *
  * cpdef normalize_datum(
  *         datum: Datum,             # <<<<<<<<<<<<<<
  *         text_normalizer=None,
@@ -1388,7 +1388,7 @@ static const char __pyx_k_sentence[] = "sentence";
 static const char __pyx_k_begin_ind[] = "begin_ind";
 static const char __pyx_k_normalize[] = "normalize";
 static const char __pyx_k_utterance[] = "utterance";
-static const char __pyx_k_IamtheWALL[] = "|IamtheWALL|";
+static const char __pyx_k_IamtheWALL[] = "WALL";
 static const char __pyx_k_NOT_ENTITY[] = "NOT_ENTITY";
 static const char __pyx_k_not_entity[] = "not_entity";
 static const char __pyx_k_denormalize[] = "denormalize";
@@ -1495,8 +1495,8 @@ static PyObject *__pyx_codeobj__5;
 /* Late includes */
 
 /* "uttut/normalize_datum.pyx":9
- * 
- * 
+ *
+ *
  * def _gen_partitioned_utterance_n_entities(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
@@ -1598,7 +1598,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
   /* "uttut/normalize_datum.pyx":14
  *     ):
- * 
+ *
  *     start = 0             # <<<<<<<<<<<<<<
  *     utterance = datum.utterance
  *     partitioned_utterance = []
@@ -1607,7 +1607,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
   __pyx_v_start = __pyx_int_0;
 
   /* "uttut/normalize_datum.pyx":15
- * 
+ *
  *     start = 0
  *     utterance = datum.utterance             # <<<<<<<<<<<<<<
  *     partitioned_utterance = []
@@ -1623,7 +1623,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
  *     utterance = datum.utterance
  *     partitioned_utterance = []             # <<<<<<<<<<<<<<
  *     partitioned_entities = []
- * 
+ *
  */
   __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1634,7 +1634,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
  *     utterance = datum.utterance
  *     partitioned_utterance = []
  *     partitioned_entities = []             # <<<<<<<<<<<<<<
- * 
+ *
  *     if datum.has_entities():
  */
   __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
@@ -1644,7 +1644,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
   /* "uttut/normalize_datum.pyx":19
  *     partitioned_entities = []
- * 
+ *
  *     if datum.has_entities():             # <<<<<<<<<<<<<<
  *         for entity in datum.entities:
  *             if start != entity.start:
@@ -1674,7 +1674,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
   if (__pyx_t_4) {
 
     /* "uttut/normalize_datum.pyx":20
- * 
+ *
  *     if datum.has_entities():
  *         for entity in datum.entities:             # <<<<<<<<<<<<<<
  *             if start != entity.start:
@@ -1828,7 +1828,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
  *                 utterance[entity.start: entity.end]]
  *             partitioned_entities.append(entity.name)             # <<<<<<<<<<<<<<
  *             start = entity.end
- * 
+ *
  */
       __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_entity, __pyx_n_s_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 27, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
@@ -1839,7 +1839,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
  *                 utterance[entity.start: entity.end]]
  *             partitioned_entities.append(entity.name)
  *             start = entity.end             # <<<<<<<<<<<<<<
- * 
+ *
  *         if datum.entities[-1].end != len(utterance):
  */
       __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_entity, __pyx_n_s_end); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 28, __pyx_L1_error)
@@ -1848,7 +1848,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
       __pyx_t_8 = 0;
 
       /* "uttut/normalize_datum.pyx":20
- * 
+ *
  *     if datum.has_entities():
  *         for entity in datum.entities:             # <<<<<<<<<<<<<<
  *             if start != entity.start:
@@ -1859,7 +1859,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
     /* "uttut/normalize_datum.pyx":30
  *             start = entity.end
- * 
+ *
  *         if datum.entities[-1].end != len(utterance):             # <<<<<<<<<<<<<<
  *             partitioned_utterance += [utterance[start:]]
  *             partitioned_entities.append(not_entity)
@@ -1883,7 +1883,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
     if (__pyx_t_4) {
 
       /* "uttut/normalize_datum.pyx":31
- * 
+ *
  *         if datum.entities[-1].end != len(utterance):
  *             partitioned_utterance += [utterance[start:]]             # <<<<<<<<<<<<<<
  *             partitioned_entities.append(not_entity)
@@ -1913,7 +1913,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
       /* "uttut/normalize_datum.pyx":30
  *             start = entity.end
- * 
+ *
  *         if datum.entities[-1].end != len(utterance):             # <<<<<<<<<<<<<<
  *             partitioned_utterance += [utterance[start:]]
  *             partitioned_entities.append(not_entity)
@@ -1922,7 +1922,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
     /* "uttut/normalize_datum.pyx":19
  *     partitioned_entities = []
- * 
+ *
  *     if datum.has_entities():             # <<<<<<<<<<<<<<
  *         for entity in datum.entities:
  *             if start != entity.start:
@@ -1935,7 +1935,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
  *     else:
  *         partitioned_utterance = [utterance]             # <<<<<<<<<<<<<<
  *         partitioned_entities = [not_entity]
- * 
+ *
  */
   /*else*/ {
     __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
@@ -1950,7 +1950,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
  *     else:
  *         partitioned_utterance = [utterance]
  *         partitioned_entities = [not_entity]             # <<<<<<<<<<<<<<
- * 
+ *
  *     if len(partitioned_utterance) != len(partitioned_entities):
  */
     __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
@@ -1965,7 +1965,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
   /* "uttut/normalize_datum.pyx":37
  *         partitioned_entities = [not_entity]
- * 
+ *
  *     if len(partitioned_utterance) != len(partitioned_entities):             # <<<<<<<<<<<<<<
  *         raise KeyError(
  *             'Number of segments of utterance and entities is not equal',
@@ -2039,7 +2039,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
     /* "uttut/normalize_datum.pyx":38
- * 
+ *
  *     if len(partitioned_utterance) != len(partitioned_entities):
  *         raise KeyError(             # <<<<<<<<<<<<<<
  *             'Number of segments of utterance and entities is not equal',
@@ -2062,7 +2062,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
     /* "uttut/normalize_datum.pyx":37
  *         partitioned_entities = [not_entity]
- * 
+ *
  *     if len(partitioned_utterance) != len(partitioned_entities):             # <<<<<<<<<<<<<<
  *         raise KeyError(
  *             'Number of segments of utterance and entities is not equal',
@@ -2071,10 +2071,10 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 
   /* "uttut/normalize_datum.pyx":45
  *         )
- * 
+ *
  *     return partitioned_utterance, partitioned_entities             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
@@ -2090,8 +2090,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
   goto __pyx_L0;
 
   /* "uttut/normalize_datum.pyx":9
- * 
- * 
+ *
+ *
  * def _gen_partitioned_utterance_n_entities(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
@@ -2118,8 +2118,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum__gen_partitioned_utterance_n_
 }
 
 /* "uttut/normalize_datum.pyx":48
- * 
- * 
+ *
+ *
  * cpdef normalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         text_normalizer=None,
@@ -2181,20 +2181,20 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
 
   /* "uttut/normalize_datum.pyx":62
  *     cdef str normalized_utterance
- * 
+ *
  *     if text_normalizer is None:             # <<<<<<<<<<<<<<
  *         return datum, None
- * 
+ *
  */
   __pyx_t_1 = (__pyx_v_text_normalizer == Py_None);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
     /* "uttut/normalize_datum.pyx":63
- * 
+ *
  *     if text_normalizer is None:
  *         return datum, None             # <<<<<<<<<<<<<<
- * 
+ *
  *     normalized_utterance, meta = text_normalizer.normalize(
  */
     __Pyx_XDECREF(__pyx_r);
@@ -2212,16 +2212,16 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
 
     /* "uttut/normalize_datum.pyx":62
  *     cdef str normalized_utterance
- * 
+ *
  *     if text_normalizer is None:             # <<<<<<<<<<<<<<
  *         return datum, None
- * 
+ *
  */
   }
 
   /* "uttut/normalize_datum.pyx":65
  *         return datum, None
- * 
+ *
  *     normalized_utterance, meta = text_normalizer.normalize(             # <<<<<<<<<<<<<<
  *         sentence=datum.utterance,
  *     )
@@ -2230,7 +2230,7 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
   __Pyx_GOTREF(__pyx_t_3);
 
   /* "uttut/normalize_datum.pyx":66
- * 
+ *
  *     normalized_utterance, meta = text_normalizer.normalize(
  *         sentence=datum.utterance,             # <<<<<<<<<<<<<<
  *     )
@@ -2245,7 +2245,7 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
 
   /* "uttut/normalize_datum.pyx":65
  *         return datum, None
- * 
+ *
  *     normalized_utterance, meta = text_normalizer.normalize(             # <<<<<<<<<<<<<<
  *         sentence=datum.utterance,
  *     )
@@ -2264,11 +2264,11 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
-      __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
-      __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1); 
+      __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0);
+      __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1);
     } else {
-      __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
-      __pyx_t_3 = PyList_GET_ITEM(sequence, 1); 
+      __pyx_t_4 = PyList_GET_ITEM(sequence, 0);
+      __pyx_t_3 = PyList_GET_ITEM(sequence, 1);
     }
     __Pyx_INCREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_3);
@@ -2472,11 +2472,11 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1); 
+        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0);
+        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1);
       } else {
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 1); 
+        __pyx_t_4 = PyList_GET_ITEM(sequence, 0);
+        __pyx_t_3 = PyList_GET_ITEM(sequence, 1);
       }
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_3);
@@ -2639,11 +2639,11 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
-          __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-          __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
+          __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0);
+          __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1);
         } else {
-          __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-          __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
+          __pyx_t_3 = PyList_GET_ITEM(sequence, 0);
+          __pyx_t_5 = PyList_GET_ITEM(sequence, 1);
         }
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_5);
@@ -3004,7 +3004,7 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
  *                     ),
  *                 )
  *                 entities_ind += 1             # <<<<<<<<<<<<<<
- * 
+ *
  *     return Datum(
  */
         __pyx_v_entities_ind = (__pyx_v_entities_ind + 1);
@@ -3022,7 +3022,7 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
 
   /* "uttut/normalize_datum.pyx":119
  *                 entities_ind += 1
- * 
+ *
  *     return Datum(             # <<<<<<<<<<<<<<
  *         utterance=normalized_utterance,
  *         intents=datum.intents,
@@ -3032,7 +3032,7 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
   __Pyx_GOTREF(__pyx_t_5);
 
   /* "uttut/normalize_datum.pyx":120
- * 
+ *
  *     return Datum(
  *         utterance=normalized_utterance,             # <<<<<<<<<<<<<<
  *         intents=datum.intents,
@@ -3059,13 +3059,13 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
  *         intents=datum.intents,
  *         entities=entities,             # <<<<<<<<<<<<<<
  *     ), meta
- * 
+ *
  */
   if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_entities, __pyx_v_entities) < 0) __PYX_ERR(0, 120, __pyx_L1_error)
 
   /* "uttut/normalize_datum.pyx":119
  *                 entities_ind += 1
- * 
+ *
  *     return Datum(             # <<<<<<<<<<<<<<
  *         utterance=normalized_utterance,
  *         intents=datum.intents,
@@ -3079,8 +3079,8 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
  *         intents=datum.intents,
  *         entities=entities,
  *     ), meta             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
   __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
@@ -3095,8 +3095,8 @@ static PyObject *__pyx_f_5uttut_15normalize_datum_normalize_datum(PyObject *__py
   goto __pyx_L0;
 
   /* "uttut/normalize_datum.pyx":48
- * 
- * 
+ *
+ *
  * cpdef normalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         text_normalizer=None,
@@ -3209,8 +3209,8 @@ static PyObject *__pyx_pw_5uttut_15normalize_datum_3normalize_datum(PyObject *__
   __pyx_r = __pyx_pf_5uttut_15normalize_datum_2normalize_datum(__pyx_self, __pyx_v_datum, __pyx_v_text_normalizer, __pyx_v_not_entity);
 
   /* "uttut/normalize_datum.pyx":48
- * 
- * 
+ *
+ *
  * cpdef normalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         text_normalizer=None,
@@ -3252,8 +3252,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_2normalize_datum(CYTHON_UNUSE
 }
 
 /* "uttut/normalize_datum.pyx":126
- * 
- * 
+ *
+ *
  * def denormalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         meta: List[dict],
@@ -3353,8 +3353,8 @@ static PyObject *__pyx_pw_5uttut_15normalize_datum_5denormalize_datum(PyObject *
   __pyx_r = __pyx_pf_5uttut_15normalize_datum_4denormalize_datum(__pyx_self, __pyx_v_datum, __pyx_v_meta, __pyx_v_text_normalizer, __pyx_v_not_entity);
 
   /* "uttut/normalize_datum.pyx":126
- * 
- * 
+ *
+ *
  * def denormalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         meta: List[dict],
@@ -3400,20 +3400,20 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
   /* "uttut/normalize_datum.pyx":133
  *     ) -> Datum:
- * 
+ *
  *     if text_normalizer is None:             # <<<<<<<<<<<<<<
  *         return datum
- * 
+ *
  */
   __pyx_t_1 = (__pyx_v_text_normalizer == Py_None);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
     /* "uttut/normalize_datum.pyx":134
- * 
+ *
  *     if text_normalizer is None:
  *         return datum             # <<<<<<<<<<<<<<
- * 
+ *
  *     denormalized_utterance = text_normalizer.denormalize(
  */
     __Pyx_XDECREF(__pyx_r);
@@ -3423,16 +3423,16 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
     /* "uttut/normalize_datum.pyx":133
  *     ) -> Datum:
- * 
+ *
  *     if text_normalizer is None:             # <<<<<<<<<<<<<<
  *         return datum
- * 
+ *
  */
   }
 
   /* "uttut/normalize_datum.pyx":136
  *         return datum
- * 
+ *
  *     denormalized_utterance = text_normalizer.denormalize(             # <<<<<<<<<<<<<<
  *         sentence=datum.utterance,
  *         meta=meta,
@@ -3441,7 +3441,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
   __Pyx_GOTREF(__pyx_t_3);
 
   /* "uttut/normalize_datum.pyx":137
- * 
+ *
  *     denormalized_utterance = text_normalizer.denormalize(
  *         sentence=datum.utterance,             # <<<<<<<<<<<<<<
  *         meta=meta,
@@ -3465,7 +3465,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
   /* "uttut/normalize_datum.pyx":136
  *         return datum
- * 
+ *
  *     denormalized_utterance = text_normalizer.denormalize(             # <<<<<<<<<<<<<<
  *         sentence=datum.utterance,
  *         meta=meta,
@@ -3584,7 +3584,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
  *                 datum=datum,
  *                 not_entity=not_entity,             # <<<<<<<<<<<<<<
  *             )
- * 
+ *
  */
     if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_not_entity, __pyx_v_not_entity) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
 
@@ -3609,11 +3609,11 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1); 
+        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0);
+        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1);
       } else {
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 1); 
+        __pyx_t_4 = PyList_GET_ITEM(sequence, 0);
+        __pyx_t_3 = PyList_GET_ITEM(sequence, 1);
       }
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_3);
@@ -3660,8 +3660,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
     /* "uttut/normalize_datum.pyx":152
  *             )
- * 
- *         utterance_with_wall = '|IamtheWALL|'.join(partitioned_utterance)             # <<<<<<<<<<<<<<
+ *
+ *         utterance_with_wall = 'WALL'.join(partitioned_utterance)             # <<<<<<<<<<<<<<
  *         denormalized_utterance_with_wall = text_normalizer.denormalize(
  *             sentence=utterance_with_wall,
  */
@@ -3671,8 +3671,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
     __pyx_t_5 = 0;
 
     /* "uttut/normalize_datum.pyx":153
- * 
- *         utterance_with_wall = '|IamtheWALL|'.join(partitioned_utterance)
+ *
+ *         utterance_with_wall = 'WALL'.join(partitioned_utterance)
  *         denormalized_utterance_with_wall = text_normalizer.denormalize(             # <<<<<<<<<<<<<<
  *             sentence=utterance_with_wall,
  *             meta=meta,
@@ -3681,7 +3681,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
     __Pyx_GOTREF(__pyx_t_5);
 
     /* "uttut/normalize_datum.pyx":154
- *         utterance_with_wall = '|IamtheWALL|'.join(partitioned_utterance)
+ *         utterance_with_wall = 'WALL'.join(partitioned_utterance)
  *         denormalized_utterance_with_wall = text_normalizer.denormalize(
  *             sentence=utterance_with_wall,             # <<<<<<<<<<<<<<
  *             meta=meta,
@@ -3701,8 +3701,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
     if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_meta, __pyx_v_meta) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
 
     /* "uttut/normalize_datum.pyx":153
- * 
- *         utterance_with_wall = '|IamtheWALL|'.join(partitioned_utterance)
+ *
+ *         utterance_with_wall = 'WALL'.join(partitioned_utterance)
  *         denormalized_utterance_with_wall = text_normalizer.denormalize(             # <<<<<<<<<<<<<<
  *             sentence=utterance_with_wall,
  *             meta=meta,
@@ -3717,8 +3717,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
     /* "uttut/normalize_datum.pyx":158
  *         )
  *         partitioned_denormalized_utterance = \
- *             denormalized_utterance_with_wall.split('|IamtheWALL|')             # <<<<<<<<<<<<<<
- * 
+ *             denormalized_utterance_with_wall.split('WALL')             # <<<<<<<<<<<<<<
+ *
  *         if len(partitioned_utterance) != len(partitioned_denormalized_utterance):
  */
     __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_denormalized_utterance_with_wall, __pyx_n_s_split); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 158, __pyx_L1_error)
@@ -3730,8 +3730,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
     __pyx_t_3 = 0;
 
     /* "uttut/normalize_datum.pyx":160
- *             denormalized_utterance_with_wall.split('|IamtheWALL|')
- * 
+ *             denormalized_utterance_with_wall.split('WALL')
+ *
  *         if len(partitioned_utterance) != len(partitioned_denormalized_utterance):             # <<<<<<<<<<<<<<
  *             raise KeyError(
  *                 'Something wrong during denormalize',
@@ -3809,7 +3809,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
  *                 'after denormalize = {}'.format(
  *                     partitioned_denormalized_utterance),             # <<<<<<<<<<<<<<
  *             )
- * 
+ *
  */
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -3856,7 +3856,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
       /* "uttut/normalize_datum.pyx":161
- * 
+ *
  *         if len(partitioned_utterance) != len(partitioned_denormalized_utterance):
  *             raise KeyError(             # <<<<<<<<<<<<<<
  *                 'Something wrong during denormalize',
@@ -3881,8 +3881,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
       __PYX_ERR(0, 161, __pyx_L1_error)
 
       /* "uttut/normalize_datum.pyx":160
- *             denormalized_utterance_with_wall.split('|IamtheWALL|')
- * 
+ *             denormalized_utterance_with_wall.split('WALL')
+ *
  *         if len(partitioned_utterance) != len(partitioned_denormalized_utterance):             # <<<<<<<<<<<<<<
  *             raise KeyError(
  *                 'Something wrong during denormalize',
@@ -3891,7 +3891,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
     /* "uttut/normalize_datum.pyx":168
  *             )
- * 
+ *
  *         begin_ind = 0             # <<<<<<<<<<<<<<
  *         entities_ind = 0
  *         entities = []
@@ -3900,7 +3900,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
     __pyx_v_begin_ind = __pyx_int_0;
 
     /* "uttut/normalize_datum.pyx":169
- * 
+ *
  *         begin_ind = 0
  *         entities_ind = 0             # <<<<<<<<<<<<<<
  *         entities = []
@@ -3989,11 +3989,11 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
-          __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-          __pyx_t_10 = PyTuple_GET_ITEM(sequence, 1); 
+          __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0);
+          __pyx_t_10 = PyTuple_GET_ITEM(sequence, 1);
         } else {
-          __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-          __pyx_t_10 = PyList_GET_ITEM(sequence, 1); 
+          __pyx_t_3 = PyList_GET_ITEM(sequence, 0);
+          __pyx_t_10 = PyList_GET_ITEM(sequence, 1);
         }
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_10);
@@ -4196,9 +4196,9 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
       /* "uttut/normalize_datum.pyx":187
  *                 )
- * 
+ *
  *             begin_ind = start + len(denormalized_segment)             # <<<<<<<<<<<<<<
- * 
+ *
  *             if entity != not_entity:
  */
       __pyx_t_8 = PyObject_Length(__pyx_v_denormalized_segment); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 187, __pyx_L1_error)
@@ -4212,7 +4212,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
       /* "uttut/normalize_datum.pyx":189
  *             begin_ind = start + len(denormalized_segment)
- * 
+ *
  *             if entity != not_entity:             # <<<<<<<<<<<<<<
  *                 entities.append(
  *                     Entity(
@@ -4301,7 +4301,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
         /* "uttut/normalize_datum.pyx":190
- * 
+ *
  *             if entity != not_entity:
  *                 entities.append(             # <<<<<<<<<<<<<<
  *                     Entity(
@@ -4314,7 +4314,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
  *                     ),
  *                 )
  *                 entities_ind += 1             # <<<<<<<<<<<<<<
- * 
+ *
  *     return Datum(
  */
         __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_entities_ind, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
@@ -4324,7 +4324,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
         /* "uttut/normalize_datum.pyx":189
  *             begin_ind = start + len(denormalized_segment)
- * 
+ *
  *             if entity != not_entity:             # <<<<<<<<<<<<<<
  *                 entities.append(
  *                     Entity(
@@ -4344,7 +4344,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
   /* "uttut/normalize_datum.pyx":201
  *                 entities_ind += 1
- * 
+ *
  *     return Datum(             # <<<<<<<<<<<<<<
  *         utterance=denormalized_utterance,
  *         intents=datum.intents,
@@ -4354,7 +4354,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
   __Pyx_GOTREF(__pyx_t_4);
 
   /* "uttut/normalize_datum.pyx":202
- * 
+ *
  *     return Datum(
  *         utterance=denormalized_utterance,             # <<<<<<<<<<<<<<
  *         intents=datum.intents,
@@ -4386,7 +4386,7 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
 
   /* "uttut/normalize_datum.pyx":201
  *                 entities_ind += 1
- * 
+ *
  *     return Datum(             # <<<<<<<<<<<<<<
  *         utterance=denormalized_utterance,
  *         intents=datum.intents,
@@ -4400,8 +4400,8 @@ static PyObject *__pyx_pf_5uttut_15normalize_datum_4denormalize_datum(CYTHON_UNU
   goto __pyx_L0;
 
   /* "uttut/normalize_datum.pyx":126
- * 
- * 
+ *
+ *
  * def denormalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         meta: List[dict],
@@ -4550,8 +4550,8 @@ static int __Pyx_InitCachedConstants(void) {
   /* "uttut/normalize_datum.pyx":158
  *         )
  *         partitioned_denormalized_utterance = \
- *             denormalized_utterance_with_wall.split('|IamtheWALL|')             # <<<<<<<<<<<<<<
- * 
+ *             denormalized_utterance_with_wall.split('WALL')             # <<<<<<<<<<<<<<
+ *
  *         if len(partitioned_utterance) != len(partitioned_denormalized_utterance):
  */
   __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_IamtheWALL); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 158, __pyx_L1_error)
@@ -4559,8 +4559,8 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__6);
 
   /* "uttut/normalize_datum.pyx":9
- * 
- * 
+ *
+ *
  * def _gen_partitioned_utterance_n_entities(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
@@ -4571,8 +4571,8 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_normalize_datum_pyx, __pyx_n_s_gen_partitioned_utterance_n_ent, 9, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 9, __pyx_L1_error)
 
   /* "uttut/normalize_datum.pyx":126
- * 
- * 
+ *
+ *
  * def denormalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         meta: List[dict],
@@ -4843,7 +4843,7 @@ if (!__Pyx_RefNanny) {
  * # cython: profile=True
  * # cython: linetrace=False
  * from typing import List, Tuple             # <<<<<<<<<<<<<<
- * 
+ *
  * from uttut.elements import Datum, Entity
  */
   __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
@@ -4869,10 +4869,10 @@ if (!__Pyx_RefNanny) {
 
   /* "uttut/normalize_datum.pyx":5
  * from typing import List, Tuple
- * 
+ *
  * from uttut.elements import Datum, Entity             # <<<<<<<<<<<<<<
  * from uttut import ENTITY_LABEL
- * 
+ *
  */
   __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -4896,11 +4896,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "uttut/normalize_datum.pyx":6
- * 
+ *
  * from uttut.elements import Datum, Entity
  * from uttut import ENTITY_LABEL             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -4921,7 +4921,7 @@ if (!__Pyx_RefNanny) {
  *         datum: Datum,
  *         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],             # <<<<<<<<<<<<<<
  *     ):
- * 
+ *
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -4934,8 +4934,8 @@ if (!__Pyx_RefNanny) {
   __pyx_t_1 = 0;
 
   /* "uttut/normalize_datum.pyx":9
- * 
- * 
+ *
+ *
  * def _gen_partitioned_utterance_n_entities(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         not_entity: str = ENTITY_LABEL['NOT_ENTITY'],
@@ -4962,8 +4962,8 @@ if (!__Pyx_RefNanny) {
   __pyx_t_2 = 0;
 
   /* "uttut/normalize_datum.pyx":48
- * 
- * 
+ *
+ *
  * cpdef normalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         text_normalizer=None,
@@ -4990,7 +4990,7 @@ if (!__Pyx_RefNanny) {
  *         text_normalizer: object = None,
  *         not_entity=ENTITY_LABEL['NOT_ENTITY'],             # <<<<<<<<<<<<<<
  *     ) -> Datum:
- * 
+ *
  */
   __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5002,8 +5002,8 @@ if (!__Pyx_RefNanny) {
   __pyx_t_2 = 0;
 
   /* "uttut/normalize_datum.pyx":126
- * 
- * 
+ *
+ *
  * def denormalize_datum(             # <<<<<<<<<<<<<<
  *         datum: Datum,
  *         meta: List[dict],
@@ -6357,8 +6357,8 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED
                 llx = lla + llb;
             return PyLong_FromLongLong(llx);
 #endif
-        
-        
+
+
     }
     #endif
     if (PyFloat_CheckExact(op1)) {
