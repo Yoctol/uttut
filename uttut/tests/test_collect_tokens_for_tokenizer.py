@@ -11,9 +11,12 @@ from ..collect_tokens_for_tokenizer import (
     get_tokens_from_replacements,
 )
 
+
 class FakeTokenizer:
+
     def lcut(self, sentence, *__, **___):
         return list(sentence)
+
 
 FAKE_TOKENIZER = FakeTokenizer()
 
