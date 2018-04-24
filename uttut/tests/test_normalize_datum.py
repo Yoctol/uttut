@@ -122,7 +122,7 @@ class NormalizeDatumTestCase(TestCase):
 
     def test_denormalize_datum_with_mocked_fake_normalizer(self):
         self.fake_text_normalizer.denormalize = Mock(
-            return_value=('家豪大大喜歡吃|IamtheWALL|豪大|IamtheWALL|雞排'))
+            return_value=('家豪大大喜歡吃WALL豪大WALL雞排'))
         denormalize_datum(
             datum=self.example_datum,
             meta=[{'_food_': '雞排'}],
@@ -131,6 +131,6 @@ class NormalizeDatumTestCase(TestCase):
         self.fake_text_normalizer.denormalize.assert_has_calls(
             [
                 call(meta=[{'_food_': '雞排'}], sentence='家豪大大喜歡吃豪大雞排'),
-                call(meta=[{'_food_': '雞排'}], sentence='家豪大大喜歡吃|IamtheWALL|豪大|IamtheWALL|雞排'),
+                call(meta=[{'_food_': '雞排'}], sentence='家豪大大喜歡吃WALL豪大WALL雞排'),
             ],
         )
