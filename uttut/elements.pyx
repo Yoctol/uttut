@@ -81,7 +81,7 @@ cdef class Entity:
 
     @classmethod
     def from_dict(cls, dict entity, str utterance):
-        new_end = entity['end'] + 1
+        new_end = entity['end']
         entity_value = utterance[entity['start']: new_end]
         replacements = entity.get('replacements')
         return cls(
