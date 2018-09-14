@@ -2,6 +2,10 @@ language: python
 python:
   - "3.5"
   - "3.6"
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install pandoc -y
+
 # command to install dependencies
 install:
   - pip install -r requirements_dev.txt
@@ -10,3 +14,15 @@ install:
 script:
   - flake8
   - python -m unittest
+deploy:
+  provider: pypi
+  user: stegben
+  password:
+    secure: eihswW4KNxCa9Tn/iPcYE6mdlLHwMVWG+2Dll2WhuCj2+ZBL+zI4UHoGmSWqevwal39iBqb+9gwY8tALzCG1XDIYx2nXjz7dtvNlAyWTMg5IgyvxhqxARcrhiWsO9dqi/mUzdGdUthiIztlMF3torYqQDO3mZ67oGCZZSf+o5+KXJX49WnkbTOSDlDNG6ndsmJaAQGq8uxDIiIMzbD8tbIx2AM/eyd0s8KGbRaotQxViS7uPpqofUJql7QdWRnYHmp12joOx0P9g7EKShbPDDYikDGfgpXoAZMgHErIOIPP7ed0+vYp5sVP23y34pmyQFjuXn63l1u9+dicd2m3xVAAuY775evt2EX3zOgfjQmNVo8jKBWWaPbxznKiXT52DAQcB4Z/q0WgoA0q1RWnwqhzUvV1VQzJ57v4LnOuvba6bDXRQvKgNZIA7lTpeDwvxPYtIRtL2bUlyVoDUeNREBniZzSyPwXrehDasUurD1kyHg8+4uM/E3I2T6nrCQsPojZ9i6GP3JEiaZmyuBbCFrNxNUGIxeysaaE5vYpQxxZE6HPozDGmnUjJThA5mWhwBZ4d1t7PFK3RQl/JRo7GRSloEZi7V1gkzVcGKsU4njRWC1vORk9ue+FSqdarlgMCcbxr/A+b06QAi0EGbXkQP4m3TdzaNClOn7xOtn7OXXxE=
+  distributions: sdist
+  skip_cleanup: true
+  on:
+    tags: true
+    python:
+      - "3.5"
+      - "3.6"
