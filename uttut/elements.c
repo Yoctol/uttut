@@ -2482,7 +2482,7 @@ static PyObject *__pyx_pf_5uttut_8elements_6Entity_10to_dict(struct __pyx_obj_5u
  *         result = {
  *             'name': self.name,             # <<<<<<<<<<<<<<
  *             'start': self.start,
- *             'end': self.end - 1,
+ *             'end': self.end,
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2492,7 +2492,7 @@ static PyObject *__pyx_pf_5uttut_8elements_6Entity_10to_dict(struct __pyx_obj_5u
  *         result = {
  *             'name': self.name,
  *             'start': self.start,             # <<<<<<<<<<<<<<
- *             'end': self.end - 1,
+ *             'end': self.end,
  *         }
  */
   __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
@@ -2503,11 +2503,11 @@ static PyObject *__pyx_pf_5uttut_8elements_6Entity_10to_dict(struct __pyx_obj_5u
   /* "uttut/elements.pyx":76
  *             'name': self.name,
  *             'start': self.start,
- *             'end': self.end - 1,             # <<<<<<<<<<<<<<
+ *             'end': self.end,             # <<<<<<<<<<<<<<
  *         }
  *         if not self.no_replacements():
  */
-  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_self->end - 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->end); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_end, __pyx_t_2) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2515,7 +2515,7 @@ static PyObject *__pyx_pf_5uttut_8elements_6Entity_10to_dict(struct __pyx_obj_5u
   __pyx_t_1 = 0;
 
   /* "uttut/elements.pyx":78
- *             'end': self.end - 1,
+ *             'end': self.end,
  *         }
  *         if not self.no_replacements():             # <<<<<<<<<<<<<<
  *             result['replacements'] = list(self.replacements)
@@ -2559,7 +2559,7 @@ static PyObject *__pyx_pf_5uttut_8elements_6Entity_10to_dict(struct __pyx_obj_5u
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "uttut/elements.pyx":78
- *             'end': self.end - 1,
+ *             'end': self.end,
  *         }
  *         if not self.no_replacements():             # <<<<<<<<<<<<<<
  *             result['replacements'] = list(self.replacements)

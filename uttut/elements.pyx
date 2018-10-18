@@ -73,7 +73,7 @@ cdef class Entity:
         result = {
             'name': self.name,
             'start': self.start,
-            'end': self.end - 1,
+            'end': self.end,
         }
         if not self.no_replacements():
             result['replacements'] = list(self.replacements)
