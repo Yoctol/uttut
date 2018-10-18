@@ -26,7 +26,7 @@ class ElementEntityTestCase(TestCase):
             name='LOC',
             value='紐約',
             start=1,
-            end=2,
+            end=3,
         )
         self.assertTrue(ent.no_replacements())
 
@@ -35,7 +35,7 @@ class ElementEntityTestCase(TestCase):
             name='LOC',
             value='紐約',
             start=1,
-            end=2,
+            end=3,
             replacements=['台北'],
         )
         self.assertFalse(ent.no_replacements())
@@ -43,7 +43,7 @@ class ElementEntityTestCase(TestCase):
     def test_from_dict(self):
         name = 'LOC'
         start = 1
-        end = 2
+        end = 3
         replacements = ['斯堪地那維亞', 'KIX']
         utterance = '去紐約的機票'
         entity = {
@@ -57,13 +57,13 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent.value, '紐約')
         self.assertEqual(ent.name, 'LOC')
         self.assertEqual(ent.start, start)
-        self.assertEqual(ent.end, end + 1)
+        self.assertEqual(ent.end, end)
         self.assertEqual(ent.replacements, set(replacements))
 
     def test_from_dict_no_replacements(self):
         name = 'LOC'
         start = 1
-        end = 2
+        end = 3
         utterance = '去紐約的機票'
         entity = {
             'name': name,
@@ -75,7 +75,7 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent.value, '紐約')
         self.assertEqual(ent.name, 'LOC')
         self.assertEqual(ent.start, start)
-        self.assertEqual(ent.end, end + 1)
+        self.assertEqual(ent.end, end)
         self.assertEqual(ent.replacements, set([]))
 
     def test_to_dict(self):
