@@ -69,4 +69,5 @@ setup(
     ],
     cmdclass=cmdclass,
     ext_modules=ext_modules,
+    python_requires='>=3.5',
 )
