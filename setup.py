@@ -52,7 +52,7 @@ else:
 
 setup(
     name="uttut",
-    version='0.5.1',
+    version='0.5.2',
     description="Yoctol Utterance processing utilities",
     license="MIT",
     author="cph",
