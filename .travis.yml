@@ -10,13 +10,12 @@ before_install:
 
 # command to install dependencies
 install:
-  - pip install -r requirements_dev.txt
-  - pip install -e .
+  - make install
 
 # command to run tests
 script:
-  - flake8
-  - python -m unittest
+  - make lint
+  - make test
 
 deploy:
   provider: pypi
