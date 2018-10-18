@@ -29,7 +29,7 @@ clean:
 	rm -f `find . -type f -name '*.py[co]' `
 	rm -f `find . -type f -name '*~' `
 	rm -f `find . -type f -name '.*~' `
-	rm -f `find . -name *.so`
+	rm -f `find uttut -name *.so`
 	rm -rf .cache
 	rm -rf htmlcov
 	rm -rf *.egg-info
