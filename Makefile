@@ -17,7 +17,7 @@ lint:
 
 .PHONY: test
 test:
-	pytest -v
+	python -m unittest
 
 .PHONY: all
 all: test lint
