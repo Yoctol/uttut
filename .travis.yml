@@ -1,7 +1,9 @@
 language: python
+
 python:
   - "3.5"
   - "3.6"
+
 before_install:
   - sudo apt-get update
   - sudo apt-get install pandoc -y
@@ -10,10 +12,12 @@ before_install:
 install:
   - pip install -r requirements_dev.txt
   - pip install -e .
+
 # command to run tests
 script:
   - flake8
   - python -m unittest
+
 deploy:
   provider: pypi
   user: stegben
