@@ -81,7 +81,7 @@ class ElementEntityTestCase(TestCase):
     def test_to_dict(self):
         name = 'LOC'
         start = 1
-        end = 2
+        end = 3
         replacements = ['斯堪地那維亞', 'KIX']
         entity = {
             'name': name,
@@ -93,7 +93,7 @@ class ElementEntityTestCase(TestCase):
             name=name,
             value='紐約',
             start=start,
-            end=end + 1,
+            end=end,
             replacements=replacements,
         )
         ent_tx = ent.to_dict()
@@ -106,7 +106,7 @@ class ElementEntityTestCase(TestCase):
     def test_to_dict_no_replacement(self):
         name = 'LOC'
         start = 1
-        end = 2
+        end = 3
         entity = {
             'name': name,
             'start': start,
@@ -116,7 +116,7 @@ class ElementEntityTestCase(TestCase):
             name=name,
             value='紐約',
             start=start,
-            end=end + 1,
+            end=end,
         )
         ent_tx = ent.to_dict()
         self.assertEqual(ent_tx['name'], entity['name'])
@@ -129,14 +129,14 @@ class ElementEntityTestCase(TestCase):
             name='LOC',
             value='紐約',
             start=1,
-            end=2,
+            end=3,
             replacements=['台北'],
         )
         ent2 = Entity(
             name='LOC',
             value='紐約',
             start=1,
-            end=2,
+            end=3,
             replacements=['台北'],
         )
         self.assertEqual(ent1, ent2)
@@ -427,7 +427,7 @@ class ElementDatumTestCase(TestCase):
                 {
                     'name': entity_name,
                     'start': entity_start,
-                    'end': entity_end - 1,
+                    'end': entity_end,
                     'replacements': entity_replacements,
                 },
             ],
@@ -480,7 +480,7 @@ class ElementDatumTestCase(TestCase):
                 {
                     'name': entity_name,
                     'start': entity_start,
-                    'end': entity_end - 1,
+                    'end': entity_end,
                     'replacements': entity_replacements,
                 },
             ],
