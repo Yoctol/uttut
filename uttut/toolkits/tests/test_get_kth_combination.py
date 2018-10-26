@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+import numpy as np
+
 from ..get_kth_combination import get_kth_combination
 
 
@@ -32,16 +34,17 @@ class GetKthCombinationTestCase(TestCase):
             with self.subTest(k=i):
                 output = get_kth_combination(iterables, i)
                 self.assertEqual(expected_outputs[i % 18], output)
-    # n_combinations = np.prod([len(e) for e in entities])
 
-    # assert len(
-
-    #     set(
-
-    #         ','.join(get_kth_combination(entities, k))
-
-    #         for k in range(n_combinations)
-
-    #     )
-
-    # ) == n_combinations
+        # no duplicated output when k <= n_combinations
+        n_combinations = np.prod([len(e) for e in iterables])
+        self.assertEqual(
+            len(
+                set(
+                    [
+                        str(get_kth_combination(iterables, k))
+                        for k in range(n_combinations)
+                    ],
+                ),
+            ),
+            n_combinations,
+        )
