@@ -25,6 +25,7 @@ if use_cython:
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.pyx']),
         Extension('uttut.normalize_datum', ['uttut/normalize_datum.pyx']),
         Extension('uttut.tokenize_datum', ['uttut/tokenize_datum.pyx']),
+        Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.pyx']),
     ]
     cmdclass.update({'build_ext': build_ext})
 else:
@@ -33,6 +34,7 @@ else:
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.c']),
         Extension('uttut.normalize_datum', ['uttut/normalize_datum.c']),
         Extension('uttut.tokenize_datum', ['uttut/tokenize_datum.c']),
+        Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.pyx']),
     ]
 
 
