@@ -30,10 +30,10 @@ class GetKthCombinationTestCase(TestCase):
             [3, 'C', 'II'],
         ]
 
-        for i in range(20):
+        for i, expected_output in enumerate(expected_outputs):
             with self.subTest(k=i):
                 output = get_kth_combination(iterables, i)
-                self.assertEqual(expected_outputs[i % 18], output)
+                self.assertEqual(expected_output, output)
 
         # no duplicated output when k <= n_combinations
         n_combinations = np.prod([len(e) for e in iterables])

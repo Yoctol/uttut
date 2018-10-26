@@ -1244,7 +1244,7 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
   PyObject *__pyx_v_output = 0;
   int __pyx_v_i;
   int __pyx_v_n_iters;
-  int __pyx_v_chose_id;
+  int __pyx_v_chosen_id;
   int __pyx_v_k_in_suffix;
   PyObject *__pyx_v_iter_ = NULL;
   PyObject *__pyx_r = NULL;
@@ -1258,7 +1258,7 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
   __Pyx_RefNannySetupContext("get_kth_combination_in_c", 0);
 
   /* "uttut/toolkits/get_kth_combination.pyx":21
- *     cdef int i, n_iters, chose_id, k_in_suffix
+ *     cdef int i, n_iters, chosen_id, k_in_suffix
  * 
  *     n_iters = len(iterables)             # <<<<<<<<<<<<<<
  *     output = []
@@ -1297,7 +1297,7 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
  * 
  *     for i in range(n_iters):             # <<<<<<<<<<<<<<
  *         iter_ = iterables[i]
- *         chose_id = k_in_suffix % len(iter_)
+ *         chosen_id = k_in_suffix % len(iter_)
  */
   __pyx_t_3 = __pyx_v_n_iters;
   __pyx_t_4 = __pyx_t_3;
@@ -1308,8 +1308,8 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
  * 
  *     for i in range(n_iters):
  *         iter_ = iterables[i]             # <<<<<<<<<<<<<<
- *         chose_id = k_in_suffix % len(iter_)
- *         output.append(iter_[chose_id])
+ *         chosen_id = k_in_suffix % len(iter_)
+ *         output.append(iter_[chosen_id])
  */
     if (unlikely(__pyx_v_iterables == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -1323,8 +1323,8 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
     /* "uttut/toolkits/get_kth_combination.pyx":27
  *     for i in range(n_iters):
  *         iter_ = iterables[i]
- *         chose_id = k_in_suffix % len(iter_)             # <<<<<<<<<<<<<<
- *         output.append(iter_[chose_id])
+ *         chosen_id = k_in_suffix % len(iter_)             # <<<<<<<<<<<<<<
+ *         output.append(iter_[chosen_id])
  *         k_in_suffix = k_in_suffix // len(iter_)
  */
     __pyx_t_1 = PyObject_Length(__pyx_v_iter_); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
@@ -1332,23 +1332,23 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
       PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
       __PYX_ERR(0, 27, __pyx_L1_error)
     }
-    __pyx_v_chose_id = __Pyx_mod_Py_ssize_t(__pyx_v_k_in_suffix, __pyx_t_1);
+    __pyx_v_chosen_id = __Pyx_mod_Py_ssize_t(__pyx_v_k_in_suffix, __pyx_t_1);
 
     /* "uttut/toolkits/get_kth_combination.pyx":28
  *         iter_ = iterables[i]
- *         chose_id = k_in_suffix % len(iter_)
- *         output.append(iter_[chose_id])             # <<<<<<<<<<<<<<
+ *         chosen_id = k_in_suffix % len(iter_)
+ *         output.append(iter_[chosen_id])             # <<<<<<<<<<<<<<
  *         k_in_suffix = k_in_suffix // len(iter_)
  *     return output
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_iter_, __pyx_v_chose_id, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_iter_, __pyx_v_chosen_id, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_output, __pyx_t_2); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "uttut/toolkits/get_kth_combination.pyx":29
- *         chose_id = k_in_suffix % len(iter_)
- *         output.append(iter_[chose_id])
+ *         chosen_id = k_in_suffix % len(iter_)
+ *         output.append(iter_[chosen_id])
  *         k_in_suffix = k_in_suffix // len(iter_)             # <<<<<<<<<<<<<<
  *     return output
  */
@@ -1365,7 +1365,7 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
   }
 
   /* "uttut/toolkits/get_kth_combination.pyx":30
- *         output.append(iter_[chose_id])
+ *         output.append(iter_[chosen_id])
  *         k_in_suffix = k_in_suffix // len(iter_)
  *     return output             # <<<<<<<<<<<<<<
  */

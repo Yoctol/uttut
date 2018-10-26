@@ -16,7 +16,7 @@ cdef list get_kth_combination_in_c(
         int k,
     ):
     cdef list output
-    cdef int i, n_iters, chose_id, k_in_suffix
+    cdef int i, n_iters, chosen_id, k_in_suffix
 
     n_iters = len(iterables)
     output = []
@@ -24,7 +24,7 @@ cdef list get_kth_combination_in_c(
 
     for i in range(n_iters):
         iter_ = iterables[i]
-        chose_id = k_in_suffix % len(iter_)
-        output.append(iter_[chose_id])
+        chosen_id = k_in_suffix % len(iter_)
+        output.append(iter_[chosen_id])
         k_in_suffix = k_in_suffix // len(iter_)
     return output
