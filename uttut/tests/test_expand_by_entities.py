@@ -1,4 +1,5 @@
 from unittest import TestCase
+from unittest.mock import patch, Mock, call
 
 from ..expand_by_entities import (
     expand_by_entities,
@@ -103,6 +104,45 @@ class ExpandByEntitiesTestCase(TestCase):
             with self.subTest(datum_idx=idx):
                 self.assertIn(datum, self.expected_data)
 
+    @patch('uttut.expand_by_entities.partition_by_entities', return_value=([[]], []))
+    def test_expand_by_entities_call_partition_correctly(self, patch_partition):
+        expand_by_entities(
+            self.datum,
+            include_orig=True,
+        )
+        patch_partition.assert_called_once_with(self.datum, True)
+
+    @patch('uttut.expand_by_entities.partition_by_entities', return_value=([[]], []))
+    def test_expand_by_entities_call_partition_correctly_false(self, patch_partition):
+        expand_by_entities(
+            self.datum,
+            include_orig=False,
+        )
+        patch_partition.assert_called_once_with(self.datum, False)
+
+    fake_parts = [['a', 'b'], ['c']]
+    fake_entity_names = ['Z', None]
+
+    @patch(
+        'uttut.expand_by_entities.partition_by_entities',
+        return_value=(fake_parts, fake_entity_names),
+    )
+    @patch('uttut.expand_by_entities.get_kth_combination', return_value=['a', 'c'])
+    def test_expand_by_entities_correctly_use_sampling_method(self, patch_get_k, _):
+        mock_sampling_method = Mock(return_value=[0, 1])
+
+        expand_by_entities(
+            self.datum,
+            sampling_method=mock_sampling_method,
+            include_orig=True,
+        )
+
+        mock_sampling_method.assert_called_once_with(2)
+        patch_get_k.assert_has_calls([
+            call(self.fake_parts, 0),
+            call(self.fake_parts, 1),
+        ])
+
     def test_partition_by_entities(self):
         actual_parts, entity_names = partition_by_entities(self.datum, False)
         expected_parts = [
@@ -118,7 +158,7 @@ class ExpandByEntitiesTestCase(TestCase):
             self.assertEqual(set(exp_part), set(act_part))
         self.assertEqual(
             entity_names,
-            [None, '日期', None, '出發地', None, '目的地', None]
+            [None, '日期', None, '出發地', None, '目的地', None],
         )
 
     def test_partition_by_entities_include_orig(self):
@@ -136,7 +176,7 @@ class ExpandByEntitiesTestCase(TestCase):
             self.assertEqual(set(exp_part), set(act_part))
         self.assertEqual(
             entity_names,
-            [None, '日期', None, '出發地', None, '目的地', None]
+            [None, '日期', None, '出發地', None, '目的地', None],
         )
 
     def test__aggregate_entities(self):
