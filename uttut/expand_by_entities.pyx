@@ -82,7 +82,8 @@ def expand_by_entities(
         return [datum]
 
     if sampling_method is None:
-        sampling_method = lambda k: list(range(k))  # return all possible combinations
+        sampling_method = lambda n_combinations: list(range(n_combinations))
+        # return all possible combinations
 
     parts, entity_names = partition_by_entities(datum, include_orig)
 
