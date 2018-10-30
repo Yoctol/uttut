@@ -3,7 +3,6 @@ from unittest.mock import patch, Mock, call
 
 from ..expand_by_entities import (
     expand_by_entities,
-    partition_by_entities,
     _aggregate_entities,
 )
 from ..elements import (
@@ -142,42 +141,6 @@ class ExpandByEntitiesTestCase(TestCase):
             call(self.fake_parts, 0),
             call(self.fake_parts, 1),
         ])
-
-    def test_partition_by_entities(self):
-        actual_parts, entity_names = partition_by_entities(self.datum, False)
-        expected_parts = [
-            ['我想訂'],
-            ['下禮拜二'],
-            ['從'],
-            ['紐約'],
-            ['飛到'],
-            ['斯堪地那維亞', 'KIX'],
-            ['的機票'],
-        ]
-        for exp_part, act_part in zip(expected_parts, actual_parts):
-            self.assertEqual(set(exp_part), set(act_part))
-        self.assertEqual(
-            entity_names,
-            [None, '日期', None, '出發地', None, '目的地', None],
-        )
-
-    def test_partition_by_entities_include_orig(self):
-        actual_parts, entity_names = partition_by_entities(self.datum, True)
-        expected_parts = [
-            ['我想訂'],
-            ['明天', '下禮拜二'],
-            ['從'],
-            ['紐約'],
-            ['飛到'],
-            ['新加坡', '斯堪地那維亞', 'KIX'],
-            ['的機票'],
-        ]
-        for exp_part, act_part in zip(expected_parts, actual_parts):
-            self.assertEqual(set(exp_part), set(act_part))
-        self.assertEqual(
-            entity_names,
-            [None, '日期', None, '出發地', None, '目的地', None],
-        )
 
     def test__aggregate_entities(self):
         segments = ['我想喝', '珍奶', '半糖']
