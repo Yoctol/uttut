@@ -8,7 +8,7 @@ FINDALL_PROG = re.compile(r"<([^\<\>]*?)>([^\<\>]*?)</")
 
 
 def remove_annotation(annotated_utterance: str):
-    return SUB_PROG.sub("\g<KEEP>", annotated_utterance)
+    return SUB_PROG.sub(r"\g<KEEP>", annotated_utterance)
 
 
 def transform_annotated_sentence_to_entity_object(
