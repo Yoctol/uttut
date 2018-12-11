@@ -7,7 +7,7 @@ installself:
 
 .PHONY: install
 install:
-	pip install -U pip wheel setuptools cython
+	pip install -U pip wheel setuptools cython==0.29.1
 	pip install -r requirements_dev.txt
 	make installself
 
@@ -17,11 +17,10 @@ lint:
 
 .PHONY: test
 test:
-	python -m unittest
+	py.test --cov=uttut/ --cov-fail-under=90
 
 .PHONY: all
-all: test lint
-
+all: lint test
 
 .PHONY: clean
 clean:
