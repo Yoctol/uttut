@@ -29,6 +29,7 @@ if use_cython:
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.pyx']),
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.pyx']),
+        Extension('uttut.element.intent', ['uttut/element/intent.pyx']),
     ]
     ext_modules = cythonize(
         ext_modules,
@@ -42,6 +43,7 @@ else:
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.c']),
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.c']),
+        Extension('uttut.element.intent', ['uttut/element/intent.c']),
     ]
 
 
