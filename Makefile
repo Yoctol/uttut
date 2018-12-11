@@ -1,15 +1,12 @@
 .DEFAULT_GOAL := all
 
-.PHONY: installself
-installself:
-	python setup.py build_ext
-	pip install -e .
-
 .PHONY: install
 install:
-	pip install -U pip wheel setuptools cython
-	pip install -r requirements_dev.txt
-	make installself
+	pipenv install
+
+.PHONY: install-dev
+install-dev:
+	pipenv install --dev
 
 .PHONY: lint
 lint:
@@ -17,11 +14,10 @@ lint:
 
 .PHONY: test
 test:
-	python -m unittest
+	py.test --cov=uttut/ --cov-fail-under=90
 
 .PHONY: all
-all: test lint
-
+all: lint test
 
 .PHONY: clean
 clean:
@@ -41,13 +37,13 @@ clean:
 .PHONY: dev-test
 dev-test:
 	make clean
-	make installself
+	make install
 	make lint
 	make test
 
 .PHONY: docs
 docs:
-	make installself
+	make install
 	make -C docs
 
 .PHONY: distribute

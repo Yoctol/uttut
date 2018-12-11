@@ -1,2 +1,0 @@
-flake8-config-yoctol==0.0.11
-pypandoc
