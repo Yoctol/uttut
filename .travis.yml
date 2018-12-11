@@ -19,7 +19,8 @@ script:
   - pipenv run make test
 
 after_success:
-  - codecov
+  - export CODECOV_TOKEN="211067ca-0d98-42d6-bd63-bf01171cc92f"
+  - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   provider: pypi
