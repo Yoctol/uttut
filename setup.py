@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages, Extension
 from pathlib import Path
 
-
 try:
     long_description = open("README.md").read()
 except IOError:
@@ -10,13 +9,13 @@ except IOError:
 # a good way to structure python package with Cython
 # https://stackoverflow.com/questions/4505747/how-should-i-structure-a-python-package-that-contains-cython-code
 try:
-    from Cython.Distutils import build_ext
+    from Cython.Build import cythonize
+
 except ImportError:
     use_cython = False
 else:
     use_cython = True
 
-cmdclass = {}
 ext_modules = []
 
 if use_cython:
@@ -29,7 +28,8 @@ if use_cython:
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.pyx']),
     ]
-    cmdclass.update({'build_ext': build_ext})
+    ext_modules = cythonize(ext_modules)
+
 else:
     ext_modules += [
         Extension('uttut.elements', ['uttut/elements.c']),
@@ -74,7 +74,6 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Development Status :: 3 - Alpha",
     ],
-    cmdclass=cmdclass,
     ext_modules=ext_modules,
     python_requires='>=3.5',
 )
