@@ -16,17 +16,16 @@ from .utils import (
 
 cdef class Entity:
 
-    cdef public str name
+    cdef public int label
     cdef public str value
     cdef public int start
     cdef public int end
     cdef public set replacements
-    cdef public set replacements_with_self
     cdef public int index
 
     def __init__(
             self,
-            str name,
+            int label,
             str value,
             int start,
             int end,
@@ -34,29 +33,27 @@ cdef class Entity:
         ) -> None:
         self.index = -1
 
-        self.name = name
+        self.label = label
         self.value = value
         self.start = start
         self.end = end
         cdef list _replacements = [] if replacements is None else list(replacements)
         self.replacements = set(_replacements)
-        _replacements.append(self.value)
-        self.replacements_with_self = set(_replacements)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             raise TypeError('can only compare entity to entity')
-        cdef bint same_name = self.name == other.name
+        cdef bint same_label = self.label == other.label
         cdef bint same_value = self.value == other.value
         cdef bint same_position = (self.start == other.start) and (self.end == other.end)
         cdef bint same_replacements = self.replacements == other.replacements
-        if same_name and same_value and same_position and same_replacements:
+        if same_label and same_value and same_position and same_replacements:
             return True
         return False
 
     def __repr__(self):
         return "<Entity {}: {} at {} - {}, with replacements: {}>".format(
-            self.name,
+            self.label,
             self.value,
             self.start,
             self.end,
@@ -71,7 +68,7 @@ cdef class Entity:
 
     def to_dict(self) -> dict:
         result = {
-            'name': self.name,
+            'label': self.label,
             'start': self.start,
             'end': self.end,
         }
@@ -85,7 +82,7 @@ cdef class Entity:
         entity_value = utterance[entity['start']: new_end]
         replacements = entity.get('replacements')
         return cls(
-            name=entity['name'],
+            label=entity['label'],
             value=entity_value,
             start=entity['start'],
             end=new_end,
@@ -95,19 +92,19 @@ cdef class Entity:
 
 cdef class Intent:
 
-    cdef public str name
+    cdef public int label
 
-    def __init__(self, str name):
-        self.name = name
+    def __init__(self, int label):
+        self.label = label
 
     def __repr__(self):
-        return self.name
+        return str(self.label)
 
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.label)
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.label == other.label
 
 
 class Datum:
@@ -177,33 +174,4 @@ class Datum:
         return len(self.intents) > 0
 
     def copy_intents(self) -> List[Intent]:
-        return [Intent(intent.name) for intent in self.intents]
-
-    @classmethod
-    def from_dict(cls, utterance_obj):
-        utterance = utterance_obj['utterance']
-        intents = []
-        if isinstance(utterance_obj['intent'], str):
-            intents.append(Intent(utterance_obj['intent']))
-        elif isinstance(utterance_obj['intent'], dict):
-            for intent in utterance_obj['intent']['names']:
-                intents.append(Intent(intent))
-        entities = None
-        if utterance_obj.get('entities') is not None:
-            entities = []
-            for entity in utterance_obj['entities']:
-                entities.append(Entity.from_dict(entity, utterance_obj['utterance']))
-        return cls(
-            utterance=utterance,
-            intents=intents,
-            entities=entities,
-        )
-
-    def to_dict(self) -> dict:
-        result = {
-            'utterance': self.utterance,
-            'intent': {'names': [intent.name for intent in self.intents]},
-        }
-        if len(self.entities) > 0:
-            result['entities'] = [entity.to_dict() for entity in self.entities]
-        return result
+        return [Intent(intent.label) for intent in self.intents]
