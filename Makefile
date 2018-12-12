@@ -44,7 +44,7 @@ clean:
 .PHONY: dev-test
 dev-test:
 	make clean
-	make install
+	make installself
 	make lint
 	make test
 
