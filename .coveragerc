@@ -1,6 +1,7 @@
 # .coveragerc to control coverage.py
 [run]
-branch = True
+branch = true
+plugins = Cython.Coverage
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -23,7 +24,10 @@ exclude_lines =
 ignore_errors = True
 omit =
     *__init__.py
-    *tests/test*
+    *test_*
+    *.pxd
+    *.c
+    *.cpp
 
 [html]
 directory = coverage_html_report

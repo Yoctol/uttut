@@ -16,7 +16,7 @@ install:
 # command to run tests
 script:
   - pipenv run make lint
-  - pipenv run make test
+  - pipenv run make test-linetrace
 
 after_success:
   - export CODECOV_TOKEN="211067ca-0d98-42d6-bd63-bf01171cc92f"

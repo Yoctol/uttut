@@ -1,5 +1,9 @@
+import os
 from setuptools import setup, find_packages, Extension
 from pathlib import Path
+
+LINE_TRACE = bool(os.environ.get('LINE_TRACE', 0))
+
 
 try:
     long_description = open("README.md").read()
@@ -28,7 +32,10 @@ if use_cython:
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.pyx']),
     ]
-    ext_modules = cythonize(ext_modules)
+    ext_modules = cythonize(
+        ext_modules,
+        compiler_directives={'language_level': 3, 'linetrace': LINE_TRACE, 'profile': True},
+    )
 
 else:
     ext_modules += [
