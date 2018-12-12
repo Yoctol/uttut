@@ -1,5 +1,10 @@
 .DEFAULT_GOAL := all
 
+.PHONY: installself
+installself:
+	python setup.py build_ext
+	pip install -e .
+
 .PHONY: install
 install:
 	pipenv install
@@ -26,6 +31,8 @@ clean:
 	rm -f `find . -type f -name '*~' `
 	rm -f `find . -type f -name '.*~' `
 	rm -f `find uttut -name *.so`
+	rm -f `find uttut -name *.c`
+	rm -f `find uttut -name *.cpp`
 	rm -rf .cache
 	rm -rf htmlcov
 	rm -rf *.egg-info
