@@ -30,6 +30,8 @@ if use_cython:
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.pyx']),
         Extension('uttut.element.intent', ['uttut/element/intent.pyx']),
+        Extension('uttut.element.entity', ['uttut/element/entity.pyx']),
+        Extension('uttut.element.datum', ['uttut/element/datum.pyx']),
     ]
     ext_modules = cythonize(
         ext_modules,
@@ -44,6 +46,8 @@ else:
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.c']),
         Extension('uttut.element.intent', ['uttut/element/intent.c']),
+        Extension('uttut.element.entity', ['uttut/element/entity.c']),
+        Extension('uttut.element.datum', ['uttut/element/datum.c']),
     ]
 
 
