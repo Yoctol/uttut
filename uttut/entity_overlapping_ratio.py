@@ -11,7 +11,7 @@ def check_utter_index_in_entity(
         ent_list: list,
     ) -> bool:
     if utter_ind >= entity.start and utter_ind < entity.end:
-        ent_list.append(entity.name)
+        ent_list.append(entity.label)
     elif utter_ind >= entity.end:
         return False
     else:
@@ -19,7 +19,7 @@ def check_utter_index_in_entity(
     return True
 
 
-def expand_entity_with_list(
+def expand_entity_to_list(
         datum: Datum,
     ) -> list:
     ent_list = []
@@ -43,8 +43,8 @@ def expand_entity_with_list(
 
 
 def penalty_on_same_entity_or_not(
-        ent1: str,
-        ent2: str,
+        ent1: int,
+        ent2: int,
         wrong_penalty_rate: float,
     ) -> float:
     if ent1 == ent2:
@@ -69,8 +69,8 @@ got:
 """.format(datum1.utterance, datum2.utterance))
 
     penalty = 0.
-    ent1_list = expand_entity_with_list(datum1)
-    ent2_list = expand_entity_with_list(datum2)
+    ent1_list = expand_entity_to_list(datum1)
+    ent2_list = expand_entity_to_list(datum2)
     for ent1, ent2 in zip(ent1_list, ent2_list):
         penalty += penalty_on_same_entity_or_not(
             ent1, ent2, wrong_penalty_rate)
