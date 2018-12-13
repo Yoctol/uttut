@@ -32,7 +32,12 @@ if use_cython:
     ]
     ext_modules = cythonize(
         ext_modules,
-        compiler_directives={'language_level': 3, 'linetrace': LINE_TRACE, 'profile': True, 'binding': LINE_TRACE},
+        compiler_directives={
+            'language_level': 3,
+            'linetrace': LINE_TRACE,
+            'profile': True,
+            'binding': LINE_TRACE,
+        },
     )
 
 else:
