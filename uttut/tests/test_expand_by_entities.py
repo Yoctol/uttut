@@ -17,12 +17,12 @@ class ExpandByEntitiesTestCase(TestCase):
     def setUp(self):
         self.utterance = '我想訂明天從紐約飛到新加坡的機票'
         self.entities = [
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
-            Entity(name='出發地', value='紐約', start=6, end=8),
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(label=1, value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(label=2, value='紐約', start=6, end=8),
+            Entity(label=3, value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
         ]
         self.intents = [
-            Intent(name='訂機票'),
+            Intent(label=0),
         ]
         self.datum = Datum(
             utterance=self.utterance,
@@ -40,43 +40,43 @@ class ExpandByEntitiesTestCase(TestCase):
         ]
         self.expected_entity_lists = [
             [
-                Entity(name='日期', value='明天', start=3, end=5),
-                Entity(name='出發地', value='紐約', start=6, end=8),
-                Entity(name='目的地', value='新加坡', start=10, end=13),
+                Entity(label=1, value='明天', start=3, end=5),
+                Entity(label=2, value='紐約', start=6, end=8),
+                Entity(label=3, value='新加坡', start=10, end=13),
             ],
             [
-                Entity(name='日期', value='明天', start=3, end=5),
-                Entity(name='出發地', value='紐約', start=6, end=8),
-                Entity(name='目的地', value='斯堪地那維亞', start=10, end=16),
+                Entity(label=1, value='明天', start=3, end=5),
+                Entity(label=2, value='紐約', start=6, end=8),
+                Entity(label=3, value='斯堪地那維亞', start=10, end=16),
             ],
             [
-                Entity(name='日期', value='明天', start=3, end=5),
-                Entity(name='出發地', value='紐約', start=6, end=8),
-                Entity(name='目的地', value='KIX', start=10, end=13),
+                Entity(label=1, value='明天', start=3, end=5),
+                Entity(label=2, value='紐約', start=6, end=8),
+                Entity(label=3, value='KIX', start=10, end=13),
             ],
             [
-                Entity(name='日期', value='下禮拜二', start=3, end=7),
-                Entity(name='出發地', value='紐約', start=8, end=10),
-                Entity(name='目的地', value='新加坡', start=12, end=15),
+                Entity(label=1, value='下禮拜二', start=3, end=7),
+                Entity(label=2, value='紐約', start=8, end=10),
+                Entity(label=3, value='新加坡', start=12, end=15),
             ],
             [
-                Entity(name='日期', value='下禮拜二', start=3, end=7),
-                Entity(name='出發地', value='紐約', start=8, end=10),
-                Entity(name='目的地', value='斯堪地那維亞', start=12, end=18),
+                Entity(label=1, value='下禮拜二', start=3, end=7),
+                Entity(label=2, value='紐約', start=8, end=10),
+                Entity(label=3, value='斯堪地那維亞', start=12, end=18),
             ],
             [
-                Entity(name='日期', value='下禮拜二', start=3, end=7),
-                Entity(name='出發地', value='紐約', start=8, end=10),
-                Entity(name='目的地', value='KIX', start=12, end=15),
+                Entity(label=1, value='下禮拜二', start=3, end=7),
+                Entity(label=2, value='紐約', start=8, end=10),
+                Entity(label=3, value='KIX', start=12, end=15),
             ],
         ]
         self.expected_intents = [
-            [Intent(name='訂機票')],
-            [Intent(name='訂機票')],
-            [Intent(name='訂機票')],
-            [Intent(name='訂機票')],
-            [Intent(name='訂機票')],
-            [Intent(name='訂機票')],
+            [Intent(label=0)],
+            [Intent(label=0)],
+            [Intent(label=0)],
+            [Intent(label=0)],
+            [Intent(label=0)],
+            [Intent(label=0)],
         ]
         self.expected_data = []
         self.expected_data_without_replacement = []
@@ -117,7 +117,7 @@ class ExpandByEntitiesTestCase(TestCase):
     def test_datum_without_entities(self):
         datum_wo_entities = Datum(
             utterance='薄餡亂入',
-            intents=[Intent(name='肚子餓了')],
+            intents=[Intent(label=0)],
         )
         for include_orig in [True, False]:
             with self.subTest(include_orig_or_not=include_orig):
@@ -141,11 +141,11 @@ class ExpandByEntitiesTestCase(TestCase):
         patch_partition.assert_called_once_with(self.datum, False)
 
     fake_parts = [['a', 'b'], ['c']]
-    fake_entity_names = ['Z', None]
+    fake_entity_labels = [1, None]
 
     @patch(
         'uttut.expand_by_entities.partition_by_entities',
-        return_value=(fake_parts, fake_entity_names),
+        return_value=(fake_parts, fake_entity_labels),
     )
     @patch('uttut.expand_by_entities.get_kth_combination', return_value=['a', 'c'])
     def test_expand_by_entities_correctly_use_sampling_method(self, patch_get_k, _):
@@ -165,11 +165,11 @@ class ExpandByEntitiesTestCase(TestCase):
 
     def test__aggregate_entities(self):
         segments = ['我想喝', '珍奶', '半糖']
-        entity_names = [None, 'DRINK', 'SUGAR']
+        entity_names = [None, 1, 2]
 
         expected_entities = [
-            Entity(name='DRINK', value='珍奶', start=3, end=5),
-            Entity(name='SUGAR', value='半糖', start=5, end=7),
+            Entity(label=1, value='珍奶', start=3, end=5),
+            Entity(label=2, value='半糖', start=5, end=7),
         ]
 
         actual_entities = _aggregate_entities(segments, entity_names)

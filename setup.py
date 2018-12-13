@@ -26,8 +26,6 @@ if use_cython:
     ext_modules += [
         Extension('uttut.elements', ['uttut/elements.pyx']),
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.pyx']),
-        Extension('uttut.normalize_datum', ['uttut/normalize_datum.pyx']),
-        Extension('uttut.tokenize_datum', ['uttut/tokenize_datum.pyx']),
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.pyx']),
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.pyx']),
@@ -41,8 +39,6 @@ else:
     ext_modules += [
         Extension('uttut.elements', ['uttut/elements.c']),
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.c']),
-        Extension('uttut.normalize_datum', ['uttut/normalize_datum.c']),
-        Extension('uttut.tokenize_datum', ['uttut/tokenize_datum.c']),
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.c']),
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.c']),

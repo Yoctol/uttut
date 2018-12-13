@@ -9,13 +9,13 @@ def partition_by_entities(
 
     start = 0
     parts = []
-    entity_names = []
+    entity_labels = []
     utt = datum.utterance
 
     for entity in datum.entities:
         if start != entity.start:
             parts.append([utt[start: entity.start]])
-            entity_names.append(None)
+            entity_labels.append(None)
 
         if entity.no_replacements():
             part_candidates = [entity.value]
@@ -24,12 +24,12 @@ def partition_by_entities(
             if include_orig:
                 part_candidates.append(entity.value)
         parts.append(part_candidates)
-        entity_names.append(entity.name)
+        entity_labels.append(entity.label)
 
         start = entity.end
 
     if start != len(utt):
         parts.append([utt[start:]])
-        entity_names.append(None)
+        entity_labels.append(None)
 
-    return parts, entity_names
+    return parts, entity_labels

@@ -9,12 +9,12 @@ class PartitionByEntitiesTestCase(TestCase):
     def setUp(self):
         self.utterance = '我想訂明天從紐約飛到新加坡的機票'
         self.entities = [
-            Entity(name='日期', value='明天', start=3, end=5, replacements=['下禮拜二']),
-            Entity(name='出發地', value='紐約', start=6, end=8),
-            Entity(name='目的地', value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
+            Entity(label=0, value='明天', start=3, end=5, replacements=['下禮拜二']),
+            Entity(label=1, value='紐約', start=6, end=8),
+            Entity(label=2, value='新加坡', start=10, end=13, replacements=['斯堪地那維亞', 'KIX']),
         ]
         self.intents = [
-            Intent(name='訂機票'),
+            Intent(label=0),
         ]
         self.datum = Datum(
             utterance=self.utterance,
@@ -24,7 +24,7 @@ class PartitionByEntitiesTestCase(TestCase):
 
         self.datum_wo_entity = Datum(
             utterance='薄餡亂入',
-            intents=[Intent(name='肚子餓了')],
+            intents=[Intent(label=0)],
         )
 
     def test_partition_by_entities(self):
@@ -42,7 +42,7 @@ class PartitionByEntitiesTestCase(TestCase):
             self.assertEqual(set(exp_part), set(act_part))
         self.assertEqual(
             entity_names,
-            [None, '日期', None, '出發地', None, '目的地', None],
+            [None, 0, None, 1, None, 2, None],
         )
 
     def test_partition_by_entities_include_orig(self):
@@ -60,7 +60,7 @@ class PartitionByEntitiesTestCase(TestCase):
             self.assertEqual(set(exp_part), set(act_part))
         self.assertEqual(
             entity_names,
-            [None, '日期', None, '出發地', None, '目的地', None],
+            [None, 0, None, 1, None, 2, None],
         )
 
     def test_datum_wo_entity(self):

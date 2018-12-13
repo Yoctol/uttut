@@ -1299,24 +1299,24 @@ static const char __pyx_k_end[] = "end";
 static const char __pyx_k_utt[] = "utt";
 static const char __pyx_k_List[] = "List";
 static const char __pyx_k_main[] = "__main__";
-static const char __pyx_k_name[] = "name";
+static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_Datum[] = "Datum";
 static const char __pyx_k_Tuple[] = "Tuple";
 static const char __pyx_k_Union[] = "Union";
 static const char __pyx_k_datum[] = "datum";
+static const char __pyx_k_label[] = "label";
 static const char __pyx_k_parts[] = "parts";
 static const char __pyx_k_start[] = "start";
 static const char __pyx_k_value[] = "value";
 static const char __pyx_k_entity[] = "entity";
 static const char __pyx_k_import[] = "__import__";
-static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_entities[] = "entities";
 static const char __pyx_k_utterance[] = "utterance";
-static const char __pyx_k_entity_names[] = "entity_names";
 static const char __pyx_k_include_orig[] = "include_orig";
 static const char __pyx_k_replacements[] = "replacements";
+static const char __pyx_k_entity_labels[] = "entity_labels";
 static const char __pyx_k_uttut_elements[] = "uttut.elements";
 static const char __pyx_k_no_replacements[] = "no_replacements";
 static const char __pyx_k_part_candidates[] = "part_candidates";
@@ -1333,12 +1333,12 @@ static PyObject *__pyx_n_s_datum;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_entities;
 static PyObject *__pyx_n_s_entity;
-static PyObject *__pyx_n_s_entity_names;
+static PyObject *__pyx_n_s_entity_labels;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_include_orig;
+static PyObject *__pyx_n_s_label;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_name_2;
 static PyObject *__pyx_n_s_no_replacements;
 static PyObject *__pyx_n_s_part_candidates;
 static PyObject *__pyx_n_s_partition_by_entities;
@@ -1432,7 +1432,7 @@ static PyObject *__pyx_pw_5uttut_8toolkits_21partition_by_entities_1partition_by
 static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_entities(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_datum, PyObject *__pyx_v_include_orig) {
   PyObject *__pyx_v_start = NULL;
   PyObject *__pyx_v_parts = NULL;
-  PyObject *__pyx_v_entity_names = NULL;
+  PyObject *__pyx_v_entity_labels = NULL;
   PyObject *__pyx_v_utt = NULL;
   PyObject *__pyx_v_entity = NULL;
   PyObject *__pyx_v_part_candidates = NULL;
@@ -1456,7 +1456,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  * 
  *     start = 0             # <<<<<<<<<<<<<<
  *     parts = []
- *     entity_names = []
+ *     entity_labels = []
  */
   __Pyx_INCREF(__pyx_int_0);
   __pyx_v_start = __pyx_int_0;
@@ -1465,7 +1465,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  * 
  *     start = 0
  *     parts = []             # <<<<<<<<<<<<<<
- *     entity_names = []
+ *     entity_labels = []
  *     utt = datum.utterance
  */
   __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
@@ -1476,18 +1476,18 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
   /* "uttut/toolkits/partition_by_entities.pyx":12
  *     start = 0
  *     parts = []
- *     entity_names = []             # <<<<<<<<<<<<<<
+ *     entity_labels = []             # <<<<<<<<<<<<<<
  *     utt = datum.utterance
  * 
  */
   __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_entity_names = ((PyObject*)__pyx_t_1);
+  __pyx_v_entity_labels = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
   /* "uttut/toolkits/partition_by_entities.pyx":13
  *     parts = []
- *     entity_names = []
+ *     entity_labels = []
  *     utt = datum.utterance             # <<<<<<<<<<<<<<
  * 
  *     for entity in datum.entities:
@@ -1554,7 +1554,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  *     for entity in datum.entities:
  *         if start != entity.start:             # <<<<<<<<<<<<<<
  *             parts.append([utt[start: entity.start]])
- *             entity_names.append(None)
+ *             entity_labels.append(None)
  */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_entity, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -1568,7 +1568,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  *     for entity in datum.entities:
  *         if start != entity.start:
  *             parts.append([utt[start: entity.start]])             # <<<<<<<<<<<<<<
- *             entity_names.append(None)
+ *             entity_labels.append(None)
  * 
  */
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_entity, __pyx_n_s_start); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 17, __pyx_L1_error)
@@ -1587,23 +1587,23 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
       /* "uttut/toolkits/partition_by_entities.pyx":18
  *         if start != entity.start:
  *             parts.append([utt[start: entity.start]])
- *             entity_names.append(None)             # <<<<<<<<<<<<<<
+ *             entity_labels.append(None)             # <<<<<<<<<<<<<<
  * 
  *         if entity.no_replacements():
  */
-      __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_entity_names, Py_None); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 18, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_entity_labels, Py_None); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 18, __pyx_L1_error)
 
       /* "uttut/toolkits/partition_by_entities.pyx":16
  * 
  *     for entity in datum.entities:
  *         if start != entity.start:             # <<<<<<<<<<<<<<
  *             parts.append([utt[start: entity.start]])
- *             entity_names.append(None)
+ *             entity_labels.append(None)
  */
     }
 
     /* "uttut/toolkits/partition_by_entities.pyx":20
- *             entity_names.append(None)
+ *             entity_labels.append(None)
  * 
  *         if entity.no_replacements():             # <<<<<<<<<<<<<<
  *             part_candidates = [entity.value]
@@ -1648,7 +1648,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
       __pyx_t_1 = 0;
 
       /* "uttut/toolkits/partition_by_entities.pyx":20
- *             entity_names.append(None)
+ *             entity_labels.append(None)
  * 
  *         if entity.no_replacements():             # <<<<<<<<<<<<<<
  *             part_candidates = [entity.value]
@@ -1694,7 +1694,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  *             if include_orig:
  *                 part_candidates.append(entity.value)             # <<<<<<<<<<<<<<
  *         parts.append(part_candidates)
- *         entity_names.append(entity.name)
+ *         entity_labels.append(entity.label)
  */
         if (unlikely(__pyx_v_part_candidates == Py_None)) {
           PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
@@ -1720,7 +1720,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  *             if include_orig:
  *                 part_candidates.append(entity.value)
  *         parts.append(part_candidates)             # <<<<<<<<<<<<<<
- *         entity_names.append(entity.name)
+ *         entity_labels.append(entity.label)
  * 
  */
     __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_parts, __pyx_v_part_candidates); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 26, __pyx_L1_error)
@@ -1728,17 +1728,17 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
     /* "uttut/toolkits/partition_by_entities.pyx":27
  *                 part_candidates.append(entity.value)
  *         parts.append(part_candidates)
- *         entity_names.append(entity.name)             # <<<<<<<<<<<<<<
+ *         entity_labels.append(entity.label)             # <<<<<<<<<<<<<<
  * 
  *         start = entity.end
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_entity, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_entity, __pyx_n_s_label); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_entity_names, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_entity_labels, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "uttut/toolkits/partition_by_entities.pyx":29
- *         entity_names.append(entity.name)
+ *         entity_labels.append(entity.label)
  * 
  *         start = entity.end             # <<<<<<<<<<<<<<
  * 
@@ -1764,7 +1764,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  * 
  *     if start != len(utt):             # <<<<<<<<<<<<<<
  *         parts.append([utt[start:]])
- *         entity_names.append(None)
+ *         entity_labels.append(None)
  */
   __pyx_t_3 = PyObject_Length(__pyx_v_utt); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 31, __pyx_L1_error)
   __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
@@ -1779,7 +1779,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
  * 
  *     if start != len(utt):
  *         parts.append([utt[start:]])             # <<<<<<<<<<<<<<
- *         entity_names.append(None)
+ *         entity_labels.append(None)
  * 
  */
     __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_utt, 0, 0, &__pyx_v_start, NULL, NULL, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
@@ -1795,25 +1795,25 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
     /* "uttut/toolkits/partition_by_entities.pyx":33
  *     if start != len(utt):
  *         parts.append([utt[start:]])
- *         entity_names.append(None)             # <<<<<<<<<<<<<<
+ *         entity_labels.append(None)             # <<<<<<<<<<<<<<
  * 
- *     return parts, entity_names
+ *     return parts, entity_labels
  */
-    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_entity_names, Py_None); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_entity_labels, Py_None); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 33, __pyx_L1_error)
 
     /* "uttut/toolkits/partition_by_entities.pyx":31
  *         start = entity.end
  * 
  *     if start != len(utt):             # <<<<<<<<<<<<<<
  *         parts.append([utt[start:]])
- *         entity_names.append(None)
+ *         entity_labels.append(None)
  */
   }
 
   /* "uttut/toolkits/partition_by_entities.pyx":35
- *         entity_names.append(None)
+ *         entity_labels.append(None)
  * 
- *     return parts, entity_names             # <<<<<<<<<<<<<<
+ *     return parts, entity_labels             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
@@ -1821,9 +1821,9 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
   __Pyx_INCREF(__pyx_v_parts);
   __Pyx_GIVEREF(__pyx_v_parts);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_parts);
-  __Pyx_INCREF(__pyx_v_entity_names);
-  __Pyx_GIVEREF(__pyx_v_entity_names);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_entity_names);
+  __Pyx_INCREF(__pyx_v_entity_labels);
+  __Pyx_GIVEREF(__pyx_v_entity_labels);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_entity_labels);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
@@ -1847,7 +1847,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_21partition_by_entities_partition_by_
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_start);
   __Pyx_XDECREF(__pyx_v_parts);
-  __Pyx_XDECREF(__pyx_v_entity_names);
+  __Pyx_XDECREF(__pyx_v_entity_labels);
   __Pyx_XDECREF(__pyx_v_utt);
   __Pyx_XDECREF(__pyx_v_entity);
   __Pyx_XDECREF(__pyx_v_part_candidates);
@@ -1912,12 +1912,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_entities, __pyx_k_entities, sizeof(__pyx_k_entities), 0, 0, 1, 1},
   {&__pyx_n_s_entity, __pyx_k_entity, sizeof(__pyx_k_entity), 0, 0, 1, 1},
-  {&__pyx_n_s_entity_names, __pyx_k_entity_names, sizeof(__pyx_k_entity_names), 0, 0, 1, 1},
+  {&__pyx_n_s_entity_labels, __pyx_k_entity_labels, sizeof(__pyx_k_entity_labels), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_include_orig, __pyx_k_include_orig, sizeof(__pyx_k_include_orig), 0, 0, 1, 1},
+  {&__pyx_n_s_label, __pyx_k_label, sizeof(__pyx_k_label), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
   {&__pyx_n_s_no_replacements, __pyx_k_no_replacements, sizeof(__pyx_k_no_replacements), 0, 0, 1, 1},
   {&__pyx_n_s_part_candidates, __pyx_k_part_candidates, sizeof(__pyx_k_part_candidates), 0, 0, 1, 1},
   {&__pyx_n_s_partition_by_entities, __pyx_k_partition_by_entities, sizeof(__pyx_k_partition_by_entities), 0, 0, 1, 1},
@@ -1949,7 +1949,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         datum: Datum,
  *         include_orig: bool,
  */
-  __pyx_tuple__2 = PyTuple_Pack(8, __pyx_n_s_datum, __pyx_n_s_include_orig, __pyx_n_s_start, __pyx_n_s_parts, __pyx_n_s_entity_names, __pyx_n_s_utt, __pyx_n_s_entity, __pyx_n_s_part_candidates); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(8, __pyx_n_s_datum, __pyx_n_s_include_orig, __pyx_n_s_start, __pyx_n_s_parts, __pyx_n_s_entity_labels, __pyx_n_s_utt, __pyx_n_s_entity, __pyx_n_s_part_candidates); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
   __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_toolkits_partition_by_enti, __pyx_n_s_partition_by_entities, 5, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 5, __pyx_L1_error)
@@ -2205,7 +2205,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   if (__pyx_module_is_main_uttut__toolkits__partition_by_entities) {
-    if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {

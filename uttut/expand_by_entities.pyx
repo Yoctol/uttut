@@ -17,20 +17,20 @@ __all__ = [
 
 def _aggregate_entities(
         list segments,
-        list entity_names,
+        list entity_labels,
     ):
     cdef list entities = []
     cdef int pointer = 0
     cdef int len_segment
 
-    for seg, entity_name in zip(segments, entity_names):
+    for seg, entity_label in zip(segments, entity_labels):
         len_seg = len(seg)
-        if entity_name is None:
+        if entity_label is None:
             pointer += len_seg
             continue
 
         entity = Entity(
-            name=entity_name,
+            label=entity_label,
             value=seg,
             start=pointer,
             end=pointer + len_seg
@@ -52,7 +52,7 @@ def expand_by_entities(
         sampling_method = lambda n_combinations: list(range(n_combinations))
         # return all possible combinations
 
-    parts, entity_names = partition_by_entities(datum, include_orig)
+    parts, entity_labels = partition_by_entities(datum, include_orig)
 
     n_combinations = np.prod([len(part) for part in parts])
     ints = sampling_method(n_combinations)
@@ -62,7 +62,7 @@ def expand_by_entities(
         segments = get_kth_combination(parts, idx)
 
         utterance = ''.join(segments)
-        entities = _aggregate_entities(segments, entity_names)
+        entities = _aggregate_entities(segments, entity_labels)
         new_datum = Datum(
             utterance=utterance,
             intents=datum.copy_intents(),
