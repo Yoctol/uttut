@@ -1,5 +1,3 @@
-# cython: profile=True
-# cython: linetrace=False
 from typing import List
 
 from uttut.elements import Datum

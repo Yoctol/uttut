@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := all
+1.DEFAULT_GOAL := all
 
 .PHONY: installself
 installself:
@@ -19,7 +19,14 @@ lint:
 
 .PHONY: test
 test:
-	py.test --cov=uttut/ --cov-fail-under=90
+	pytest --cov-report=term-missing --cov=uttut/ --cov-fail-under=80
+
+.PHONY: test-linetrace
+test-linetrace:
+	make clean
+	make clean-c
+	LINE_TRACE=1 python setup.py build_ext --force --inplace --define CYTHON_TRACE
+	make test
 
 .PHONY: all
 all: lint test
@@ -39,12 +46,10 @@ clean:
 	rm -rf build
 	python setup.py clean
 
-.PHONY: dev-test
-dev-test:
-	make clean
-	make installself
-	make lint
-	make test
+.PHONY: clean-c
+clean-c:
+	rm -f `find uttut -name *.c`
+	rm -f `find uttut -name *.cpp`
 
 .PHONY: docs
 docs:
@@ -56,8 +61,3 @@ distribute:
 	make clean
 	python setup.py sdist
 
-.PHONY: rebuild
-rebuild:
-	make clean
-	rm -f `find uttut -name *.c`
-	rm -f `find uttut -name *.cpp`

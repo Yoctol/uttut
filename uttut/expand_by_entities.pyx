@@ -1,5 +1,3 @@
-# cython: profile=True
-# cython: linetrace=False
 import random
 from typing import List, Tuple, Union
 import numpy as np

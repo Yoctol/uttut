@@ -1,5 +1,3 @@
-# cython: profile=True
-# cython: linetrace=False
 from typing import List, Tuple
 
 from uttut.elements import Datum, Entity
