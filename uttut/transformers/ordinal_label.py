@@ -30,6 +30,10 @@ class OrdinalLabel(BaseTransformer):
         idxs = sorted(list(str2idx.values()))
         return idxs == list(range(len(idxs)))
 
+    @property
+    def not_entity_index(self):
+        return self._not_entity_index
+
     def index2entity(self, idx):
         for entity, current_idx in self._entity2index.items():
             if idx == current_idx:

@@ -73,6 +73,8 @@ def test_ordinal_label_init(mocked_OrdinalLabel):
     assert tx._entity2index == entity2index
     assert tx._not_entity_index == not_entity_index
 
+    assert tx.not_entity_index == not_entity_index
+
     actual_calls = mocked_OrdinalLabel.is_valid_mapping.call_args_list
     expected_calls = [
         call(intent2index),
