@@ -12,36 +12,18 @@ def validate_start_end(start: int, end: int):
     return start, end
 
 
-def validate_objs(objs: Sequence[object], type_):
-    '''
-    A object must have two integer properties `start` and `end`.
-    e.g.
-        1. validate a list of edits
-            validate_objs([Edit(), ...], Edit)
-        2. validate a list of spans
-            validate_objs([Span(), ...], Span)
-    Returns
-        sorted objs
-    '''
-    _validate_type_of_each_elements(objs, type_)
-    return _validate_disjoint(objs)
-
-
-def _validate_disjoint(objs: Sequence[object]):
+def _validate_disjoint(sorted_objs: Sequence[object]):
     '''
     A object must have two integer properties `start` and `end`.
     '''
-    objs = sorted(objs, key=lambda e: e.end)
-
-    current = objs[0].end
-    for obj in objs[1:]:
+    current = sorted_objs[0].end
+    for obj in sorted_objs[1:]:
         if obj.start < current:
             raise ValueError(f"overlapped")
         current = obj.end
-    return objs
 
 
-def _validate_type_of_each_elements(objs: Sequence[object], type_):
+def _validate_type_of_each_elements(objs: Sequence[object], target_type):
     for i, element in enumerate(objs):
-        if not isinstance(element, type_):
-            raise TypeError(f"{i}-th element is not a(an) {type_.__name__}")
+        if not isinstance(element, target_type):
+            raise TypeError(f"{i}-th element is not a(an) {target_type.__name__}")
