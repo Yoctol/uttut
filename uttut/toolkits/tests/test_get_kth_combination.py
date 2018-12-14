@@ -1,6 +1,6 @@
 from unittest import TestCase
-
-import numpy as np
+from functools import reduce
+from operator import mul
 
 from ..get_kth_combination import get_kth_combination
 
@@ -36,7 +36,7 @@ class GetKthCombinationTestCase(TestCase):
                 self.assertEqual(expected_output, output)
 
         # no duplicated output when k <= n_combinations
-        n_combinations = np.prod([len(e) for e in iterables])
+        n_combinations = reduce(mul, [len(e) for e in iterables])
         self.assertEqual(
             len(
                 set(

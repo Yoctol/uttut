@@ -73,7 +73,6 @@ setup(
     url='https://github.com/Yoctol/uttut',
     packages=find_packages(),
     install_requires=[
-        'numpy>=1.14.1',
     ],
     long_description=long_description,
     classifiers=[
