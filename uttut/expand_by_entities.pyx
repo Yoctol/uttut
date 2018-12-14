@@ -1,6 +1,7 @@
 import random
 from typing import List, Tuple, Union
-import numpy as np
+from functools import reduce
+from operator import mul
 
 from .elements import (
     Datum,
@@ -54,7 +55,8 @@ def expand_by_entities(
 
     parts, entity_labels = partition_by_entities(datum, include_orig)
 
-    n_combinations = np.prod([len(part) for part in parts])
+    n_combinations = reduce(mul, [len(part) for part in parts])
+
     ints = sampling_method(n_combinations)
 
     result = []
