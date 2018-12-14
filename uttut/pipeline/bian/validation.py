@@ -20,6 +20,8 @@ def validate_objs(objs: Sequence[object], type_):
             validate_objs([Edit(), ...], Edit)
         2. validate a list of spans
             validate_objs([Span(), ...], Span)
+    Returns
+        sorted objs
     '''
     _validate_type_of_each_elements(objs, type_)
     return _validate_disjoint(objs)
