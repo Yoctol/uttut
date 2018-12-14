@@ -1,7 +1,7 @@
 from typing import List
 
 from .validation import (
-    validate_start_end,
+    _validate_start_end,
     _validate_type_of_each_elements,
     _validate_disjoint,
 )
@@ -20,7 +20,8 @@ class Span:
             start: int,
             end: int,
         ):
-        self.start, self.end = validate_start_end(start, end)
+        _validate_start_end(start, end)
+        self.start, self.end = start, end
 
     def __eq__(self, other):
         if not isinstance(other, Span):

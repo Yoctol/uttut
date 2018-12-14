@@ -1,35 +1,39 @@
 import pytest
 
-from ..validation import validate_start_end
+from ..validation import _validate_start_end
 
 
 def test_normal():
-    output = validate_start_end(1, 3)
-    assert (1, 3) == output
+    _validate_start_end(1, 3)
 
 
-def test_wrong_type():
+@pytest.mark.parametrize(
+    "start,end",
+    [
+        pytest.param(12.3, 15, id='float_start'),
+        pytest.param(12, 15.7, id='float_end'),
+        pytest.param(12.3, 15.7, id='all_float'),
+        pytest.param('start', 'end', id='all_str'),
+    ],
+)
+def test_wrong_type(start, end):
     with pytest.raises(TypeError):
-        validate_start_end(12.3, 15)
-
-    with pytest.raises(TypeError):
-        validate_start_end(12, 15.7)
-
-    with pytest.raises(TypeError):
-        validate_start_end(12.3, 15.7)
-
-    with pytest.raises(TypeError):
-        validate_start_end('start', 'end')
+        _validate_start_end(start, end)
 
 
-def test_negative():
+@pytest.mark.parametrize(
+    "start,end",
+    [
+        pytest.param(-3, 10, id='start'),
+        pytest.param(0, -7, id='end'),
+        pytest.param(-19, -15, id='all'),
+    ],
+)
+def test_negative(start, end):
     with pytest.raises(ValueError):
-        validate_start_end(-3, 10)
-
-    with pytest.raises(ValueError):
-        validate_start_end(0, -7)
+        _validate_start_end(start, end)
 
 
 def test_end_smaller_than_start():
     with pytest.raises(ValueError):
-        validate_start_end(18, 10)
+        _validate_start_end(18, 10)

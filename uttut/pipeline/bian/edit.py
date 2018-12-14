@@ -1,7 +1,7 @@
 from typing import List
 
 from .validation import (
-    validate_start_end,
+    _validate_start_end,
     _validate_type_of_each_elements,
     _validate_disjoint,
 )
@@ -38,7 +38,8 @@ class Edit:
             replacement,
             annotation: str = None,
         ):
-        self.start, self.end = validate_start_end(start, end)
+        _validate_start_end(start, end)
+        self.start, self.end = start, end
         self.replacement = replacement
         self.annotation = annotation
 

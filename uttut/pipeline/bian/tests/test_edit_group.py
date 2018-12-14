@@ -18,14 +18,8 @@ def test_need_sorted():
 @pytest.mark.parametrize(
     "edits",
     [
-        pytest.param(
-            [Edit(1, 10, 'b'), Edit(2, 15, 'a')],
-            id='intersect',
-        ),
-        pytest.param(
-            [Edit(1, 10, 'b'), Edit(2, 8, 'a')],
-            id='include',
-        ),
+        pytest.param([Edit(1, 10, 'b'), Edit(2, 15, 'a')], id='intersect'),
+        pytest.param([Edit(1, 10, 'b'), Edit(2, 8, 'a')], id='include'),
     ],
 )
 def test_validate_disjoint(edits):

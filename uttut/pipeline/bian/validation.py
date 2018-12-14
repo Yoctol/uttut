@@ -1,7 +1,7 @@
 from typing import Sequence
 
 
-def validate_start_end(start: int, end: int):
+def _validate_start_end(start: int, end: int):
 
     if not isinstance(start, int) or not isinstance(end, int):
         raise TypeError("start and end must be integers")
@@ -9,7 +9,6 @@ def validate_start_end(start: int, end: int):
         raise ValueError("start and end must be positive integers")
     if start > end:
         raise ValueError("start cannot be greater than end")
-    return start, end
 
 
 def _validate_disjoint(sorted_objs: Sequence[object]):

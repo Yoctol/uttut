@@ -18,14 +18,8 @@ def test_need_sorted():
 @pytest.mark.parametrize(
     "spans",
     [
-        pytest.param(
-            [Span(1, 10), Span(2, 15)],
-            id='intersect',
-        ),
-        pytest.param(
-            [Span(1, 10), Span(2, 8)],
-            id='include',
-        ),
+        pytest.param([Span(1, 10), Span(2, 15)], id='intersect'),
+        pytest.param([Span(1, 10), Span(2, 8)], id='include'),
     ],
 )
 def test_validate_disjoint(spans):
