@@ -8,24 +8,27 @@ from .base import BaseTransformer
 class OrdinalLabel(BaseTransformer):
     """Transformer that turn raw label into integers"""
 
-    def __init__(self, intent2index: Mapping[str, int], entity2index: Mapping[str, int]):
+    def __init__(
+            self,
+            intent2index: Mapping[str, int],
+            entity2index: Mapping[str, int],
+            not_entity_index: int = 0,
+        ):
         if OrdinalLabel.is_valid_mapping(intent2index):
             self._intent2index = intent2index
         else:
             raise ValueError('Intent mapping is not valid.')
 
-        if OrdinalLabel.is_valid_mapping(entity2index):
+        self._not_entity_index = not_entity_index
+        if OrdinalLabel.is_valid_mapping({**entity2index, "__NOT_ENTITY__": not_entity_index}):
             self._entity2index = entity2index
         else:
             raise ValueError('Entity mapping is not valid.')
 
     @staticmethod
     def is_valid_mapping(str2idx: Mapping[str, int]) -> bool:
-        idxs = list(str2idx.values())
-        no_duplicate = len(idxs) == len(set(idxs))
-        is_ordinal = set(idxs) == set(list(range(len(idxs))))
-        no_negative = min(idxs) == 0
-        return no_duplicate and is_ordinal and no_negative
+        idxs = sorted(list(str2idx.values()))
+        return idxs == list(range(len(idxs)))
 
     def index2entity(self, idx):
         for entity, current_idx in self._entity2index.items():
@@ -88,6 +91,7 @@ class OrdinalLabel(BaseTransformer):
         serializable = {
             'intent2index': self._intent2index,
             'entity2index': self._entity2index,
+            'not_entity_index': self._not_entity_index,
         }
         return json.dumps(serializable)
 
@@ -96,7 +100,8 @@ class OrdinalLabel(BaseTransformer):
         loaded = json.loads(serialized)
         intent2index = loaded['intent2index']
         entity2index = loaded['entity2index']
-        return cls(intent2index, entity2index)
+        not_entity_index = loaded['not_entity_index']
+        return cls(intent2index, entity2index, not_entity_index)
 
     @classmethod
     def from_raw_dictionary(cls, raw_dict):
@@ -112,11 +117,11 @@ class OrdinalLabel(BaseTransformer):
             continue
 
         entity2index = {}
-        idx = 0
+        idx = 1
         for entity in entities:
             if entity not in entity2index:
                 entity2index[entity] = idx
                 idx += 1
             continue
 
-        return cls(intent2index, entity2index)
+        return cls(intent2index, entity2index, not_entity_index=0)

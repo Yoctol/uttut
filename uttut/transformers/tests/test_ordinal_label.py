@@ -39,8 +39,8 @@ TRANSFORMATION_PAIRS = [
             utterance='我想喝珍奶半糖',
             intents=[Intent(2)],
             entities=[
-                Entity(0, '珍奶', 3, 5, ["拿鐵", "多多綠", "紅茶"]),
-                Entity(1, '半糖', 5, 7, ["無糖", "全糖"]),
+                Entity(1, '珍奶', 3, 5, ["拿鐵", "多多綠", "紅茶"]),
+                Entity(2, '半糖', 5, 7, ["無糖", "全糖"]),
             ],
         ),
     ),
@@ -50,8 +50,9 @@ TRANSFORMATION_PAIRS = [
 @pytest.fixture(scope='function')
 def tx():
     intent2index = {'HI': 0, 'BYE': 1, 'ORDER': 2}
-    entity2index = {'ITEM': 0, 'SUGAR': 1}
-    tx = OrdinalLabel(intent2index, entity2index)
+    entity2index = {'ITEM': 1, 'SUGAR': 2}
+    not_entity_index = 0
+    tx = OrdinalLabel(intent2index, entity2index, not_entity_index)
     return tx
 
 
@@ -66,14 +67,16 @@ def mocked_OrdinalLabel():
 def test_ordinal_label_init(mocked_OrdinalLabel):
     intent2index = {'HI': 0, 'BYE': 1, 'ORDER': 2}
     entity2index = {'DRINK': 0, 'SIZE': 1}
-    tx = mocked_OrdinalLabel(intent2index, entity2index)
+    not_entity_index = 2
+    tx = mocked_OrdinalLabel(intent2index, entity2index, not_entity_index)
     assert tx._intent2index == intent2index
     assert tx._entity2index == entity2index
+    assert tx._not_entity_index == not_entity_index
 
     actual_calls = mocked_OrdinalLabel.is_valid_mapping.call_args_list
     expected_calls = [
         call(intent2index),
-        call(entity2index),
+        call({**entity2index, "__NOT_ENTITY__": 2}),
     ]
     assert expected_calls == actual_calls
 
@@ -142,7 +145,7 @@ def test_ordinal_label_machanize(raw_dict, datum, tx):
 
 def test_ordinal_label_serialization():
     intent2index = {'HI': 0, 'BYE': 1, 'ORDER': 2}
-    entity2index = {'DRINK': 0, 'SIZE': 1}
+    entity2index = {'DRINK': 1, 'SIZE': 2}
     tx = OrdinalLabel(intent2index, entity2index)
 
     serialized = tx.serialize()
@@ -187,4 +190,4 @@ def test_ordinal_from_raw_dictionary():
     tx = OrdinalLabel.from_raw_dictionary(data)
     # indexes are based on the appearance order
     assert tx._intent2index == {"GREETINGS": 0, "ORDER": 1}
-    assert tx._entity2index == {"ITEM": 0, "SUGAR": 1}
+    assert tx._entity2index == {"ITEM": 1, "SUGAR": 2}
