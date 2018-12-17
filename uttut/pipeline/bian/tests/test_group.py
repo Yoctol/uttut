@@ -21,7 +21,7 @@ def test_getitem_all(dtype, objs):
 
 
 @pytest.mark.parametrize(
-    "dtype,objs, expected_objs",
+    "dtype,objs,expected_objs",
     [
         pytest.param('e', [Edit(1, 2, 'b'), Edit(0, 1, 'a')],
                      [Edit(0, 1, 'a'), Edit(1, 2, 'b')], id='edit'),

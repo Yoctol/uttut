@@ -2,7 +2,6 @@ from typing import List, Union
 
 from .edit import Edit
 from .span import Span
-
 from .validation import (
     _validate_type_of_each_elements,
     _validate_disjoint,
@@ -36,5 +35,5 @@ class EditGroup(Group):
 
 class SpanGroup(Group):
 
-    def __init__(self, spans: List[Edit]):
+    def __init__(self, spans: List[Span]):
         super().__init__(objs=spans, target_type=Span)
