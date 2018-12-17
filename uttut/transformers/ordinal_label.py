@@ -1,6 +1,7 @@
 import json
 from typing import Mapping
 
+from .. import NOT_ENTITY
 from ..elements import Datum, Intent, Entity
 from .base import BaseTransformer
 
@@ -20,7 +21,7 @@ class OrdinalLabel(BaseTransformer):
             raise ValueError('Intent mapping is not valid.')
 
         self._not_entity_index = not_entity_index
-        if OrdinalLabel.is_valid_mapping({**entity2index, "__NOT_ENTITY__": not_entity_index}):
+        if OrdinalLabel.is_valid_mapping({**entity2index, NOT_ENTITY: not_entity_index}):
             self._entity2index = entity2index
         else:
             raise ValueError('Entity mapping is not valid.')

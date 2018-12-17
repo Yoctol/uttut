@@ -2,6 +2,7 @@ from unittest.mock import Mock, call
 
 import pytest
 
+from uttut import NOT_ENTITY
 from uttut.elements import Datum, Intent, Entity
 from ..ordinal_label import OrdinalLabel
 
@@ -78,7 +79,7 @@ def test_ordinal_label_init(mocked_OrdinalLabel):
     actual_calls = mocked_OrdinalLabel.is_valid_mapping.call_args_list
     expected_calls = [
         call(intent2index),
-        call({**entity2index, "__NOT_ENTITY__": 2}),
+        call({**entity2index, NOT_ENTITY: 2}),
     ]
     assert expected_calls == actual_calls
 
