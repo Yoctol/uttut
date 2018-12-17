@@ -13,5 +13,6 @@ exclude =
     venv/
     env/
     build/
+    *__init__.py
 max_complexity = 10
 statistics = true
