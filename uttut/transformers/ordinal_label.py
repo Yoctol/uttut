@@ -109,7 +109,10 @@ class OrdinalLabel(BaseTransformer):
         return cls(intent2index, entity2index, not_entity_index)
 
     @classmethod
-    def from_raw_dictionary(cls, raw_dict):
+    def from_raw_dictionary(cls, raw_dict, not_entity_index=0):
+        if not isinstance(not_entity_index, int):
+            raise TypeError(f"not_entity_index must be integer, got {not_entity_index}"
+                            f"with type{type(not_entity_index)}")
         intents = [i for d in raw_dict['data'] for i in d['intent']['names']]
         entities = [e['name'] for d in raw_dict['data'] for e in d.get('entities', [])]
 
@@ -122,11 +125,13 @@ class OrdinalLabel(BaseTransformer):
             continue
 
         entity2index = {}
-        idx = 1
+        idx = 0
         for entity in entities:
             if entity not in entity2index:
+                if idx == not_entity_index:
+                    idx += 1
                 entity2index[entity] = idx
                 idx += 1
             continue
 
-        return cls(intent2index, entity2index, not_entity_index=0)
+        return cls(intent2index, entity2index, not_entity_index=not_entity_index)

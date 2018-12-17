@@ -158,8 +158,9 @@ def test_ordinal_label_serialization():
     assert tx._entity2index == loaded_tx._entity2index
 
 
-def test_ordinal_from_raw_dictionary():
-    data = {
+@pytest.fixture(scope='function')
+def raw_data():
+    return {
         "data": [
             {
                 "utterance": "你好",
@@ -190,7 +191,30 @@ def test_ordinal_from_raw_dictionary():
         ],
     }
 
-    tx = OrdinalLabel.from_raw_dictionary(data)
+
+def test_ordinal_from_raw_dictionary(raw_data):
+    tx = OrdinalLabel.from_raw_dictionary(raw_data)
     # indexes are based on the appearance order
     assert tx._intent2index == {"GREETINGS": 0, "ORDER": 1}
     assert tx._entity2index == {"ITEM": 1, "SUGAR": 2}
+
+
+def test_ordinal_from_raw_dictionary_with_custom_not_entity_index(raw_data):
+    tx = OrdinalLabel.from_raw_dictionary(raw_data, not_entity_index=1)
+    # indexes are based on the appearance order
+    assert tx._intent2index == {"GREETINGS": 0, "ORDER": 1}
+    assert tx._entity2index == {"ITEM": 0, "SUGAR": 2}
+
+
+def test_ordinal_from_raw_dictionary_with_custom_not_entity_index_2(raw_data):
+    tx = OrdinalLabel.from_raw_dictionary(raw_data, not_entity_index=2)
+    # indexes are based on the appearance order
+    assert tx._intent2index == {"GREETINGS": 0, "ORDER": 1}
+    assert tx._entity2index == {"ITEM": 0, "SUGAR": 1}
+
+
+@pytest.mark.parametrize('wrong_entity_index', [0., 1., 100., 0.1, '0', '0.1'])
+def test_ordinal_from_raw_dictionary_raise_with_wrong_type(wrong_entity_index):
+    raw_data = {'data': []}
+    with pytest.raises(TypeError):
+        OrdinalLabel.from_raw_dictionary(raw_data, not_entity_index=wrong_entity_index)
