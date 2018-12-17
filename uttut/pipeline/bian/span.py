@@ -1,10 +1,4 @@
-from typing import List
-
-from .validation import (
-    _validate_start_end,
-    _validate_type_of_each_elements,
-    _validate_disjoint,
-)
+from .validation import _validate_start_end
 
 
 class Span:
@@ -35,16 +29,3 @@ class Span:
 
     def __repr__(self):
         return f"Span({self.start}, {self.end})"
-
-
-class SpanGroup:
-
-    def __init__(self, spans: List[Span]):
-        _validate_type_of_each_elements(spans, Span)
-        spans = sorted(spans, key=lambda e: e.end)
-        _validate_disjoint(spans)
-        self._spans = spans
-
-    @property
-    def spans(self):
-        return self._spans
