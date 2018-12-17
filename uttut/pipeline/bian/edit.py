@@ -1,10 +1,4 @@
-from typing import List
-
-from .validation import (
-    _validate_start_end,
-    _validate_type_of_each_elements,
-    _validate_disjoint,
-)
+from .validation import _validate_start_end
 
 
 class Edit:
@@ -58,16 +52,3 @@ class Edit:
         output_repr = f"Edit({self.start}, {self.end}, " \
             f"{self.replacement}, annotation={self.annotation})"
         return output_repr
-
-
-class EditGroup:
-
-    def __init__(self, edits: List[Edit]):
-        _validate_type_of_each_elements(edits, Edit)
-        edits = sorted(edits, key=lambda e: e.end)
-        _validate_disjoint(edits)
-        self._edits = edits
-
-    @property
-    def edits(self):
-        return self._edits
