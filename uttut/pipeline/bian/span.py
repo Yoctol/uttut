@@ -12,11 +12,7 @@ class Span:
         end (int): end index (exclusive)
     '''
 
-    def __init__(
-            self,
-            start: int,
-            end: int,
-        ):
+    def __init__(self, start: int, end: int):
         _validate_start_end(start, end)
         self.start, self.end = start, end
 
@@ -37,7 +33,7 @@ class Span:
 class SpanGroup(Group):
 
     def __init__(self, spans: List[Span]):
-        super().__init__(objs=spans, target_type=Span)
+        super().__init__(objs=spans)
         self._validate_contiguousness(self._objs)
 
     def _validate_contiguousness(self, sorted_spans):

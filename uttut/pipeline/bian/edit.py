@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Union
+from typing import List
 
 from .validation import _validate_start_end
 from .utils import Group
@@ -89,7 +89,7 @@ class LstEdit(Edit):
             annotation: str = None,
         ):
         if not isinstance(replacement, list):
-            raise TypeError('StrEdit needs list replacement.')
+            raise TypeError('LstEdit needs list replacement.')
         super().__init__(start=start, end=end, replacement=replacement, annotation=annotation)
 
     def __eq__(self, other):
@@ -105,12 +105,13 @@ class LstEdit(Edit):
 
 class EditGroup(Group):
 
-    def __init__(self, edits: List[Edit], target_type: Union[StrEdit, LstEdit]):
-        if target_type not in [StrEdit, LstEdit]:
-            raise TypeError('Support StrEdit, LstEdit only.')
-        super().__init__(objs=edits, target_type=target_type)
-
     def __eq__(self, other):
         if not isinstance(other, EditGroup):
             return False
         return super().__eq__(other)
+
+    def __repr__(self):
+        return f"{self._objs[0].__class__.__name__}Group"
+
+    def __name__(self):
+        return f"{self._objs[0].__class__.__name__}Group"

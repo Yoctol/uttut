@@ -1,25 +1,23 @@
-from abc import ABC
-
 from .validation import (
     _validate_type_of_each_elements,
     _validate_disjoint,
 )
 
 
-class Group(ABC):
+class Group:
     '''Base class of EditGroup and SpanGroup'''
 
-    def __init__(self, objs, target_type):
+    def __init__(self, objs):
         '''
         Args:
             objs: list of Edits or Spans.
             target_type: Edit or Span.
 
         e.g.
-            1. Group(edits, Edit)
-            2. Group(spans, Span)
+            1. Group(edits)
+            2. Group(spans)
         '''
-        _validate_type_of_each_elements(objs, target_type)
+        _validate_type_of_each_elements(objs)
         objs = sorted(objs, key=lambda e: e.end)
         _validate_disjoint(objs)
         self._objs = objs
@@ -37,3 +35,9 @@ class Group(ABC):
             if other[i] != self._objs[i]:
                 return False
         return True
+
+    def __repr__(self):
+        return f"{self._objs[0].__class__.__name__}Group"
+
+    def __name__(self):
+        return f"{self._objs[0].__class__.__name__}Group"
