@@ -1,7 +1,11 @@
+from abc import ABC, abstractmethod
+from typing import List, Union
+
 from .validation import _validate_start_end
+from .utils import Group
 
 
-class Edit:
+class Edit(ABC):
     '''Represents an edit to a Sequence such as a string or a list
 
     A sequence is a collection of objects that can be indexed in a linear fashion. E.g. a string
@@ -38,8 +42,6 @@ class Edit:
         self.annotation = annotation
 
     def __eq__(self, other):
-        if not isinstance(other, Edit):
-            return False
         same_start = other.start == self.start
         same_end = other.end == self.end
         same_replacements = other.replacement == self.replacement
@@ -48,7 +50,67 @@ class Edit:
     def __str__(self):
         return f"({self.start}, {self.end}) => '{self.replacement}'"
 
+    @abstractmethod
     def __repr__(self):
-        output_repr = f"Edit({self.start}, {self.end}, " \
+        pass
+
+
+class StrEdit(Edit):
+
+    def __init__(
+            self,
+            start: int,
+            end: int,
+            replacement: str,
+            annotation: str = None,
+        ):
+        if not isinstance(replacement, str):
+            raise TypeError('StrEdit needs string replacement.')
+        super().__init__(start=start, end=end, replacement=replacement, annotation=annotation)
+
+    def __eq__(self, other):
+        if not isinstance(other, StrEdit):
+            return False
+        return super().__eq__(other)
+
+    def __repr__(self):
+        output_repr = f"StrEdit({self.start}, {self.end}, " \
             f"{self.replacement}, annotation={self.annotation})"
         return output_repr
+
+
+class LstEdit(Edit):
+
+    def __init__(
+            self,
+            start: int,
+            end: int,
+            replacement: List[str],
+            annotation: str = None,
+        ):
+        if not isinstance(replacement, list):
+            raise TypeError('StrEdit needs list replacement.')
+        super().__init__(start=start, end=end, replacement=replacement, annotation=annotation)
+
+    def __eq__(self, other):
+        if not isinstance(other, LstEdit):
+            return False
+        return super().__eq__(other)
+
+    def __repr__(self):
+        output_repr = f"LstEdit({self.start}, {self.end}, " \
+            f"{self.replacement}, annotation={self.annotation})"
+        return output_repr
+
+
+class EditGroup(Group):
+
+    def __init__(self, edits: List[Edit], target_type: Union[StrEdit, LstEdit]):
+        if target_type not in [StrEdit, LstEdit]:
+            raise TypeError('Support StrEdit, LstEdit only.')
+        super().__init__(objs=edits, target_type=target_type)
+
+    def __eq__(self, other):
+        if not isinstance(other, EditGroup):
+            return False
+        return super().__eq__(other)

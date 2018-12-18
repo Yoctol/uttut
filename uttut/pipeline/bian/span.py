@@ -1,4 +1,7 @@
+from typing import List
+
 from .validation import _validate_start_end
+from .utils import Group
 
 
 class Span:
@@ -29,3 +32,22 @@ class Span:
 
     def __repr__(self):
         return f"Span({self.start}, {self.end})"
+
+
+class SpanGroup(Group):
+
+    def __init__(self, spans: List[Span]):
+        super().__init__(objs=spans, target_type=Span)
+        self._validate_contiguousness(self._objs)
+
+    def _validate_contiguousness(self, sorted_spans):
+        if sorted_spans[0].start != 0:
+            raise ValueError('Spans should start from 0')
+        for idx in range(len(sorted_spans) - 1):
+            if sorted_spans[idx].end != sorted_spans[idx + 1].start:
+                raise ValueError('Spans should be contiguous.')
+
+    def __eq__(self, other):
+        if not isinstance(other, SpanGroup):
+            return False
+        return super().__eq__(other)
