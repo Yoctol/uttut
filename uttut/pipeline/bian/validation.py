@@ -22,7 +22,8 @@ def _validate_disjoint(sorted_objs: Sequence[object]):
         current = obj.end
 
 
-def _validate_type_of_each_elements(objs: Sequence[object], target_type):
+def _validate_type_of_each_elements(objs: Sequence[object]):
+    target_type = type(objs[0])
     for i, element in enumerate(objs):
         if not isinstance(element, target_type):
             raise TypeError(f"{i}-th element is not a(an) {target_type.__name__}")
