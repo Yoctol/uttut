@@ -35,9 +35,3 @@ class Group:
             if other[i] != self._objs[i]:
                 return False
         return True
-
-    def __repr__(self):
-        return f"{self._objs[0].__class__.__name__}Group"
-
-    def __name__(self):
-        return f"{self._objs[0].__class__.__name__}Group"

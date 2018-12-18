@@ -121,3 +121,15 @@ def test_wrong_type(Group, objs):
 def test_span_group_should_be_contiguous(spans):
     with pytest.raises(ValueError):
         SpanGroup(spans)
+
+
+@pytest.mark.parametrize(
+    "name,group",
+    [
+        pytest.param('StrEditGroup', EditGroup([StrEdit(0, 0, 'a')]), id='str-edit'),
+        pytest.param('LstEditGroup', EditGroup([LstEdit(0, 0, ['a'])]), id='list-edit'),
+        pytest.param('SpanGroup', SpanGroup([Span(0, 0), Span(0, 2)]), id='span'),
+    ],
+)
+def test_representation(name, group):
+    assert name == repr(group)

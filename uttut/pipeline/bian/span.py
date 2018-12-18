@@ -47,3 +47,6 @@ class SpanGroup(Group):
         if not isinstance(other, SpanGroup):
             return False
         return super().__eq__(other)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}"
