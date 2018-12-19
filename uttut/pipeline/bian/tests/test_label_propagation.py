@@ -131,8 +131,8 @@ def test_span_group_not_competible(labels, func, spans):
     ],
 )
 def test_different_reduce_func(by, group):
-    def zero_reduce(x):
-        return 0
+    def zero_reduce(x, output_size):
+        return [0] * output_size
     assert [0, 0] == by([1, 2, 3, 4, 5], group, zero_reduce)
 
 

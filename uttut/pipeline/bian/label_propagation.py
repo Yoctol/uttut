@@ -8,7 +8,7 @@ from .span import SpanGroup
 def propagate_by_edit_group(
         labels: List[int],
         edit_group: EditGroup,
-        reduce_func: Callable[[List[int]], int] = None,
+        reduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     '''Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
     Note that the length of edit_group should be the same as that of backward_edit_group.
@@ -37,9 +37,11 @@ def propagate_by_edit_group(
         o_start += fixed_len
 
         # edit
-        label = reduce_func(labels[edit.start: edit.end])
         expand_size = len(edit.replacement)
-        output_labels[o_start: o_start + expand_size] = [label] * expand_size
+        output_labels[o_start: o_start + expand_size] = reduce_func(
+            labels[edit.start: edit.end],
+            expand_size,
+        )
 
         i_start = edit.end
         o_start += expand_size
@@ -49,11 +51,14 @@ def propagate_by_edit_group(
     return output_labels
 
 
-def _get_most_common_label(labels: List[int]):
+def _get_most_common_label(labels: List[int], output_size: int = 1):
     if len(labels) == 0:
-        return 0
-    counter = Counter(labels)
-    return counter.most_common(1)[0][0]
+        most_common_label = 0
+    else:
+        counter = Counter(labels)
+        most_common_label = counter.most_common(1)[0][0]
+    print(most_common_label)
+    return [most_common_label] * output_size
 
 
 def _compute_output_length(
@@ -74,7 +79,7 @@ def _compute_output_length(
 def reduce_by_span_group(
         labels: List[int],
         span_group: SpanGroup,
-        reduce_func: Callable[[List[int]], int] = None,
+        reduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     # use case: string -> list
 
@@ -88,8 +93,7 @@ def reduce_by_span_group(
     output_labels = [0] * output_len
 
     for i, span in enumerate(span_group):
-        label = reduce_func(labels[span.start: span.end])
-        output_labels[i] = label
+        output_labels[i: i + 1] = reduce_func(labels[span.start: span.end], 1)
 
     return output_labels
 
