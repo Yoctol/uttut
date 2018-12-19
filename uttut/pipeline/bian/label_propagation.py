@@ -48,7 +48,7 @@ def propagate_by_edit_group(
     return output_labels
 
 
-def _get_max_label(labels):
+def _get_max_label(labels: List[int]):
     if len(labels) == 0:
         return 0
     return max(labels)
@@ -74,6 +74,9 @@ def propagate_by_span_group(
         span_group: SpanGroup,
         reduce_func: Callable[[List[int]], int] = None,
     ) -> List[int]:
+
+    if reduce_func is None:
+        reduce_func = _get_max_label
 
     if len(labels) == span_group[-1].end:
         return _tokenize(
