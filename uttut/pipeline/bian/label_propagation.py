@@ -1,4 +1,5 @@
 from typing import List, Callable, Sequence
+from collections import Counter
 
 from .edit import EditGroup
 from .span import SpanGroup
@@ -13,15 +14,15 @@ def propagate_by_edit_group(
     Note that the length of edit_group should be the same as that of backward_edit_group.
     Map the reduced label in [forward_edit[i].start, forward_edit[i].end)
     to output list
-    Arg:
+    Args:
         labels (list of ints)
-        edit_group (list of edit_group)
-        reverse_edit_group (list of edit_group)
+        edit_group (EditGroup)
+        reverse_edit_group (EditGroup)
     Return:
         labels (list of ints)
     '''
     if reduce_func is None:
-        reduce_func = _get_max_label
+        reduce_func = _get_most_common_label
 
     output_len = _compute_output_length(labels, edit_group)
     output_labels = [0] * output_len
@@ -48,10 +49,11 @@ def propagate_by_edit_group(
     return output_labels
 
 
-def _get_max_label(labels: List[int]):
+def _get_most_common_label(labels: List[int]):
     if len(labels) == 0:
         return 0
-    return max(labels)
+    counter = Counter(labels)
+    return counter.most_common(1)[0][0]
 
 
 def _compute_output_length(  # for str -> str, lst -> lst
@@ -76,7 +78,7 @@ def propagate_by_span_group(
     ) -> List[int]:
 
     if reduce_func is None:
-        reduce_func = _get_max_label
+        reduce_func = _get_most_common_label
 
     if len(labels) == span_group[-1].end:
         return _tokenize(

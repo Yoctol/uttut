@@ -86,7 +86,7 @@ def test_not_invertible(input_label, forward_edits, output_label, inverse_edits)
 
 def test_propagate_by_span_group():
     span_group = SpanGroup([Span(0, 2), Span(2, 5)])
-    output_label = propagate_by_span_group([1, 2, 3, 4, 5], span_group)
+    output_label = propagate_by_span_group([2, 2, 3, 5, 5], span_group)
     assert [2, 5] == output_label
     reverse_label = propagate_by_span_group(output_label, span_group)
     assert reverse_label == [2, 2, 5, 5, 5]
