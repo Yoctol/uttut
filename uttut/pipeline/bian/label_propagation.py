@@ -8,7 +8,7 @@ from .span import SpanGroup
 def propagate_by_edit_group(
         labels: List[int],
         edit_group: EditGroup,
-        reduce_func: Callable[[List[int], int], List[int]] = None,
+        transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     '''Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
     Note that the length of edit_group should be the same as that of backward_edit_group.
@@ -17,12 +17,12 @@ def propagate_by_edit_group(
     Args:
         labels (list of ints)
         edit_group (EditGroup)
-        reduce_func (Callable): a function that return an integer given a list of integers.
+        transduce_func (Callable): a function that return an integer given a list of integers.
     Return:
         labels (list of ints)
     '''
-    if reduce_func is None:
-        reduce_func = _get_most_common_label
+    if transduce_func is None:
+        transduce_func = _get_most_common_label
 
     output_len = _compute_output_length(labels, edit_group)
     output_labels = [0] * output_len
@@ -38,7 +38,7 @@ def propagate_by_edit_group(
 
         # edit
         expand_size = len(edit.replacement)
-        output_labels[o_start: o_start + expand_size] = reduce_func(
+        output_labels[o_start: o_start + expand_size] = transduce_func(
             labels[edit.start: edit.end],
             expand_size,
         )
@@ -79,12 +79,12 @@ def _compute_output_length(
 def reduce_by_span_group(
         labels: List[int],
         span_group: SpanGroup,
-        reduce_func: Callable[[List[int], int], List[int]] = None,
+        transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     # use case: string -> list
 
-    if reduce_func is None:
-        reduce_func = _get_most_common_label
+    if transduce_func is None:
+        transduce_func = _get_most_common_label
 
     if len(labels) != span_group[-1].end:
         raise ValueError('labels and span_group are not compatible.')
@@ -93,7 +93,7 @@ def reduce_by_span_group(
     output_labels = [0] * output_len
 
     for i, span in enumerate(span_group):
-        output_labels[i: i + 1] = reduce_func(labels[span.start: span.end], 1)
+        output_labels[i: i + 1] = transduce_func(labels[span.start: span.end], 1)
 
     return output_labels
 

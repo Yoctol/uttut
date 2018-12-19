@@ -130,10 +130,10 @@ def test_span_group_not_competible(labels, func, spans):
         ),
     ],
 )
-def test_different_reduce_func(by, group):
-    def zero_reduce(x, output_size):
+def test_different_transduce_func(by, group):
+    def zero_transduce(x, output_size):
         return [0] * output_size
-    assert [0, 0] == by([1, 2, 3, 4, 5], group, zero_reduce)
+    assert [0, 0] == by([1, 2, 3, 4, 5], group, zero_transduce)
 
 
 def test_intersection_case_of_span_propagation():
