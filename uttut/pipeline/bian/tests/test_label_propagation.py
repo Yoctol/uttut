@@ -4,7 +4,8 @@ from ..edit import StrEdit, LstEdit, EditGroup
 from ..span import Span, SpanGroup
 from ..label_propagation import (
     propagate_by_edit_group,
-    propagate_by_span_group,
+    reduce_by_span_group,
+    expand_by_span_group,
 )
 
 
@@ -86,30 +87,32 @@ def test_not_invertible(input_label, forward_edits, output_label, inverse_edits)
 
 def test_propagate_by_span_group():
     span_group = SpanGroup([Span(0, 2), Span(2, 5)])
-    output_label = propagate_by_span_group([2, 2, 3, 5, 5], span_group)
+    output_label = reduce_by_span_group([2, 2, 3, 5, 5], span_group)
     assert [2, 5] == output_label
-    reverse_label = propagate_by_span_group(output_label, span_group)
+    reverse_label = expand_by_span_group(output_label, span_group)
     assert reverse_label == [2, 2, 5, 5, 5]
 
 
 @pytest.mark.parametrize(
-    "labels,spans",
+    "labels,func,spans",
     [
         pytest.param(
             [1, 2, 3, 4, 5],
+            reduce_by_span_group,
             SpanGroup([Span(0, 2), Span(2, 4)]),
             id='max length',
         ),
         pytest.param(
             [1, 2, 3],
+            expand_by_span_group,
             SpanGroup([Span(0, 2), Span(2, 4)]),
             id='number',
         ),
     ],
 )
-def test_span_group_not_competible(labels, spans):
-    with pytest.raises(KeyError):
-        propagate_by_span_group(labels, spans)
+def test_span_group_not_competible(labels, func, spans):
+    with pytest.raises(ValueError):
+        func(labels, spans)
 
 
 @pytest.mark.parametrize(
@@ -121,7 +124,7 @@ def test_span_group_not_competible(labels, spans):
             id='edit-group',
         ),
         pytest.param(
-            propagate_by_span_group,
+            reduce_by_span_group,
             SpanGroup([Span(0, 2), Span(2, 5)]),
             id='span-group',
         ),

@@ -71,37 +71,19 @@ def _compute_output_length(
     return len_iters + offset
 
 
-def propagate_by_span_group(
-        labels: List[int],
-        span_group: SpanGroup,
-        reduce_func: Callable[[List[int]], int] = None,
-    ) -> List[int]:
-
-    if reduce_func is None:
-        reduce_func = _get_most_common_label
-
-    if len(labels) == span_group[-1].end:
-        return _tokenize(
-            labels=labels,
-            span_group=span_group,
-            reduce_func=reduce_func,
-        )
-    elif len(span_group) == len(labels):
-        return _untokenize(
-            labels=labels,
-            span_group=span_group,
-        )
-    else:
-        raise KeyError('labels and span_group are not compatible.')
-
-
-def _tokenize(
+def reduce_by_span_group(
         labels: List[int],
         span_group: SpanGroup,
         reduce_func: Callable[[List[int]], int] = None,
     ) -> List[int]:
     # use case: string -> list
-    # assert len(labels) == span_group[-1].end
+
+    if reduce_func is None:
+        reduce_func = _get_most_common_label
+
+    if len(labels) != span_group[-1].end:
+        raise ValueError('labels and span_group are not compatible.')
+
     output_len = len(span_group)
     output_labels = [0] * output_len
 
@@ -112,12 +94,14 @@ def _tokenize(
     return output_labels
 
 
-def _untokenize(
+def expand_by_span_group(
         labels: List[int],
         span_group: SpanGroup,
     ) -> List[int]:
     # use case: list -> str
-    # assert len(span_group) == len(labels)
+    if len(span_group) != len(labels):
+        raise ValueError('labels and span_group are not compatible.')
+
     output_len = span_group[-1].end
     output_labels = [0] * output_len
 
