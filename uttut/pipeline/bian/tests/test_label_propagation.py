@@ -134,3 +134,10 @@ def test_different_reduce_func(by, group):
     def zero_reduce(x):
         return 0
     assert [0, 0] == by([1, 2, 3, 4, 5], group, zero_reduce)
+
+
+def test_intersection_case_of_span_propagation():
+    labels = [1]
+    span_group = SpanGroup([Span(0, 1)])
+    assert labels == reduce_by_span_group(labels, span_group)
+    assert labels == expand_by_span_group(labels, span_group)
