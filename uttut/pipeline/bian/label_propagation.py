@@ -17,7 +17,7 @@ def propagate_by_edit_group(
     Args:
         labels (list of ints)
         edit_group (EditGroup)
-        reverse_edit_group (EditGroup)
+        reduce_func (Callable): a function that return an integer given a list of integers.
     Return:
         labels (list of ints)
     '''
@@ -56,11 +56,11 @@ def _get_most_common_label(labels: List[int]):
     return counter.most_common(1)[0][0]
 
 
-def _compute_output_length(  # for str -> str, lst -> lst
+def _compute_output_length(
         input_seq: Sequence,
         edit_group: EditGroup,
     ) -> int:
-
+    # use cases: str -> str or list -> list
     len_iters = len(input_seq)
     offset = 0
     for edit in edit_group:
@@ -92,7 +92,7 @@ def propagate_by_span_group(
             span_group=span_group,
         )
     else:
-        raise KeyError('labels and span_group are not competible.')
+        raise KeyError('labels and span_group are not compatible.')
 
 
 def _tokenize(
@@ -100,7 +100,7 @@ def _tokenize(
         span_group: SpanGroup,
         reduce_func: Callable[[List[int]], int] = None,
     ) -> List[int]:
-    # str to list
+    # use case: string -> list
     # assert len(labels) == span_group[-1].end
     output_len = len(span_group)
     output_labels = [0] * output_len
@@ -116,7 +116,7 @@ def _untokenize(
         labels: List[int],
         span_group: SpanGroup,
     ) -> List[int]:
-    # list to str
+    # use case: list -> str
     # assert len(span_group) == len(labels)
     output_len = span_group[-1].end
     output_labels = [0] * output_len
