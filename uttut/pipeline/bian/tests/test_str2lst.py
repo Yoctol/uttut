@@ -2,7 +2,7 @@ import pytest
 
 from ..edit import EditGroup
 from ..span import SpanGroup
-from uttut.pipeline.bian import str2lst
+from uttut.pipeline.bian import str2lst, lst2str
 
 
 test_cases = [
@@ -47,15 +47,27 @@ test_cases = [
 
 
 @pytest.mark.parametrize("input_str,tokens,edit_group,span_group,inverse_edit_group", test_cases)
-def test_apply(input_str, tokens, edit_group, span_group, inverse_edit_group):
-    output = str2lst.apply(input_str, span_group, edit_group)
+def test_forward_apply(input_str, tokens, edit_group, span_group, inverse_edit_group):
+    output = str2lst.apply(input_str, edit_group, span_group)
     assert tokens == output
 
 
 @pytest.mark.parametrize("input_str,tokens,edit_group,span_group,inverse_edit_group", test_cases)
-def test_inverse(input_str, tokens, edit_group, span_group, inverse_edit_group):
-    output = str2lst.inverse(input_str, span_group, edit_group)
+def test_backward_apply(input_str, tokens, edit_group, span_group, inverse_edit_group):
+    output = lst2str.apply(tokens, span_group, inverse_edit_group)
+    assert input_str == output
+
+
+@pytest.mark.parametrize("input_str,tokens,edit_group,span_group,inverse_edit_group", test_cases)
+def test_forward_inverse(input_str, tokens, edit_group, span_group, inverse_edit_group):
+    output = str2lst.inverse(input_str, edit_group, span_group)
     assert (inverse_edit_group, span_group) == output
+
+
+@pytest.mark.parametrize("input_str,tokens,edit_group,span_group,inverse_edit_group", test_cases)
+def test_backward_inverse(input_str, tokens, edit_group, span_group, inverse_edit_group):
+    output = lst2str.inverse(tokens, span_group, inverse_edit_group)
+    assert (edit_group, span_group) == output
 
 
 @pytest.mark.parametrize("input_str,tokens,edit_group,span_group,inverse_edit_group", test_cases)
@@ -85,3 +97,19 @@ def test_gen_edit_group(input_str, tokens, edit_group, span_group, inverse_edit_
 def test_gen_edit_group_fail(input_str, tokens):
     with pytest.raises(ValueError, message='input_str and tokens are not compatible.'):
         str2lst.gen_edit_group(input_str, tokens)
+
+
+@pytest.mark.parametrize(
+    'input_lst,span_group',
+    [
+        pytest.param(['薄餡', '亂入'], SpanGroup.add_all([(0, 1)]), id='length'),
+        pytest.param(['我', '想要', '喝', '多多綠'],
+                     SpanGroup.add_all([(0, 1), (1, 3), (3, 5), (5, 8)]), id='element'),
+    ],
+)
+def test_incompatible_lst2str(input_lst, span_group):
+    with pytest.raises(ValueError):
+        lst2str.apply(input_lst, span_group, EditGroup.add_all([]))
+
+    with pytest.raises(ValueError):
+        lst2str.inverse(input_lst, span_group, EditGroup.add_all([]))
