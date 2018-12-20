@@ -7,7 +7,7 @@ def entity_position_correct(utterance: str, entity) -> bool:
 
 
 def overlap(entity, next_entity) -> bool:
-    return entity.end > next_entity.start
+    return bool(entity.end > next_entity.start)
 
 
 def msg_entity_wrong_position(utterance: str, entity) -> str:

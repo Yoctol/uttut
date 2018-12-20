@@ -15,11 +15,11 @@ def _validate_disjoint(sorted_objs: Sequence[object]):
     '''
     A object must have two integer properties `start` and `end`.
     '''
-    current = sorted_objs[0].end
+    current = sorted_objs[0].end  # type: ignore
     for obj in sorted_objs[1:]:
-        if obj.start < current:
+        if obj.start < current:  # type: ignore
             raise ValueError(f"overlapped")
-        current = obj.end
+        current = obj.end  # type: ignore
 
 
 def _validate_type_of_each_elements(objs: Sequence[object]):

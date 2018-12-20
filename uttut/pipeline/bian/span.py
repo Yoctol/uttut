@@ -43,7 +43,7 @@ class SpanGroup(Group):
         self._spans = set()
         super().__init__()
 
-    def add(self, start: int, end: int):
+    def add(self, start: int, end: int):  # type: ignore
         span = Span(start=start, end=end)
         self._spans.add(span)
 
@@ -65,7 +65,7 @@ class SpanGroup(Group):
                 raise ValueError('Spans should be contiguous.')
 
     @classmethod
-    def add_all(cls, spans: List[Tuple[int, int]]):
+    def add_all(cls, spans: List[Tuple[int, int]]):  # type: ignore
         span_group = cls()
         for span in spans:
             if len(span) == 2:

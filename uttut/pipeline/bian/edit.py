@@ -68,7 +68,9 @@ class EditGroup(Group):
         self._edits = set()
         super().__init__()
 
-    def add(self, start: int, end: int, replacement: Union[str, List[str]], annotation=None):
+    def add(self, start: int, end: int,  # type: ignore
+            replacement: Union[str, List[str]], annotation=None):
+        edit: Edit
         if isinstance(replacement, str):
             edit = StrEdit(start=start, end=end, replacement=replacement, annotation=annotation)
         elif isinstance(replacement, list):
@@ -88,14 +90,15 @@ class EditGroup(Group):
         self._is_done = True
 
     @classmethod
-    def add_all(cls, edits: List[Tuple[int, int, Union[str, list]]]):
+    def add_all(cls,  # type: ignore
+        edits: List[Union[Tuple[int, int, Union[str, list]], Tuple[int, int, Union[str, list], str]]]) -> EditGroup:
         edit_group = cls()
         for edit in edits:
             if len(edit) == 3:
-                start, end, replacement = edit
+                start, end, replacement = edit  # type: ignore
                 edit_group.add(start, end, replacement)
             elif len(edit) == 4:
-                start, end, replacement, annotation = edit
+                start, end, replacement, annotation = edit  # type: ignore
                 edit_group.add(start, end, replacement, annotation)
             else:
                 raise ValueError('Number of elements should = 3 or 4.')
