@@ -1,6 +1,7 @@
 from typing import List, Tuple
 import warnings
 
+from .base import Group
 from .validation import (
     _validate_start_end,
     _validate_disjoint,
@@ -36,11 +37,11 @@ class Span:
         return hash(self.__str__())
 
 
-class SpanGroup:
+class SpanGroup(Group):
 
     def __init__(self):
         self._spans = set()
-        self._is_done = False
+        super().__init__()
 
     def add(self, start: int, end: int):
         span = Span(start=start, end=end)
