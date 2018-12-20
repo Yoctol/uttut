@@ -107,7 +107,11 @@ cdef class Intent:
         return self.label == other.label
 
 
-class Datum:
+cdef class Datum:
+
+    cdef public str utterance
+    cdef public list intents
+    cdef public list entities
 
     def __init__(
             self,

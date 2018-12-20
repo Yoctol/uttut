@@ -17,6 +17,10 @@ install-dev:
 lint:
 	flake8
 
+.PHONY: typecheck
+typecheck:
+	mypy --config-file=.mypy uttut
+
 .PHONY: test
 test:
 	pytest --cov-report=term-missing --cov=uttut/ --cov-fail-under=80

@@ -29,6 +29,7 @@ omit =
     *__init__.py
     *test_*
     *.pxd
+    *.pyi
     *.c
     *.cpp
 
