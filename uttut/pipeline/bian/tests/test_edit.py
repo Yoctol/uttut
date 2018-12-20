@@ -77,7 +77,6 @@ def test_not_equal(obj1, obj2):
     [
         pytest.param(StrEdit(10, 15, '薄餡亂入'), "(10, 15) => '薄餡亂入'", id='str-edit'),
         pytest.param(LstEdit(10, 15, ['薄餡亂入']), "(10, 15) => '['薄餡亂入']'", id='lst-edit'),
-
     ],
 )
 def test_str(edit, expected):

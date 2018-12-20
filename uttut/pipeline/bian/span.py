@@ -1,7 +1,11 @@
-from typing import List
+from typing import List, Tuple
+import warnings
 
-from .validation import _validate_start_end
-from .utils import Group
+from .base import Group
+from .validation import (
+    _validate_start_end,
+    _validate_disjoint,
+)
 
 
 class Span:
@@ -29,12 +33,29 @@ class Span:
     def __repr__(self):
         return f"Span({self.start}, {self.end})"
 
+    def __hash__(self):
+        return hash(self.__str__())
+
 
 class SpanGroup(Group):
 
-    def __init__(self, spans: List[Span]):
-        super().__init__(objs=spans)
-        self._validate_contiguousness(self._objs)
+    def __init__(self):
+        self._spans = set()
+        super().__init__()
+
+    def add(self, start: int, end: int):
+        span = Span(start=start, end=end)
+        self._spans.add(span)
+
+    def done(self):
+        if len(self._spans) == 0:
+            warnings.warn("SpanGroup is empty")
+            self._spans = list(self._spans)
+        else:
+            self._spans = sorted(self._spans, key=lambda e: e.end)  # set -> list
+            _validate_disjoint(self._spans)
+            self._validate_contiguousness(self._spans)
+        self._is_done = True
 
     def _validate_contiguousness(self, sorted_spans):
         if sorted_spans[0].start != 0:
@@ -43,10 +64,38 @@ class SpanGroup(Group):
             if sorted_spans[idx].end != sorted_spans[idx + 1].start:
                 raise ValueError('Spans should be contiguous.')
 
+    @classmethod
+    def add_all(cls, spans: List[Tuple[int, int]]):
+        span_group = cls()
+        for span in spans:
+            if len(span) == 2:
+                start, end = span
+                span_group.add(start, end)
+            else:
+                raise ValueError('Number of elements should = 2.')
+        span_group.done()
+        return span_group
+
     def __eq__(self, other):
+        self._warn_not_done()
         if not isinstance(other, SpanGroup):
             return False
-        return super().__eq__(other)
+        same_length = len(other) == len(self._spans)
+        same_elements = set(other) == set(self._spans)
+        return same_length and same_elements
+
+    def __getitem__(self, value):
+        if not self._is_done:
+            raise RuntimeError('Please call `done` first.')
+        return self._spans[value]
+
+    def __len__(self):
+        self._warn_not_done()
+        return len(self._spans)
+
+    def _warn_not_done(self):
+        if not self._is_done:
+            warnings.warn('SpanGroup needs validation, please call `done`.')
 
     def __repr__(self):
-        return f"{self.__class__.__name__}"
+        return str(self.__class__.__name__)
