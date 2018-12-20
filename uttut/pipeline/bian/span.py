@@ -49,7 +49,6 @@ class SpanGroup(Group):
 
     def done(self):
         if len(self._spans) == 0:
-            warnings.warn("SpanGroup is empty")
             self._spans = list(self._spans)
         else:
             self._spans = sorted(self._spans, key=lambda e: e.end)  # set -> list
@@ -75,6 +74,9 @@ class SpanGroup(Group):
                 raise ValueError('Number of elements should = 2.')
         span_group.done()
         return span_group
+
+    def is_empty(self):
+        return len(self._spans) == 0
 
     def __eq__(self, other):
         self._warn_not_done()

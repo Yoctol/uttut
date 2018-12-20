@@ -7,7 +7,7 @@ from ..span import Span, SpanGroup
 def test_correctly_init():
     span_group = SpanGroup()
     assert span_group._is_done is False
-    assert span_group._spans == set()
+    assert span_group.is_empty() is True
     assert len(span_group) == 0
 
 
@@ -32,8 +32,21 @@ def test_add_all():
 
 
 def test_add_all_empty():
-    with pytest.warns(UserWarning, match='SpanGroup is empty'):
-        SpanGroup.add_all([])
+    span_group = SpanGroup.add_all([])
+    assert span_group.is_empty() is True
+
+
+def test_not_done_warning():
+    span_group = SpanGroup()
+    with pytest.warns(UserWarning, match='SpanGroup needs validation, please call `done`.'):
+        len(span_group)
+
+
+def test_not_done_error():
+    span_group = SpanGroup()
+    span_group.add(1, 3)
+    with pytest.raises(RuntimeError, message='Please call `done` first.'):
+        span_group[0]
 
 
 @pytest.mark.parametrize(
@@ -48,7 +61,6 @@ def test_add_fails(obj, error_type):
         SpanGroup.add_all(obj)
 
 
-@pytest.mark.filterwarnings("ignore")
 @pytest.mark.parametrize(
     "group1,group2",
     [
@@ -106,10 +118,3 @@ def test_validate_disjoint(objs):
 )
 def test_representation(name, group):
     assert name == repr(group)
-
-
-def test_getitem_fails():
-    span_group = SpanGroup()
-    span_group.add(0, 2)
-    with pytest.raises(RuntimeError):
-        span_group[0]
