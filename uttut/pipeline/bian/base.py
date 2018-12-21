@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from abc import ABC, abstractmethod, abstractclassmethod
-from typing import overload
 
 from .validation import _validate_start_end
 

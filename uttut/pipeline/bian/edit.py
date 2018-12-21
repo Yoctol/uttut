@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple
+from typing import List, Union
 import warnings
 
 from .base import Edit, Group
@@ -90,15 +90,25 @@ class EditGroup(Group):
         self._is_done = True
 
     @classmethod
-    def add_all(cls,  # type: ignore
-        edits: List[Union[Tuple[int, int, Union[str, list]], Tuple[int, int, Union[str, list], str]]]) -> EditGroup:
+    def add_all(cls, edits: List[tuple]) -> 'EditGroup':  # type: ignore
+        '''
+        edits = [
+            (
+                start: int,
+                end: int,
+                replacement: Union[str, list[str]],
+                annotation: str, # optional
+            ),
+            ...
+        ]
+        '''
         edit_group = cls()
         for edit in edits:
             if len(edit) == 3:
-                start, end, replacement = edit  # type: ignore
+                start, end, replacement = edit
                 edit_group.add(start, end, replacement)
             elif len(edit) == 4:
-                start, end, replacement, annotation = edit  # type: ignore
+                start, end, replacement, annotation = edit
                 edit_group.add(start, end, replacement, annotation)
             else:
                 raise ValueError('Number of elements should = 3 or 4.')
