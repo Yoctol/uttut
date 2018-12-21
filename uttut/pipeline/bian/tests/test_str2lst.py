@@ -75,6 +75,19 @@ def test_gen_span_group(input_str, tokens, span_group):
 
 
 @pytest.mark.parametrize(
+    'input_str,tokens',
+    [
+        pytest.param('我想要喝200元的珍奶10杯', ['薄餡', '亂入'], id='zh_all_mismatch'),
+        pytest.param("I've been to Japan.", ["I", "'", "ve", "been", "to", "Japan", "."],
+                     id='us lack of space'),
+    ],
+)
+def test_gen_span_group_fail(input_str, tokens):
+    with pytest.raises(ValueError, message='input_str and tokens are not compatible.'):
+        str2lst.gen_span_group(input_str, tokens)
+
+
+@pytest.mark.parametrize(
     "input_str,tokens,edit_group",
     [
         pytest.param(
