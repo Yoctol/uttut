@@ -4,16 +4,20 @@ from .edit import EditGroup
 from .span import SpanGroup
 
 
-def apply(
-        input_str: str,
-        span_group: SpanGroup,
-    ) -> List[str]:
+def apply(input_str: str, span_group: SpanGroup) -> List[str]:
+
+    _validate_compatibility(input_str, span_group)
 
     output_lst = [''] * len(span_group)
     for i, span in enumerate(span_group):
         output_lst[i] = input_str[span.start: span.end]
 
     return output_lst
+
+
+def _validate_compatibility(input_str: str, span_group: SpanGroup):
+    if len(input_str) != span_group[-1].end:
+        raise ValueError('Input list and span group is not compatible.')
 
 
 def gen_span_group(input_str: str, tokens: List[str]) -> SpanGroup:

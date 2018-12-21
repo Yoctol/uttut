@@ -50,6 +50,24 @@ def test_backward_apply(input_str, tokens, span_group):
     assert input_str == output
 
 
+def test_incompatible_str2lst():
+    with pytest.raises(ValueError):
+        str2lst.apply('薄餡亂入', SpanGroup.add_all([(0, 1), (1, 2)]))
+
+
+@pytest.mark.parametrize(
+    'input_lst,span_group',
+    [
+        pytest.param(['薄餡', '亂入'], SpanGroup.add_all([(0, 1)]), id='length'),
+        pytest.param(['我', '想要', '喝', '多多綠'],
+                     SpanGroup.add_all([(0, 1), (1, 3), (3, 5), (5, 8)]), id='element'),
+    ],
+)
+def test_incompatible_lst2str(input_lst, span_group):
+    with pytest.raises(ValueError):
+        lst2str.apply(input_lst, span_group)
+
+
 @pytest.mark.parametrize("input_str,tokens,span_group,", test_cases)
 def test_gen_span_group(input_str, tokens, span_group):
     output = str2lst.gen_span_group(input_str, tokens)
@@ -101,16 +119,3 @@ def test_gen_edit_group(input_str, tokens, edit_group):
 def test_gen_edit_group_fail(input_str, tokens):
     with pytest.raises(ValueError, message='input_str and tokens are not compatible.'):
         str2lst.gen_edit_group(input_str, tokens)
-
-
-@pytest.mark.parametrize(
-    'input_lst,span_group',
-    [
-        pytest.param(['薄餡', '亂入'], SpanGroup.add_all([(0, 1)]), id='length'),
-        pytest.param(['我', '想要', '喝', '多多綠'],
-                     SpanGroup.add_all([(0, 1), (1, 3), (3, 5), (5, 8)]), id='element'),
-    ],
-)
-def test_incompatible_lst2str(input_lst, span_group):
-    with pytest.raises(ValueError):
-        lst2str.apply(input_lst, span_group)
