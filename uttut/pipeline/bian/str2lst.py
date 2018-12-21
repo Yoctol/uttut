@@ -1,41 +1,19 @@
-from typing import List, Tuple
+from typing import List
 
 from .edit import EditGroup
 from .span import SpanGroup
-from uttut.pipeline.bian import str2str
 
 
 def apply(
         input_str: str,
-        edit_group: EditGroup,
         span_group: SpanGroup,
     ) -> List[str]:
 
-    # 1. apply edits (str -> str)
-    output_str = input_str
-    if not edit_group.is_empty():
-        output_str = str2str.apply(input_str, edit_group)
-
-    # 2. apply spans (str -> list)
     output_lst = [''] * len(span_group)
     for i, span in enumerate(span_group):
-        output_lst[i] = output_str[span.start: span.end]
+        output_lst[i] = input_str[span.start: span.end]
 
     return output_lst
-
-
-def inverse(
-        input_str: str,
-        edit_group: EditGroup,
-        span_group: SpanGroup,
-    ) -> Tuple[EditGroup, SpanGroup]:
-
-    # inverse edit group only
-    inverse_edit_group = EditGroup.add_all([])
-    if not edit_group.is_empty():
-        inverse_edit_group = str2str.inverse(input_str, edit_group)
-
-    return inverse_edit_group, span_group
 
 
 def gen_span_group(input_str: str, tokens: List[str]) -> SpanGroup:
