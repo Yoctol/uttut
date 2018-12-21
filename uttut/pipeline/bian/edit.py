@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple
+from typing import List, Union
 import warnings
 
 from .base import Edit, Group
@@ -68,7 +68,14 @@ class EditGroup(Group):
         self._edits = set()
         super().__init__()
 
-    def add(self, start: int, end: int, replacement: Union[str, List[str]], annotation=None):
+    def add(  # type: ignore
+            self,
+            start: int,
+            end: int,
+            replacement: Union[str, List[str]],
+            annotation=None,
+        ):
+        edit: Edit
         if isinstance(replacement, str):
             edit = StrEdit(start=start, end=end, replacement=replacement, annotation=annotation)
         elif isinstance(replacement, list):
@@ -88,7 +95,18 @@ class EditGroup(Group):
         self._is_done = True
 
     @classmethod
-    def add_all(cls, edits: List[Tuple[int, int, Union[str, list]]]):
+    def add_all(cls, edits: List[tuple]) -> 'EditGroup':  # type: ignore
+        '''
+        edits = [
+            (
+                start: int,
+                end: int,
+                replacement: Union[str, list[str]],
+                annotation: str, # optional
+            ),
+            ...
+        ]
+        '''
         edit_group = cls()
         for edit in edits:
             if len(edit) == 3:

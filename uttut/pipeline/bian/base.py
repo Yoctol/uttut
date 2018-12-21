@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from abc import ABC, abstractmethod, abstractclassmethod
 
 from .validation import _validate_start_end
@@ -53,7 +54,7 @@ class Edit(ABC):
         pass
 
 
-class Group(ABC):
+class Group(Sequence):
 
     def __init__(self):
         self._is_done = False
@@ -76,12 +77,4 @@ class Group(ABC):
 
     @abstractmethod
     def __eq__(self, other):
-        pass
-
-    @abstractmethod
-    def __getitem__(self, value):
-        pass
-
-    @abstractmethod
-    def __len__(self):
         pass

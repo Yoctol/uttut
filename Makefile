@@ -16,9 +16,6 @@ install-dev:
 .PHONY: lint
 lint:
 	flake8
-
-.PHONY: typecheck
-typecheck:
 	mypy --config-file=.mypy uttut
 
 .PHONY: test
