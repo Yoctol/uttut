@@ -1,3 +1,5 @@
+from typing import List
+
 from .edit import EditGroup
 from .utils import (
     _transform_sequence,
@@ -5,7 +7,8 @@ from .utils import (
 )
 
 
-def apply(input_lst: list, edit_group: EditGroup) -> list:
+def apply(input_lst: list, edit_group: EditGroup) -> List[str]:
+    output: List[list]
     n_edit = len(edit_group)
     output = [[]] * (2 * n_edit + 1)
     output_lst = _transform_sequence(

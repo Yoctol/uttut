@@ -3,7 +3,7 @@ from typing import List
 from .span import SpanGroup
 
 
-def apply(input_lst: List[str], span_group: SpanGroup) -> List[str]:
+def apply(input_lst: List[str], span_group: SpanGroup) -> str:
 
     _validate_compatibility(input_lst, span_group)
 

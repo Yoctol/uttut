@@ -1,12 +1,12 @@
-from typing import List, Sequence
+from typing import List, Sequence, MutableSequence, Union
 
 from .edit import EditGroup
 
 
 def _transform_sequence(
-        input_seq: Sequence,
+        input_seq: Union[str, List[str]],
         edit_group: EditGroup,
-        output: Sequence,
+        output: MutableSequence,
     ) -> Sequence:
     '''
     input_seq: list of str or pure str
@@ -27,7 +27,7 @@ def _transform_sequence(
 
 
 def _gen_inverse_edit_group(
-        input_seq: Sequence,
+        input_seq: Union[str, List[str]],
         edit_group: EditGroup,
     ) -> EditGroup:
     '''
