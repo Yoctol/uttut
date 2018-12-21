@@ -68,8 +68,13 @@ class EditGroup(Group):
         self._edits = set()
         super().__init__()
 
-    def add(self, start: int, end: int,  # type: ignore
-            replacement: Union[str, List[str]], annotation=None):
+    def add(  # type: ignore
+            self,
+            start: int,
+            end: int,
+            replacement: Union[str, List[str]],
+            annotation=None,
+        ):
         edit: Edit
         if isinstance(replacement, str):
             edit = StrEdit(start=start, end=end, replacement=replacement, annotation=annotation)
