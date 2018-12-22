@@ -86,11 +86,11 @@ class EditGroup(Group):
 
     def done(self):
         if len(self._edits) == 0:
-            warnings.warn("EditGroup is empty")
             self._edits = list(self._edits)
         else:
             _validate_type_of_each_elements(list(self._edits))
             self._edits = sorted(self._edits, key=lambda e: e.end)  # set -> list
+            self._edits = sorted(self._edits, key=lambda e: e.start)
             _validate_disjoint(self._edits)
         self._is_done = True
 
@@ -120,6 +120,9 @@ class EditGroup(Group):
         edit_group.done()
         return edit_group
 
+    def is_empty(self):
+        return len(self._edits) == 0
+
     def __eq__(self, other):
         self._warn_not_done()
         if not isinstance(other, EditGroup):
@@ -142,4 +145,6 @@ class EditGroup(Group):
             warnings.warn('EditGroup needs validation, please call `done`.')
 
     def __repr__(self):
+        if self.is_empty():
+            return f"EmptyEditGroup"
         return f"{list(self._edits)[0].__class__.__name__}Group"

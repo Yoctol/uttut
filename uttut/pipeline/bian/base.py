@@ -29,12 +29,12 @@ class Edit(ABC):
     '''
 
     def __init__(
-        self,
-        start: int,
-        end: int,
-        replacement,
-        annotation: str = None,
-    ):
+            self,
+            start: int,
+            end: int,
+            replacement,
+            annotation: str = None,
+        ):
         _validate_start_end(start, end)
         self.start, self.end = start, end
         self.replacement = replacement

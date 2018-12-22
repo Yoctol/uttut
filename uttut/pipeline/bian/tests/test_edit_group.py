@@ -7,7 +7,7 @@ from ..edit import StrEdit, LstEdit, EditGroup
 def test_correctly_init():
     edit_group = EditGroup()
     assert edit_group._is_done is False
-    assert edit_group._edits == set()
+    assert edit_group.is_empty() is True
     assert len(edit_group) == 0
 
 
@@ -30,8 +30,21 @@ def test_add_all(dtype, objs):
 
 
 def test_add_all_empty():
-    with pytest.warns(UserWarning, match='EditGroup is empty'):
-        EditGroup.add_all([])
+    edit_group = EditGroup.add_all([])
+    assert edit_group.is_empty() is True
+
+
+def test_not_done_warning():
+    edit_group = EditGroup()
+    with pytest.warns(UserWarning, match='EditGroup needs validation, please call `done`.'):
+        len(edit_group)
+
+
+def test_not_done_error():
+    edit_group = EditGroup()
+    edit_group.add(1, 3, 'abc')
+    with pytest.raises(RuntimeError, message='Please call `done` first.'):
+        edit_group[0]
 
 
 @pytest.mark.parametrize(
@@ -48,7 +61,6 @@ def test_add_fails(obj, error_type):
         EditGroup.add_all(obj)
 
 
-@pytest.mark.filterwarnings("ignore")
 @pytest.mark.parametrize(
     "group1,group2",
     [
@@ -113,14 +125,8 @@ def test_validate_disjoint(objs):
     [
         pytest.param('StrEditGroup', EditGroup.add_all([(0, 0, 'a')]), id='str-edit'),
         pytest.param('LstEditGroup', EditGroup.add_all([(0, 0, ['a'])]), id='list-edit'),
+        pytest.param('EmptyEditGroup', EditGroup.add_all([]), id='empty'),
     ],
 )
 def test_representation(name, group):
     assert name == repr(group)
-
-
-def test_getitem_fails():
-    edit_group = EditGroup()
-    edit_group.add(0, 2, 'a')
-    with pytest.raises(RuntimeError):
-        edit_group[0]
