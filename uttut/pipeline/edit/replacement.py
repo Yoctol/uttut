@@ -18,7 +18,7 @@ class StrReplacement(Replacement):
             annotation: str = None,
         ):
         if not isinstance(new_value, str):
-            raise TypeError('StrReplacement needs string new_value.')
+            raise TypeError('StrReplacement needs a string type new_value.')
         super().__init__(start=start, end=end, new_value=new_value, annotation=annotation)
 
     def __eq__(self, other):
@@ -45,7 +45,7 @@ class LstReplacement(Replacement):
             annotation: str = None,
         ):
         if not isinstance(new_value, list):
-            raise TypeError('LstReplacement needs list new_value.')
+            raise TypeError('LstReplacement needs a list type new_value.')
         super().__init__(start=start, end=end, new_value=new_value, annotation=annotation)
 
     def __eq__(self, other):

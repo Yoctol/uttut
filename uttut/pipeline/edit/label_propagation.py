@@ -11,14 +11,17 @@ def propagate_by_replacement_group(
         transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     '''Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
+
     Note that the length of replacement_group should be the same as
     that of backward_replacement_group.
     Map the reduced label in [forward_replacement[i].start, forward_replacement[i].end)
     to output list
+
     Args:
         labels (list of ints)
         replacement_group (ReplacementGroup)
         transduce_func (Callable): a function that return an integer given a list of integers.
+
     Return:
         labels (list of ints)
     '''

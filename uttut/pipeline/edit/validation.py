@@ -13,7 +13,7 @@ def _validate_start_end(start: int, end: int):
 
 def _validate_disjoint(sorted_objs: Sequence[object]):
     '''
-    A object must have two integer properties `start` and `end`.
+    An object must have two integer properties `start` and `end`.
     '''
     current = sorted_objs[0].end  # type: ignore
     for obj in sorted_objs[1:]:

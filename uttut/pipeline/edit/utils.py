@@ -59,13 +59,19 @@ def _gen_inverse_replacement_group(
 
 def get_dist_bt_replacement_group(replacement_group: ReplacementGroup) -> List[int]:
     '''Compute the distance between replacement_group
+
     The distance is the length of sequence.
+
     Eg.
-    Given [Replacement(0, 1, ''), Replacement(4, 7, '')]: [3]  # 4 - 1
-    Given [Replacement(0, 3, ''), Replacement(3, 4, ''), Replacement(8, 11, '')]: [0, 4]
+        Given [Replacement(0, 1, ''), Replacement(4, 7, '')]: [3]  # 4 - 1
+        Given [Replacement(0, 3, ''), Replacement(3, 4, ''), Replacement(8, 11, '')]: [0, 4]
     Note that the length of output would be 1 less than that of input replacement_group.
-    Arg: a list of replacement_group
-    Return: a list of integers
+
+    Arg:
+        replacement_group (ReplacementGroup)
+
+    Return:
+        dist (ints)
     '''
     n_replacement = len(replacement_group)
     dists = [0] * (n_replacement - 1)

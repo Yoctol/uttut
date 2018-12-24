@@ -9,8 +9,12 @@ class Replacement(ABC):
 
     A sequence is a collection of objects that can be indexed in a linear fashion. E.g. a string
 
-    A replacement to a sequence is a new_value of a continuous range of the sequence with
-    the elements of the new_value sequence.
+    A `Replacement` stores the data for substitution of values in a sequence.
+    It represents the replacing a continuous slice of the sequence with the items of `new_value`.
+    (The semantics are similar to Python's built-in slice assignment feature
+     https://docs.python.org/3/reference/simple_stmts.html#assignment-statements ,
+     but more restrictive in that negative integers are not allowed for `start` and `end`.)
+
 
     E.g.
     The transformation from "" to "abc": Replacement(0, 0, "abc")
@@ -24,8 +28,8 @@ class Replacement(ABC):
     Args:
         start (int): start index (inclusive)
         end (int): end index (exclusive)
-        new_value (obj): the new_value
-        annotation (str, optional): an annotation for this edit
+        new_value (obj): the new subsequence
+        annotation (str, optional): an annotation for this replacement
     '''
 
     def __init__(
