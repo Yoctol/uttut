@@ -1,9 +1,9 @@
 import pytest
 
-from ..edit import EditGroup
+from ..replacement import ReplacementGroup
 from ..span import SpanGroup
 from ..label_propagation import (
-    propagate_by_edit_group,
+    propagate_by_replacement_group,
     reduce_by_span_group,
     expand_by_span_group,
 )
@@ -12,33 +12,33 @@ from ..label_propagation import (
 test_cases = [
     pytest.param(
         [1, 1, 1, 0, 0, 3, 0, 2, 2],
-        EditGroup.add_all([(0, 3, 'a'), (5, 6, 'abc'), (7, 9, 'abcd')]),
+        ReplacementGroup.add_all([(0, 3, 'a'), (5, 6, 'abc'), (7, 9, 'abcd')]),
         [1, 0, 0, 3, 3, 3, 0, 2, 2, 2, 2],
-        EditGroup.add_all([(0, 1, 'abc'), (3, 6, 'a'), (7, 11, 'ab')]),
+        ReplacementGroup.add_all([(0, 1, 'abc'), (3, 6, 'a'), (7, 11, 'ab')]),
         id='str-modify',
     ),
     pytest.param(
         [1, 1, 1, 0, 0, 3, 0, 2, 2],
-        EditGroup.add_all([(0, 3, ['a']), (5, 6, ['a', 'b', 'c']),
-                           (7, 9, ['a', 'b', 'c', 'd'])]),
+        ReplacementGroup.add_all([(0, 3, ['a']), (5, 6, ['a', 'b', 'c']),
+                                  (7, 9, ['a', 'b', 'c', 'd'])]),
         [1, 0, 0, 3, 3, 3, 0, 2, 2, 2, 2],
-        EditGroup.add_all([(0, 1, ['a', 'b', 'c']), (3, 6, ['a']),
-                           (7, 11, ['a', 'b'])]),
+        ReplacementGroup.add_all([(0, 1, ['a', 'b', 'c']), (3, 6, ['a']),
+                                  (7, 11, ['a', 'b'])]),
         id='list-modify',
     ),
     pytest.param(
         [1, 2, 3, 4],
-        EditGroup.add_all([(0, 0, 'a'), (1, 1, 'abc'), (4, 4, 'abcd')]),
+        ReplacementGroup.add_all([(0, 0, 'a'), (1, 1, 'abc'), (4, 4, 'abcd')]),
         [0, 1, 0, 0, 0, 2, 3, 4, 0, 0, 0, 0],
-        EditGroup.add_all([(0, 1, ''), (2, 5, ''), (8, 12, '')]),
+        ReplacementGroup.add_all([(0, 1, ''), (2, 5, ''), (8, 12, '')]),
         id='str-insert',
     ),
     pytest.param(
         [1, 2, 3, 4],
-        EditGroup.add_all([(0, 0, ['a']), (1, 1, ['a', 'b', 'c']),
-                           (4, 4, ['a', 'b', 'c', 'd'])]),
+        ReplacementGroup.add_all([(0, 0, ['a']), (1, 1, ['a', 'b', 'c']),
+                                  (4, 4, ['a', 'b', 'c', 'd'])]),
         [0, 1, 0, 0, 0, 2, 3, 4, 0, 0, 0, 0],
-        EditGroup.add_all([(0, 1, []), (2, 5, []), (8, 12, [])]),
+        ReplacementGroup.add_all([(0, 1, []), (2, 5, []), (8, 12, [])]),
         id='list-insert',
     ),
 ]
@@ -46,42 +46,47 @@ test_cases = [
 not_invertible_test_cases = [
     pytest.param(
         [1, 2, 3, 4, 5, 6],
-        EditGroup.add_all([(0, 1, ''), (2, 4, ''), (5, 6, '')]),
+        ReplacementGroup.add_all([(0, 1, ''), (2, 4, ''), (5, 6, '')]),
         [2, 5],
-        EditGroup.add_all([(0, 0, 'a'), (1, 1, 'ab'), (2, 2, 'c')]),
+        ReplacementGroup.add_all([(0, 0, 'a'), (1, 1, 'ab'), (2, 2, 'c')]),
         id='str-delete',
     ),
     pytest.param(
         [1, 2, 3, 4, 5, 6],
-        EditGroup.add_all([(0, 1, []), (2, 4, []), (5, 6, [])]),
+        ReplacementGroup.add_all([(0, 1, []), (2, 4, []), (5, 6, [])]),
         [2, 5],
-        EditGroup.add_all([(0, 0, ['a']), (1, 1, ['a', 'b']), (2, 2, ['c'])]),
+        ReplacementGroup.add_all([(0, 0, ['a']), (1, 1, ['a', 'b']), (2, 2, ['c'])]),
         id='list-delete',
     ),
 ]
 
 
 @pytest.mark.parametrize(
-    "input_label,forward_edits,output_label,inverse_edits",
+    "input_label,forward_replacements,output_label,inverse_replacements",
     test_cases + not_invertible_test_cases,
 )
-def test_forward_propagate_by_edit_group(input_label, forward_edits, output_label, inverse_edits):
-    output = propagate_by_edit_group(input_label, forward_edits)
+def test_forward_propagate_by_replacement_group(
+        input_label, forward_replacements, output_label, inverse_replacements):
+    output = propagate_by_replacement_group(input_label, forward_replacements)
     assert output_label == output
 
 
-@pytest.mark.parametrize("input_label,forward_edits,output_label,inverse_edits", test_cases)
-def test_backward_propagate_by_edit_group(input_label, forward_edits, output_label, inverse_edits):
-    output = propagate_by_edit_group(output_label, inverse_edits)
+@pytest.mark.parametrize(
+    "input_label,forward_replacements,output_label,inverse_replacements",
+    test_cases,
+)
+def test_backward_propagate_by_replacement_group(
+        input_label, forward_replacements, output_label, inverse_replacements):
+    output = propagate_by_replacement_group(output_label, inverse_replacements)
     assert input_label == output
 
 
 @pytest.mark.parametrize(
-    "input_label,forward_edits,output_label,inverse_edits",
+    "input_label,forward_replacements,output_label,inverse_replacements",
     not_invertible_test_cases,
 )
-def test_not_invertible(input_label, forward_edits, output_label, inverse_edits):
-    output = propagate_by_edit_group(output_label, inverse_edits)
+def test_not_invertible(input_label, forward_replacements, output_label, inverse_replacements):
+    output = propagate_by_replacement_group(output_label, inverse_replacements)
     assert [0, 2, 0, 0, 5, 0] == output
 
 
@@ -119,9 +124,9 @@ def test_span_group_not_competible(labels, func, spans):
     "by,group",
     [
         pytest.param(
-            propagate_by_edit_group,
-            EditGroup.add_all([(0, 2, 'a'), (2, 5, 'b')]),
-            id='edit-group',
+            propagate_by_replacement_group,
+            ReplacementGroup.add_all([(0, 2, 'a'), (2, 5, 'b')]),
+            id='replacement-group',
         ),
         pytest.param(
             reduce_by_span_group,
