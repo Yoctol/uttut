@@ -4,7 +4,7 @@ from ..replacement import StrReplacement, LstReplacement
 
 
 @pytest.mark.parametrize(
-    "start,end,new_sequence,annotation,Replacement_type",
+    "start,end,new_value,annotation,Replacement_type",
     [
         pytest.param(10, 15, '薄餡亂入', None, StrReplacement, id='str-replacement'),
         pytest.param(10, 15, '薄餡亂入', 'ohoh', StrReplacement, id='str-replacement with annotation'),
@@ -13,12 +13,12 @@ from ..replacement import StrReplacement, LstReplacement
                      id='list-replacement with annotation'),
     ],
 )
-def test_correctly_init(start, end, new_sequence, annotation, Replacement_type):
+def test_correctly_init(start, end, new_value, annotation, Replacement_type):
     replacement = Replacement_type(
-        start=start, end=end, new_sequence=new_sequence, annotation=annotation)
+        start=start, end=end, new_value=new_value, annotation=annotation)
     assert start == replacement.start
     assert end == replacement.end
-    assert new_sequence == replacement.new_sequence
+    assert new_value == replacement.new_value
     if annotation is None:
         assert replacement.annotation is None
     else:
@@ -26,15 +26,15 @@ def test_correctly_init(start, end, new_sequence, annotation, Replacement_type):
 
 
 @pytest.mark.parametrize(
-    "start,end,new_sequence,Replacement_type",
+    "start,end,new_value,Replacement_type",
     [
         pytest.param(10, 15, ['薄餡亂入'], StrReplacement, id='need str given list'),
         pytest.param(10, 15, '薄餡亂入', LstReplacement, id='need list given str'),
     ],
 )
-def test_invalid_new_sequence(start, end, new_sequence, Replacement_type):
+def test_invalid_new_value(start, end, new_value, Replacement_type):
     with pytest.raises(TypeError):
-        Replacement_type(start=start, end=end, new_sequence=new_sequence)
+        Replacement_type(start=start, end=end, new_value=new_value)
 
 
 @pytest.mark.parametrize(
@@ -56,7 +56,7 @@ def test_equal(obj1, obj2):
         pytest.param((10, 15, '薄餡亂入'), StrReplacement(10, 15, '薄餡亂入'),
                      id='str-replacement different type'),
         pytest.param(StrReplacement(10, 15, '薄餡亂入'), StrReplacement(10, 15, '隼興亂入'),
-                     id='str-replacement different new_sequence'),
+                     id='str-replacement different new_value'),
         pytest.param(StrReplacement(10, 15, '薄餡亂入'), StrReplacement(9, 15, '薄餡亂入'),
                      id='str-replacement different start index'),
         pytest.param(StrReplacement(10, 15, '薄餡亂入'), StrReplacement(10, 11, '薄餡亂入'),
@@ -64,7 +64,7 @@ def test_equal(obj1, obj2):
         pytest.param((10, 15, ['薄餡亂入']), LstReplacement(10, 15, ['薄餡亂入']),
                      id='lst-replacement different type'),
         pytest.param(LstReplacement(10, 15, ['薄餡亂入']), LstReplacement(10, 15, ['隼興亂入']),
-                     id='lst-replacement different new_sequence'),
+                     id='lst-replacement different new_value'),
         pytest.param(LstReplacement(10, 15, ['薄餡亂入']), LstReplacement(9, 15, ['薄餡亂入']),
                      id='lst-replacement different start index'),
         pytest.param(LstReplacement(10, 15, ['薄餡亂入']), LstReplacement(10, 11, ['薄餡亂入']),

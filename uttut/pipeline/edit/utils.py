@@ -16,7 +16,7 @@ def _transform_sequence(
     i = 0
     for replacement in replacement_group:
         output[i] = input_seq[start: replacement.start]
-        output[i + 1] = replacement.new_sequence
+        output[i + 1] = replacement.new_value
         start = replacement.end
         i += 2
 
@@ -49,10 +49,10 @@ def _gen_inverse_replacement_group(
         dist = dists[i]
         inverse_replacement_group.add(
             start=start,
-            end=start + len(replacement.new_sequence),
-            new_sequence=input_seq[replacement.start: replacement.end],
+            end=start + len(replacement.new_value),
+            new_value=input_seq[replacement.start: replacement.end],
         )
-        start += len(replacement.new_sequence) + dist
+        start += len(replacement.new_value) + dist
     inverse_replacement_group.done()
     return inverse_replacement_group
 

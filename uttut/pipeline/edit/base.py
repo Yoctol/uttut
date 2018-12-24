@@ -9,8 +9,8 @@ class Replacement(ABC):
 
     A sequence is a collection of objects that can be indexed in a linear fashion. E.g. a string
 
-    A edit to a sequence is a new_sequence of a continuous range of the sequence with the elements
-    of the new_sequence sequence.
+    A replacement to a sequence is a new_value of a continuous range of the sequence with
+    the elements of the new_value sequence.
 
     E.g.
     The transformation from "" to "abc": Replacement(0, 0, "abc")
@@ -24,7 +24,7 @@ class Replacement(ABC):
     Args:
         start (int): start index (inclusive)
         end (int): end index (exclusive)
-        new_sequence (obj): the new_sequence
+        new_value (obj): the new_value
         annotation (str, optional): an annotation for this edit
     '''
 
@@ -32,22 +32,22 @@ class Replacement(ABC):
             self,
             start: int,
             end: int,
-            new_sequence,
+            new_value,
             annotation: str = None,
         ):
         _validate_start_end(start, end)
         self.start, self.end = start, end
-        self.new_sequence = new_sequence
+        self.new_value = new_value
         self.annotation = annotation
 
     def __eq__(self, other):
         same_start = other.start == self.start
         same_end = other.end == self.end
-        same_new_sequences = other.new_sequence == self.new_sequence
-        return same_start and same_end and same_new_sequences
+        same_new_values = other.new_value == self.new_value
+        return same_start and same_end and same_new_values
 
     def __str__(self):
-        return f"({self.start}, {self.end}) => '{self.new_sequence}'"
+        return f"({self.start}, {self.end}) => '{self.new_value}'"
 
     @abstractmethod
     def __repr__(self):

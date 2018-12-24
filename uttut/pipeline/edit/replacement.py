@@ -14,12 +14,12 @@ class StrReplacement(Replacement):
             self,
             start: int,
             end: int,
-            new_sequence: str,
+            new_value: str,
             annotation: str = None,
         ):
-        if not isinstance(new_sequence, str):
-            raise TypeError('StrReplacement needs string new_sequence.')
-        super().__init__(start=start, end=end, new_sequence=new_sequence, annotation=annotation)
+        if not isinstance(new_value, str):
+            raise TypeError('StrReplacement needs string new_value.')
+        super().__init__(start=start, end=end, new_value=new_value, annotation=annotation)
 
     def __eq__(self, other):
         if not isinstance(other, StrReplacement):
@@ -28,7 +28,7 @@ class StrReplacement(Replacement):
 
     def __repr__(self):
         output_repr = f"StrReplacement({self.start}, {self.end}, " \
-            f"{self.new_sequence}, annotation={self.annotation})"
+            f"{self.new_value}, annotation={self.annotation})"
         return output_repr
 
     def __hash__(self):
@@ -41,12 +41,12 @@ class LstReplacement(Replacement):
             self,
             start: int,
             end: int,
-            new_sequence: List[str],
+            new_value: List[str],
             annotation: str = None,
         ):
-        if not isinstance(new_sequence, list):
-            raise TypeError('LstReplacement needs list new_sequence.')
-        super().__init__(start=start, end=end, new_sequence=new_sequence, annotation=annotation)
+        if not isinstance(new_value, list):
+            raise TypeError('LstReplacement needs list new_value.')
+        super().__init__(start=start, end=end, new_value=new_value, annotation=annotation)
 
     def __eq__(self, other):
         if not isinstance(other, LstReplacement):
@@ -55,7 +55,7 @@ class LstReplacement(Replacement):
 
     def __repr__(self):
         output_repr = f"LstReplacement({self.start}, {self.end}, " \
-            f"{self.new_sequence}, annotation={self.annotation})"
+            f"{self.new_value}, annotation={self.annotation})"
         return output_repr
 
     def __hash__(self):
@@ -72,26 +72,26 @@ class ReplacementGroup(Group):
             self,
             start: int,
             end: int,
-            new_sequence: Union[str, List[str]],
+            new_value: Union[str, List[str]],
             annotation=None,
         ):
         replacement: Replacement
-        if isinstance(new_sequence, str):
+        if isinstance(new_value, str):
             replacement = StrReplacement(
                 start=start,
                 end=end,
-                new_sequence=new_sequence,
+                new_value=new_value,
                 annotation=annotation,
             )
-        elif isinstance(new_sequence, list):
+        elif isinstance(new_value, list):
             replacement = LstReplacement(
                 start=start,
                 end=end,
-                new_sequence=new_sequence,
+                new_value=new_value,
                 annotation=annotation,
             )
         else:
-            raise TypeError('new_sequence should be string or list.')
+            raise TypeError('new_value should be string or list.')
         self._replacements.add(replacement)
 
     def done(self):
@@ -111,7 +111,7 @@ class ReplacementGroup(Group):
             (
                 start: int,
                 end: int,
-                new_sequence: Union[str, list[str]],
+                new_value: Union[str, list[str]],
                 annotation: str, # optional
             ),
             ...
@@ -120,11 +120,11 @@ class ReplacementGroup(Group):
         replacement_group = cls()
         for replacement in replacements:
             if len(replacement) == 3:
-                start, end, new_sequence = replacement
-                replacement_group.add(start, end, new_sequence)
+                start, end, new_value = replacement
+                replacement_group.add(start, end, new_value)
             elif len(replacement) == 4:
-                start, end, new_sequence, annotation = replacement
-                replacement_group.add(start, end, new_sequence, annotation)
+                start, end, new_value, annotation = replacement
+                replacement_group.add(start, end, new_value, annotation)
             else:
                 raise ValueError('Number of elements should = 3 or 4.')
         replacement_group.done()

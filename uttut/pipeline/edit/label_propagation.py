@@ -38,7 +38,7 @@ def propagate_by_replacement_group(
         o_start += fixed_len
 
         # replacement
-        expand_size = len(replacement.new_sequence)
+        expand_size = len(replacement.new_value)
         output_labels[o_start: o_start + expand_size] = transduce_func(
             labels[replacement.start: replacement.end],
             expand_size,
@@ -70,7 +70,7 @@ def _compute_output_length(
     len_iters = len(input_seq)
     offset = 0
     for replacement in replacement_group:
-        after = len(replacement.new_sequence)
+        after = len(replacement.new_value)
         before = replacement.end - replacement.start
         offset += after - before
 
