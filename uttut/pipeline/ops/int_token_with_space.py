@@ -63,7 +63,8 @@ class IntTokenWithSpace(Operator):
         inverse_replacement_group = str2str.inverse(input_sequence, forward_replacement_group)
 
         self.update_edit(inverse_replacement_group)
-        updated_labels = propagate_by_replacement_group(labels, forward_replacement_group, _forward_reduce_func)
+        updated_labels = propagate_by_replacement_group(
+            labels, forward_replacement_group, _forward_reduce_func)
 
         return output_sequence, updated_labels
 
