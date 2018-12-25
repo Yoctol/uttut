@@ -1,6 +1,6 @@
 from typing import List
 
-from .edit import EditGroup
+from .replacement import ReplacementGroup
 from .span import SpanGroup
 
 
@@ -38,17 +38,17 @@ def gen_span_group(input_str: str, tokens: List[str]) -> SpanGroup:
     return span_group
 
 
-def gen_edit_group(input_str: str, tokens: List[str]) -> EditGroup:
-    '''Compare string and tokens then generate EditGroup'''
+def gen_replacement_group(input_str: str, tokens: List[str]) -> ReplacementGroup:
+    '''Compare string and tokens then generate ReplacementGroup'''
 
     shift = 0
-    edit_group = EditGroup()
+    replacement_group = ReplacementGroup()
     for token in tokens:
         start = input_str.find(token, shift)
         if start == -1:
             ValueError('input_str and tokens are not compatible')
         if input_str[shift: start] != '':
-            edit_group.add(shift, start, '')
+            replacement_group.add(shift, start, '')
         shift = start + len(token)
-    edit_group.done()
-    return edit_group
+    replacement_group.done()
+    return replacement_group

@@ -1,8 +1,8 @@
 import pytest
 
-from ..edit import EditGroup
+from ..replacement import ReplacementGroup
 from ..span import SpanGroup
-from uttut.pipeline.bian import str2lst, lst2str
+from uttut.pipeline.edit import str2lst, lst2str
 
 
 test_cases = [
@@ -88,37 +88,37 @@ def test_gen_span_group_fail(input_str, tokens):
 
 
 @pytest.mark.parametrize(
-    "input_str,tokens,edit_group",
+    "input_str,tokens,replacement_group",
     [
         pytest.param(
             '我想要喝200元的珍奶10杯',
             ['我', '想要', '喝', '200元', '的', '珍奶', '10杯'],
-            EditGroup.add_all([]),
+            ReplacementGroup.add_all([]),
             id='jieba',
         ),
         pytest.param(
             '我想要喝 200 元的珍奶 10 杯',
             ['我', '想要', '喝', ' ', '200', ' ', '元', '的', '珍奶', ' ', '10', ' ', '杯'],
-            EditGroup.add_all([]),
+            ReplacementGroup.add_all([]),
             id='jieba with space',
         ),
         pytest.param(
             "I've been to Japan.",
             ["I", "'", "ve", "been", "to", "Japan", "."],
-            EditGroup.add_all([(4, 5, ''), (9, 10, ''), (12, 13, '')]),
+            ReplacementGroup.add_all([(4, 5, ''), (9, 10, ''), (12, 13, '')]),
             id='nltk punct True',
         ),
         pytest.param(
             "I've been to Japan.",
             ["I've", "been", "to", "Japan", "."],
-            EditGroup.add_all([(4, 5, ''), (9, 10, ''), (12, 13, '')]),
+            ReplacementGroup.add_all([(4, 5, ''), (9, 10, ''), (12, 13, '')]),
             id='nltk punct False',
         ),
     ],
 )
-def test_gen_edit_group(input_str, tokens, edit_group):
-    output = str2lst.gen_edit_group(input_str, tokens)
-    assert edit_group == output
+def test_gen_replacement_group(input_str, tokens, replacement_group):
+    output = str2lst.gen_replacement_group(input_str, tokens)
+    assert replacement_group == output
 
 
 @pytest.mark.parametrize(
@@ -129,6 +129,6 @@ def test_gen_edit_group(input_str, tokens, edit_group):
         pytest.param('我想要喝珍奶', ['珍奶', '我', '想要', '喝'], id='zh_different_order'),
     ],
 )
-def test_gen_edit_group_fail(input_str, tokens):
+def test_gen_replacement_group_fail(input_str, tokens):
     with pytest.raises(ValueError, message='input_str and tokens are not compatible.'):
-        str2lst.gen_edit_group(input_str, tokens)
+        str2lst.gen_replacement_group(input_str, tokens)

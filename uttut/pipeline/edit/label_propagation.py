@@ -1,49 +1,53 @@
 from typing import List, Callable, Sequence
 from collections import Counter
 
-from .edit import EditGroup
+from .replacement import ReplacementGroup
 from .span import SpanGroup
 
 
-def propagate_by_edit_group(
+def propagate_by_replacement_group(
         labels: List[int],
-        edit_group: EditGroup,
+        replacement_group: ReplacementGroup,
         transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     '''Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
-    Note that the length of edit_group should be the same as that of backward_edit_group.
-    Map the reduced label in [forward_edit[i].start, forward_edit[i].end)
+
+    Note that the length of replacement_group should be the same as
+    that of backward_replacement_group.
+    Map the reduced label in [forward_replacement[i].start, forward_replacement[i].end)
     to output list
+
     Args:
         labels (list of ints)
-        edit_group (EditGroup)
+        replacement_group (ReplacementGroup)
         transduce_func (Callable): a function that return an integer given a list of integers.
+
     Return:
         labels (list of ints)
     '''
     if transduce_func is None:
         transduce_func = _get_most_common_label
 
-    output_len = _compute_output_length(labels, edit_group)
+    output_len = _compute_output_length(labels, replacement_group)
     output_labels = [0] * output_len
 
     i_start = 0
     o_start = 0
 
-    for edit in edit_group:
-        # before edit
-        fixed_len = edit.start - i_start
-        output_labels[o_start: o_start + fixed_len] = labels[i_start: edit.start]
+    for replacement in replacement_group:
+        # before replacement
+        fixed_len = replacement.start - i_start
+        output_labels[o_start: o_start + fixed_len] = labels[i_start: replacement.start]
         o_start += fixed_len
 
-        # edit
-        expand_size = len(edit.replacement)
+        # replacement
+        expand_size = len(replacement.new_value)
         output_labels[o_start: o_start + expand_size] = transduce_func(
-            labels[edit.start: edit.end],
+            labels[replacement.start: replacement.end],
             expand_size,
         )
 
-        i_start = edit.end
+        i_start = replacement.end
         o_start += expand_size
 
     # final
@@ -63,14 +67,14 @@ def _get_most_common_label(labels: List[int], output_size: int = 1):
 
 def _compute_output_length(
         input_seq: Sequence,
-        edit_group: EditGroup,
+        replacement_group: ReplacementGroup,
     ) -> int:
     # use cases: str -> str or list -> list
     len_iters = len(input_seq)
     offset = 0
-    for edit in edit_group:
-        after = len(edit.replacement)
-        before = edit.end - edit.start
+    for replacement in replacement_group:
+        after = len(replacement.new_value)
+        before = replacement.end - replacement.start
         offset += after - before
 
     return len_iters + offset
