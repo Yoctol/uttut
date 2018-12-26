@@ -17,8 +17,7 @@ def _gen_forward_replacement_group(input_str: str) -> ReplacementGroup:
     replacement_group = ReplacementGroup()
 
     while shift < len(input_str):
-        match = INT_TOKEN_WITH_SPACE_PATTERN.search(
-            input_str, shift)
+        match = INT_TOKEN_WITH_SPACE_PATTERN.search(input_str, shift)
         if match is None:
             break
         replacement_group.add(
