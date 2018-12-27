@@ -5,6 +5,7 @@ from typing import Tuple, List, Union
 class Operator(ABC):
     """Base class for Ops
     Sub-classes should implement `transform` and `relabel`.
+
     Attributes:
         input_type: input type of sequence to transform
         output_type: output type of transformed sequence
