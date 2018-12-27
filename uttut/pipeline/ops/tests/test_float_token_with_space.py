@@ -1,7 +1,12 @@
 import pytest
 
-
 from ..float_token_with_space import FloatTokenWithSpace
+from .common_tests_for_pattern_to_token import pattern_to_token_tests
+
+
+@pytest.fixture
+def op():
+    yield FloatTokenWithSpace()
 
 
 test_cases = [
@@ -41,31 +46,9 @@ test_cases = [
     ),
 ]
 
-
-@pytest.mark.parametrize("input_str,input_labels,output_str,output_labels", test_cases)
-def test_data(input_str, input_labels, output_str, output_labels):
-    assert len(input_str) == len(input_labels)
-    assert len(output_str) == len(output_labels)
-
-
-@pytest.mark.parametrize("input_str,input_labels,output_str,output_labels", test_cases)
-def test_transform(input_str, input_labels, output_str, output_labels):
-    op = FloatTokenWithSpace()
-    output = op.transform(input_str, input_labels)
-    assert output_str == output[0]
-    assert output_labels == output[1]
-
-
-@pytest.mark.parametrize("input_str,input_labels,output_str,output_labels", test_cases)
-def test_realign_labels(input_str, input_labels, output_str, output_labels):
-    op = FloatTokenWithSpace()
-    op.transform(input_str, input_labels)
-    output = op.realign_labels(output_labels)
-    assert input_labels == output
-
-
-@pytest.mark.parametrize("input_str,input_labels,output_str,output_labels", test_cases)
-def test_realign_labels_fails(input_str, input_labels, output_str, output_labels):
-    op = FloatTokenWithSpace()
-    with pytest.raises(ValueError):
-        op.realign_labels(output_labels)
+(
+    test_data,
+    test_transform,
+    test_realign_labels,
+    test_realign_labels_fails,
+) = pattern_to_token_tests(test_cases)
