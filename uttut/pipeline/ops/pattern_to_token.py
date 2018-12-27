@@ -18,7 +18,12 @@ class PatternRecognizer(Operator):
     def __init__(self):
         super().__init__(input_type=str, output_type=str)
 
-    def _gen_forward_replacement_group(self, input_str: str) -> ReplacementGroup:
+    def _gen_forward_replacement_group(
+            self,
+            input_str: str,
+            annotation: str = None,
+        ) -> ReplacementGroup:
+
         shift = 0
         replacement_group = ReplacementGroup()
 
@@ -30,6 +35,7 @@ class PatternRecognizer(Operator):
                 start=match.start(),
                 end=match.end(),
                 new_value=self.TOKEN,
+                annotation=annotation,
             )
             shift = match.end()
         replacement_group.done()
