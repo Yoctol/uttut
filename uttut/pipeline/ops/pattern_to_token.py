@@ -7,10 +7,10 @@ from ..edit.label_propagation import propagate_by_replacement_group
 
 
 class PatternRecognizer(Operator):
-    '''
+    """
     Base class for Operators which recognize text patterns using regular expressions
     and replace them with a predefined token.
-    '''
+    """
 
     REGEX_PATTERN: Pattern
     TOKEN: str

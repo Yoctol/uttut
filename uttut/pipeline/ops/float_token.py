@@ -5,6 +5,13 @@ from .int_token import IntToken
 
 
 class FloatToken(IntToken):
+    """
+    Recognize float (ex: 12.3, 1.7) in the input string
+    and replace them with FLOAT_TOKEN (_float_)
+
+    E.g.
+        I have 10.7 dollars. -> I have _float_ dollars.
+    """
 
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+\.\d+(?![\.\d])")
     TOKEN = FLOAT_TOKEN

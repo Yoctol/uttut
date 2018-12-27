@@ -8,6 +8,13 @@ from .pattern_to_token import PatternRecognizer
 
 
 class IntTokenWithSpace(PatternRecognizer):
+    """
+    Recognize integer (ex: 12, 10000) in the input string
+    and replace them with INT_TOKEN_WTIH_SPACE ( _int_ )
+
+    E.g.
+        I have 10 apples. -> I have  _int_  apples.
+    """
 
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+(?![\.\d])")
     TOKEN = INT_TOKEN_WITH_SPACE
