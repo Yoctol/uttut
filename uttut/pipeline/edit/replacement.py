@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 import warnings
 
 from .base import Group
@@ -75,7 +75,7 @@ class ReplacementGroup(Group):
             self,
             start: int,
             end: int,
-            new_value: Union[str, List[str]],
+            new_value,
             annotation=None,
         ):
         replacement = Replacement(

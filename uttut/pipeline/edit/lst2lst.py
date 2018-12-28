@@ -1,5 +1,3 @@
-from typing import List
-
 from .replacement import ReplacementGroup
 from .utils import (
     _transform_sequence,
@@ -7,8 +5,8 @@ from .utils import (
 )
 
 
-def apply(input_lst: list, replacement_group: ReplacementGroup) -> List[str]:
-    output: List[list]
+def apply(input_lst: list, replacement_group: ReplacementGroup) -> list:
+    output: list
     n_replacement = len(replacement_group)
     output = [[]] * (2 * n_replacement + 1)
     output_lst = _transform_sequence(
@@ -26,6 +24,3 @@ def inverse(input_lst: list, replacement_group: ReplacementGroup) -> Replacement
     )
     assert len(inverse_replacement_group) == len(replacement_group)
     return inverse_replacement_group
-
-
-# TODO label

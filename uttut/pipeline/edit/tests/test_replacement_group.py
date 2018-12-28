@@ -52,7 +52,8 @@ def test_not_done_error():
     [
         pytest.param([(0,)], TypeError, id='lack of elements'),
         pytest.param([(0, 0, 'a', 'a', 'a')], TypeError, id='has redundant elements'),
-        pytest.param([(0, 1, 'a'), (0, 2, ['b'])], TypeError, id='mixed replacements'),
+        pytest.param([(0, 1, 'a'), (0, 2, ['b']), (3, 5, 10000)],
+                     TypeError, id='mixed replacements'),
     ],
 )
 def test_add_fails(obj, error_type):
