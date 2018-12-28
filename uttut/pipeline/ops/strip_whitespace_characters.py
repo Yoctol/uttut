@@ -8,7 +8,7 @@ from .pattern_to_token import PatternRecognizer
 class StripWhiteSpaceCharacters(PatternRecognizer):
     """
     Recognize leading and trailing whitespace characters in the string
-    and replace it with an empty string ("")
+    and replace them with an empty string ("")
     """
 
     REGEX_PATTERN = re.compile(r"\A\s+|\s+\Z")
