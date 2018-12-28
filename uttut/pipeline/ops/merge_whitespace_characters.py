@@ -13,6 +13,10 @@ def _get_most_common_label(labels: List[int], output_size: int) -> List[int]:
 
 
 class MergeWhiteSpaceCharacters(PatternRecognizer):
+    """
+    Recognize contiguous whitespace characters in the string
+    and replace it with a whitespace character (" ")
+    """
 
     REGEX_PATTERN = re.compile(r"\s+")
     TOKEN = " "
