@@ -61,7 +61,6 @@ def _get_most_common_label(labels: List[int], output_size: int = 1):
     else:
         counter = Counter(labels)
         most_common_label = counter.most_common(1)[0][0]
-    print(most_common_label)
     return [most_common_label] * output_size
 
 
