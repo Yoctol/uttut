@@ -73,6 +73,7 @@ setup(
     url='https://github.com/Yoctol/uttut',
     packages=find_packages(),
     install_requires=[
+        "nltk==3.3.0",
     ],
     long_description=long_description,
     classifiers=[
