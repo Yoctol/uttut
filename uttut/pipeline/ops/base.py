@@ -39,9 +39,6 @@ class Operator(ABC):
         Transform input_sequence to certain form which meets the output_type
         and updates labels if necessary.
 
-        Note that calls to transform do not accumulate changes in self.edit.
-        Each new calls effectively resets the state of the object.
-
         Args:
             input_sequence (input_type): utterance or tokens
             labels (ints): has same length of input_sequence

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Callable
 
 import json
 
@@ -68,15 +68,13 @@ class Pipe:
         Returns:
             output_sequence: transfromed sequence
             labels: updated labels
+            realigners: list of Realigners
         """
+        realigners = Realigners()
         for step in self._steps:
-            input_sequence, labels = step.transform(input_sequence, labels)
-        return input_sequence, labels
-
-    def realign_labels(self, labels: List[int]) -> List[int]:
-        for step in self._steps[::-1]:
-            labels = step.realign_labels(labels)
-        return labels
+            input_sequence, labels, realigner = step.transform(input_sequence, labels)
+            realigners.add(realigner)
+        return input_sequence, labels, realigners
 
     def serialize(self, path):
         with open(path, 'wb') as fw:
@@ -95,3 +93,17 @@ class Pipe:
                 op_kwargs=step_info['op_kwargs'],
             )
         return pipe
+
+
+class Realigners:
+
+    def __init__(self):
+        self.collections = []
+
+    def add(self, realigner: Callable[[List[int]], List[int]]):
+        self.collections.append(realigner)
+
+    def __call__(self, labels: List[int]) -> List[int]:
+        for realigner in self.collections[::-1]:
+            labels = realigner(labels)
+        return labels
