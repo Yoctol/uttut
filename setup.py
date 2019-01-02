@@ -72,9 +72,7 @@ setup(
     author="cph",
     url='https://github.com/Yoctol/uttut',
     packages=find_packages(),
-    install_requires=[
-        "nltk==3.3.0",
-    ],
+    install_requires=[],
     long_description=long_description,
     classifiers=[
         "Programming Language :: Python",

@@ -5,6 +5,3 @@ warn_unused_configs = True
 
 [mypy-pytest]
 ignore_missing_imports = True
-
-[mypy-nltk.*]
-ignore_missing_imports = True
