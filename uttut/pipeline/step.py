@@ -16,7 +16,7 @@ class Step:
         return self.op.output_type
 
     def transform(self, input_sequence, labels):
-        self.op.reset_bian()
+        self.op.reset_edit()
         return self.op.transform(input_sequence, labels)
 
     def realign_labels(self, labels: List[int]) -> List[int]:
