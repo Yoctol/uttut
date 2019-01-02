@@ -3,14 +3,18 @@ from typing import List, Callable
 import json
 
 from .step import Step
-from .factory import OperatorFactory
+from .ops import op_factory as default_factory
 
 
 class Pipe:
 
-    def __init__(self):
+    def __init__(self, operator_factory=None):
         self._steps = []
         self._step_info = []
+
+        self.operator_factory = operator_factory
+        if self.operator_factory is None:
+            self.operator_factory = default_factory
 
     def add(self, op_name: str, op_kwargs=None):
         """Add steps based on the operation name.
@@ -29,7 +33,7 @@ class Pipe:
         if op_kwargs is None:
             op_kwargs = {}
 
-        op = OperatorFactory.from_name(op_name)(**op_kwargs)
+        op = self.operator_factory[op_name](**op_kwargs)
         step = Step(op)
 
         self._validate_steps(step)
@@ -81,8 +85,8 @@ class Pipe:
             json.dump(self.step_info, fw)
 
     @classmethod
-    def restore_from_json(cls, path: str):
-        pipe = cls()
+    def restore_from_json(cls, path: str, operator_factory=None):
+        pipe = cls(operator_factory)
         with open(path, 'rb') as f:
             step_infos = json.load(f)
 
