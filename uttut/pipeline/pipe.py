@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 import json
 
@@ -15,8 +15,8 @@ class Pipe:
     def add(self, op_name: str, op_kwargs=None):
         """Add steps based on the operation name.
 
-        This method create a steps, which has a op. The op
-        is created
+        This method creates a step, which has an op. The op
+        is created.
 
         Args:
             op_name:
@@ -57,17 +57,17 @@ class Pipe:
             },
         )
 
-    def transform(self, input_sequence: Union[str, List[str]], labels: List[int]):
+    def transform(self, input_sequence, labels: List[int]):
         """Process data based on Steps(Ops).
 
-        This method process input data according to the given
-        steps.
+        This method processes input sequence according to the Pipe's steps.
 
         Args:
-            data:
+            input_sequence: string or list of strings (tokens)
 
         Returns:
-            data: transfromed data
+            output_sequence: transfromed sequence
+            labels: updated labels
         """
         for step in self._steps:
             input_sequence, labels = step.transform(input_sequence, labels)
