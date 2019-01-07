@@ -4,16 +4,17 @@ from typing import Tuple, List, Union
 
 class Operator(ABC):
     """Base class for Ops
-    Sub-classes should implement `transform` and `relabel`.
+    Sub-classes should implement `transform`
 
     Attributes:
         input_type: input type of sequence to transform
         output_type: output type of transformed sequence
     """
 
-    def __init__(self, input_type, output_type):
+    def __init__(self, input_type, output_type, realigner):
         self._input_type = input_type
         self._output_type = output_type
+        self._realigner = realigner
 
     @property
     def input_type(self):
