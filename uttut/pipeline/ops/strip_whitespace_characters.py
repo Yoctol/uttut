@@ -2,7 +2,7 @@ from typing import List
 
 import re
 
-from .pattern_to_token import PatternRecognizer
+from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
 
 
 class StripWhiteSpaceCharacters(PatternRecognizer):
@@ -14,10 +14,10 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
     REGEX_PATTERN = re.compile(r"\A\s+|\s+\Z")
     TOKEN = ""
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [0] * output_size
+    def __init__(self):
+        super().__init__(realigner=StripWhiteSpaceCharactersRealigner)
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return [0] * output_size
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
@@ -25,3 +25,9 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
             input_str=input_str,
             annotation='strip whitespace',
         )
+
+
+class StripWhiteSpaceCharactersRealigner(PatternRecognizerRealigner):
+
+    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return [0] * output_size

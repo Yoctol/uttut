@@ -1,6 +1,6 @@
 from typing import List, Tuple, Pattern
 
-from .base import Operator
+from .base import Operator, Realigner
 from ..edit.replacement import ReplacementGroup
 from ..edit import str2str
 from ..edit.label_propagation import propagate_by_replacement_group
@@ -15,8 +15,8 @@ class PatternRecognizer(Operator):
     REGEX_PATTERN: Pattern
     TOKEN: str
 
-    def __init__(self):
-        super().__init__(input_type=str, output_type=str)
+    def __init__(self, realigner):
+        super().__init__(input_type=str, output_type=str, realigner=realigner)
 
     def _gen_forward_replacement_group(
             self,
@@ -44,27 +44,30 @@ class PatternRecognizer(Operator):
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        raise NotImplementedError
-
     def transform(  # type: ignore
             self,
             input_sequence: str,
             labels: List[int],
             state: dict = None,
-        ) -> Tuple[str, List[int]]:
+        ) -> Tuple[str, List[int], 'Realigner']:
 
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)
         inverse_replacement_group = str2str.inverse(input_sequence, forward_replacement_group)
 
-        self.update_edit(inverse_replacement_group)
         updated_labels = propagate_by_replacement_group(
             labels, forward_replacement_group, self._forward_reduce_func)
 
-        return output_sequence, updated_labels
+        realigner = self._realigner(edit=inverse_replacement_group, length=len(output_sequence))
 
-    def realign_labels(self, labels: List[int], state: dict = None) -> List[int]:
-        if self.edit is None:
-            raise ValueError('Please call transform first.')
+        return output_sequence, updated_labels, realigner
+
+
+class PatternRecognizerRealigner(Realigner):
+
+    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        raise NotImplementedError
+
+    def __call__(self, labels: List[int]) -> List[int]:
+        self._validate_input(labels)
         return propagate_by_replacement_group(labels, self.edit, self._backward_reduce_func)
