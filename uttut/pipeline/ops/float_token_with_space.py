@@ -14,7 +14,16 @@ class FloatTokenWithSpace(PatternRecognizer):
     Note that extra spaces are added behind and after the FLOAT_TOKEN.
 
     E.g.
-        I have 10.7 dollars. -> I have  _float_  dollars.
+    >>> from uttut.pipeline.ops.float_token_with_space import FloatTokenWithSpace
+    >>> op = FloatTokenWithSpace()
+    >>> output_seq, output_labels, realigner = op.transform("10.7", [1, 1, 1, 1])
+    >>> output_seq
+    " _float_ "
+    >>> output_labels
+    [0, 1, 1, 1, 1, 1, 1, 1, 0]
+    >>> realigner(output_labels)
+    [1, 1, 1, 1]
+
     """
 
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+\.\d+(?![\.\d])")

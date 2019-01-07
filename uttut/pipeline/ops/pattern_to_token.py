@@ -58,7 +58,11 @@ class PatternRecognizer(Operator):
         updated_labels = propagate_by_replacement_group(
             labels, forward_replacement_group, self._forward_reduce_func)
 
-        realigner = self._realigner(edit=inverse_replacement_group, length=len(output_sequence))
+        realigner = self._realigner(
+            edit=inverse_replacement_group,
+            input_length=len(output_sequence),
+            output_length=len(input_sequence),
+        )
 
         return output_sequence, updated_labels, realigner
 
@@ -70,4 +74,7 @@ class PatternRecognizerRealigner(Realigner):
 
     def __call__(self, labels: List[int]) -> List[int]:
         self._validate_input(labels)
-        return propagate_by_replacement_group(labels, self.edit, self._backward_reduce_func)
+        output_labels = propagate_by_replacement_group(
+            labels, self._edit, self._backward_reduce_func)
+        self._validate_output(output_labels)
+        return output_labels

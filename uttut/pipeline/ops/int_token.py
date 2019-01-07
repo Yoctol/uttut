@@ -19,7 +19,16 @@ class IntToken(PatternRecognizer):
     and replace them with INT_TOKEN (_int_)
 
     E.g.
-        I have 10 apples. -> I have _int_ apples.
+    >>> from uttut.pipeline.ops.int_token import IntToken
+    >>> op = IntToken()
+    >>> output_seq, output_labels, realigner = op.transform("10", [1, 1])
+    >>> output_seq
+    "_int_"
+    >>> output_labels
+    [1, 1, 1, 1, 1]
+    >>> realigner(output_labels)
+    [1, 1]
+
     """
 
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+(?![\.\d])")

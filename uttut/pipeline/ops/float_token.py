@@ -12,7 +12,16 @@ class FloatToken(PatternRecognizer):
     and replace them with FLOAT_TOKEN (_float_)
 
     E.g.
-        I have 10.7 dollars. -> I have _float_ dollars.
+    >>> from uttut.pipeline.ops.float_token import FloatToken
+    >>> op = FloatToken()
+    >>> output_seq, output_labels, realigner = op.transform("10.7", [1, 1, 1, 1])
+    >>> output_seq
+    "_float_"
+    >>> output_labels
+    [1, 1, 1, 1, 1, 1, 1]
+    >>> realigner(output_labels)
+    [1, 1, 1, 1]
+
     """
 
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+\.\d+(?![\.\d])")
@@ -25,7 +34,7 @@ class FloatToken(PatternRecognizer):
         return _forward_reduce_func(labels=labels, output_size=output_size)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
-        return super()._gen_forward_replacement_group(  # type: ignore
+        return super()._gen_forward_replacement_group(
             input_str=input_str,
             annotation='float-token',
         )
