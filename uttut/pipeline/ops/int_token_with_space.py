@@ -7,7 +7,7 @@ from .tokens import INT_TOKEN_WITH_SPACE
 from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
 
 
-def _forward_reduce_func(labels: List[int], output_size: int, token: str) -> List[int]:
+def _forward_transduce_func(labels: List[int], output_size: int, token: str) -> List[int]:
     counter = Counter(labels)
     common_label = counter.most_common()[0][0]
     token_len = len(token) - 2
@@ -39,8 +39,8 @@ class IntTokenWithSpace(PatternRecognizer):
     def __init__(self):
         super().__init__(realigner_class=IntTokenWithSpaceRealigner)
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return _forward_reduce_func(labels=labels, output_size=output_size, token=self.TOKEN)
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return _forward_transduce_func(labels=labels, output_size=output_size, token=self.TOKEN)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(
@@ -51,7 +51,7 @@ class IntTokenWithSpace(PatternRecognizer):
 
 class IntTokenWithSpaceRealigner(PatternRecognizerRealigner):
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         nonzero_labels = [l for l in labels if l > 0]
         counter = Counter(nonzero_labels)
         common_label = counter.most_common()[0][0]

@@ -30,7 +30,7 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
     def __init__(self):
         super().__init__(realigner_class=StripWhiteSpaceCharactersRealigner)
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return [0] * output_size
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
@@ -42,5 +42,5 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
 
 class StripWhiteSpaceCharactersRealigner(PatternRecognizerRealigner):
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return [0] * output_size

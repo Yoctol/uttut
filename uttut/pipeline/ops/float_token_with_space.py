@@ -2,7 +2,7 @@ from typing import List
 import re
 
 from .tokens import FLOAT_TOKEN_WITH_SPACE
-from .int_token_with_space import IntTokenWithSpaceRealigner, _forward_reduce_func
+from .int_token_with_space import IntTokenWithSpaceRealigner, _forward_transduce_func
 from .pattern_to_token import PatternRecognizer
 
 
@@ -38,5 +38,5 @@ class FloatTokenWithSpace(PatternRecognizer):
             annotation='float-token-with-space',
         )
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return _forward_reduce_func(labels=labels, output_size=output_size, token=self.TOKEN)
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return _forward_transduce_func(labels=labels, output_size=output_size, token=self.TOKEN)

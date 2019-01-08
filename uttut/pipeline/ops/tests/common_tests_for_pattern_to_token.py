@@ -24,8 +24,6 @@ def pattern_to_token_tests(test_cases):
 
     def test_realign_labels_fails(input_str, input_labels, output_str, output_labels, op):
         pass
-    #     with pytest.raises(ValueError):
-    #         op.realign_labels(output_labels)
 
     argstr = "input_str,input_labels,output_str,output_labels"
     test_funcs = (test_data, test_transform, test_realign_labels, test_realign_labels_fails)

@@ -37,7 +37,7 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
     def __init__(self):
         super().__init__(realigner_class=MergeWhiteSpaceCharactersRealigner)
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return _get_most_common_label(
             labels=labels,
             output_size=output_size,
@@ -46,5 +46,5 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
 
 class MergeWhiteSpaceCharactersRealigner(PatternRecognizerRealigner):
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return _get_most_common_label(labels=labels, output_size=output_size)

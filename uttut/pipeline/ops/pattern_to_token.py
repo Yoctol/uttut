@@ -42,7 +42,7 @@ class PatternRecognizer(Operator):
         replacement_group.done()
         return replacement_group
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
 
     def transform(  # type: ignore
@@ -57,7 +57,10 @@ class PatternRecognizer(Operator):
         inverse_replacement_group = str2str.inverse(input_sequence, forward_replacement_group)
 
         updated_labels = propagate_by_replacement_group(
-            labels, forward_replacement_group, self._forward_reduce_func)
+            labels=labels,
+            replacement_group=forward_replacement_group,
+            transduce_func=self._forward_transduce_func,
+        )
 
         realigner = self._realigner_class(
             edit=inverse_replacement_group,
@@ -70,9 +73,12 @@ class PatternRecognizer(Operator):
 
 class PatternRecognizerRealigner(Realigner):
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
 
     def _realign_labels(self, labels: List[int]) -> List[int]:
         return propagate_by_replacement_group(
-            labels, self._edit, self._backward_reduce_func)
+            labels=labels,
+            replacement_group=self._edit,
+            transduce_func=self._backward_transduce_func,
+        )
