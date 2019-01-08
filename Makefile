@@ -8,12 +8,10 @@ installself:
 .PHONY: install
 install:
 	pipenv install
-	pip install -e.
 
 .PHONY: install-dev
 install-dev:
 	pipenv install --dev
-	pip install -e.
 
 .PHONY: lint
 lint:
