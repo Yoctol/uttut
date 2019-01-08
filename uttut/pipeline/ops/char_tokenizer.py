@@ -1,14 +1,19 @@
 from typing import List
 
+from .base import Realigner
 from .tokenizer import Tokenizer
 
 
 class CharTokenizer(Tokenizer):
 
+    def __init__(self):
+        super().__init__(realigner_class=CharTokenizerRealigner)
+
     def _tokenize(self, input_str: str) -> List[str]:
         return list(input_str)
 
-    def realign_labels(self, labels: List[int], state: dict = None) -> List[int]:
-        if self.edit is None:
-            raise ValueError('Please call transform first.')
+
+class CharTokenizerRealigner(Realigner):
+
+    def _realign_labels(self, labels: List[int]):
         return labels

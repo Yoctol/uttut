@@ -7,7 +7,7 @@ from ..edit.label_propagation import (
     expand_by_span_group,
 )
 
-from .base import Operator
+from .base import Operator, Realigner
 
 
 class Tokenizer(Operator):
@@ -15,15 +15,16 @@ class Tokenizer(Operator):
     Base class for Operators which tokenize text.
     """
 
-    def __init__(self):
+    def __init__(self, realigner_class):
         super().__init__(input_type=str, output_type=list)
+        self._realigner_class = realigner_class
 
     def transform(  # type: ignore
             self,
             input_sequence: str,
             labels: List[int],
             state: dict = None,
-        ) -> Tuple[List[str], List[int]]:
+        ) -> Tuple[List[str], List[int], 'Realigner']:
 
         tokens = self._tokenize(input_sequence)
 
@@ -38,21 +39,30 @@ class Tokenizer(Operator):
         output_labels = propagate_by_replacement_group(labels, forward_replacement_group)
         output_labels = reduce_by_span_group(output_labels, span_group)
 
-        self.update_edit(
-            {
+        realigner = self._realigner_class(
+            input_length=len(tokens),
+            output_length=len(input_sequence),
+            edit={
                 'replacement_group': inverse_replacement_group,
                 'span_group': span_group,
             },
         )
-        return tokens, output_labels
+        return tokens, output_labels, realigner
 
     def _tokenize(self, input_str: str) -> List[str]:
         raise NotImplementedError
 
-    def realign_labels(self, labels: List[int], state: dict = None) -> List[int]:
-        if self.edit is None:
-            raise ValueError('Please call transform first.')
-        output_labels = expand_by_span_group(labels, self.edit['span_group'])
+
+class TokenizerRealigner(Realigner):
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        raise NotImplementedError
+
+    def _realign_labels(self, labels: List[int]) -> List[int]:
+        output_labels = expand_by_span_group(labels=labels, span_group=self._edit['span_group'])
         output_labels = propagate_by_replacement_group(
-            output_labels, self.edit['replacement_group'])
+            labels=output_labels,
+            replacement_group=self._edit['replacement_group'],
+            transduce_func=self._backward_transduce_func,
+        )
         return output_labels

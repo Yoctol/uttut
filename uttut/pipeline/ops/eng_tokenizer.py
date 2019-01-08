@@ -2,10 +2,18 @@ from typing import List
 
 import unicodedata
 
-from .tokenizer import Tokenizer
+from .tokenizer import Tokenizer, TokenizerRealigner
+from .label_transducer import get_most_common_nonzero
 
 
 class EngTokenizer(Tokenizer):
+
+    """
+    Copy from https://github.com/google-research/bert/blob/master/tokenization.py
+    """
+
+    def __init__(self):
+        super().__init__(realigner_class=EngTokenizerRealigner)
 
     def _tokenize(self, input_str: str) -> List[str]:
         orig_tokens = whitespace_tokenize(input_str)
@@ -73,3 +81,9 @@ def _is_punctuation(char):
     if cat.startswith("P"):
         return True
     return False
+
+
+class EngTokenizerRealigner(TokenizerRealigner):
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_nonzero(labels, output_size)
