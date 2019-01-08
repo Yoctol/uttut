@@ -1,6 +1,6 @@
 from typing import List, Tuple, Dict
 
-from .base import Operator
+from .base import Operator, Realigner
 from .tokens import UNK_TOKEN
 
 from ..edit import lst2lst
@@ -56,15 +56,19 @@ class Token2Index(Operator):
             input_sequence: List[str],
             labels: List[int],
             state: dict = None,
-        ) -> Tuple[List[int], List[int]]:
+        ) -> Tuple[List[int], List[int], 'Realigner']:
 
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
         inverse_replacement_group = lst2lst.inverse(input_sequence, forward_replacement_group)
 
-        self.update_edit(inverse_replacement_group)
+        realigner = Token2IndexRealigner(
+            edit=inverse_replacement_group,
+            input_length=len(output_sequence),
+            output_length=len(input_sequence),
+        )
 
-        return output_sequence, labels
+        return output_sequence, labels, realigner
 
     def _gen_forward_replacement_group(
             self,
@@ -88,7 +92,8 @@ class Token2Index(Operator):
         replacement_group.done()
         return replacement_group
 
-    def realign_labels(self, labels: List[int], state: dict = None) -> List[int]:
-        if self.edit is None:
-            raise ValueError('Please call transform first.')
+
+class Token2IndexRealigner(Realigner):
+
+    def _realign_labels(self, labels: List[int]) -> List[int]:
         return labels

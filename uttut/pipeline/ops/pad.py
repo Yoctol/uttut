@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from .base import Operator
+from .base import Operator, Realigner
 from .tokens import PAD_TOKEN
 
 from ..edit import lst2lst
@@ -40,17 +40,22 @@ class Pad(Operator):
             input_sequence: List[str],
             labels: List[int],
             state: dict = None,
-        ) -> Tuple[List[str], List[int]]:
+        ) -> Tuple[List[str], List[int], 'Realigner']:
 
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
         inverse_replacement_group = lst2lst.inverse(input_sequence, forward_replacement_group)
 
-        self.update_edit(inverse_replacement_group)
         updated_labels = propagate_by_replacement_group(
             labels, forward_replacement_group, self._forward_reduce_func)
 
-        return output_sequence, updated_labels
+        realigner = PadRealigner(
+            edit=inverse_replacement_group,
+            input_length=len(output_sequence),
+            output_length=len(input_sequence),
+        )
+
+        return output_sequence, updated_labels, realigner
 
     def _gen_forward_replacement_group(
             self,
@@ -76,10 +81,11 @@ class Pad(Operator):
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return [0] * output_size
 
-    def realign_labels(self, labels: List[int], state: dict = None) -> List[int]:
-        if self.edit is None:
-            raise ValueError('Please call transform first.')
-        return propagate_by_replacement_group(labels, self.edit, self._backward_reduce_func)
+
+class PadRealigner(Realigner):
+
+    def _realign_labels(self, labels: List[int]) -> List[int]:
+        return propagate_by_replacement_group(labels, self._edit, self._backward_reduce_func)
 
     def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return [0] * output_size

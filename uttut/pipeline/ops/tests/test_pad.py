@@ -37,12 +37,12 @@ test_cases = [
 
 def test_longer_case(op):
     # labels are not invertible
-    output = op.transform(
+    output_seq, output_labels, realigner = op.transform(
         ['alvin', '喜歡', '吃', '榴槤', '和', '蟲', '!'],
         [1, 2, 3, 4, 5, 6, 7],
     )
-    assert ['alvin', '喜歡', '吃', '榴槤', '和'] == output[0]
-    assert [1, 2, 3, 4, 5] == output[1]
+    assert ['alvin', '喜歡', '吃', '榴槤', '和'] == output_seq
+    assert [1, 2, 3, 4, 5] == output_labels
 
-    output = op.realign_labels([1, 2, 3, 4, 5])
+    output = realigner([1, 2, 3, 4, 5])
     assert output == [1, 2, 3, 4, 5, 0, 0]
