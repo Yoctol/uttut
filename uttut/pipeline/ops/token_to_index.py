@@ -8,12 +8,24 @@ from ..edit.replacement import ReplacementGroup
 
 
 class Token2Index(Operator):
-    """Map token (str) to index (int) given token2index dictionary
 
-    Note that token2index should have UNK_TOKEN.
+    """
+    Map token (str) to index (int) given token2index dictionary
+
+    Note that token2index should have UNK_TOKEN (<unk>).
 
     E.g.
-        ['I', 'like', 'apples'] -> [1, 2, 3]
+    >>> from uttut.pipeline.ops.token_to_index import Token2Index
+    >>> op = Token2Index({'I': 1, 'like': 2, 'apples': 3})
+    >>> output_seq, output_labels, realigner = op.transform(
+        ['I', 'like', 'apples'], [3, 4, 5])
+    >>> output_seq
+    [1, 2, 3]
+    >>> output_labels
+    [3, 4, 5]
+    >>> realigner(output_labels)
+    [3, 4, 5]
+
     """
 
     def __init__(

@@ -9,11 +9,21 @@ from ..edit.label_propagation import propagate_by_replacement_group
 
 
 class Pad(Operator):
-    """Add start token (<sos>) and end token (<eos>) to a sequence.
+
+    """
+    Pad sequence to the given length using PAD_TOKEN (<pad>).
 
     E.g.
-        ['I', 'have', '10.7', 'dollars', '.']
-        -> ['<sos>', 'I', 'have', '10.7', 'dollars', '.', '<eos>']
+    >>> from uttut.pipeline.ops.pad import Pad
+    >>> op = Pad(5)
+    >>> output_seq, output_labels, realigner = op.transform(['apple'], [1])
+    >>> output_seq
+    ['apple', '<pad>', '<pad>', '<pad>', '<pad>']
+    >>> output_labels
+    [1, 0, 0, 0, 0]
+    >>> realigner(output_labels)
+    [1]
+
     """
 
     def __init__(
