@@ -73,9 +73,6 @@ class PatternRecognizerRealigner(Realigner):
     def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
 
-    def __call__(self, labels: List[int]) -> List[int]:
-        self._validate_input(labels)
-        output_labels = propagate_by_replacement_group(
+    def _realign_labels(self, labels: List[int]) -> List[int]:
+        return propagate_by_replacement_group(
             labels, self._edit, self._backward_reduce_func)
-        self._validate_output(output_labels)
-        return output_labels

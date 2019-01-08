@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Tuple, List, Union
+from typing import Tuple, List, Any
 
 
 class Operator(ABC):
@@ -32,7 +32,7 @@ class Operator(ABC):
             input_sequence,
             labels: List[int],
             state: dict = None,
-        ) -> Tuple[Union[str, List[str]], List[int], 'Realigner']:
+        ) -> Tuple[Any, List[int], 'Realigner']:
 
         """Transform input_sequence and label
 
@@ -57,7 +57,7 @@ class Realigner(ABC):
 
     """Base class for label Realigner
 
-    Sub-classes should implement `__call__`
+    Sub-classes should implement `_realign_labels`
 
     Attributes:
         input_length (int): the length of sequence transformed by Operator
@@ -71,15 +71,6 @@ class Realigner(ABC):
         self._input_length = input_length
         self._output_length = output_length
 
-    def _validate_input(self, labels: List[int]):
-        if len(labels) != self._input_length:
-            raise ValueError('Invalid input labels')
-
-    def _validate_output(self, labels: List[int]):
-        if len(labels) != self._output_length:
-            raise ValueError('Invalid output labels')
-
-    @abstractmethod
     def __call__(self, labels: List[int]) -> List[int]:
 
         """Realign model labels to original input
@@ -94,4 +85,19 @@ class Realigner(ABC):
             labels (ints): has same length as input of Operator.transform
 
         """
+        self._validate_input(labels)
+        output_labels = self._realign_labels(labels)
+        self._validate_output(output_labels)
+        return output_labels
+
+    def _validate_input(self, labels: List[int]):
+        if len(labels) != self._input_length:
+            raise ValueError('Invalid input labels')
+
+    def _validate_output(self, labels: List[int]):
+        if len(labels) != self._output_length:
+            raise ValueError('Invalid output labels')
+
+    @abstractmethod
+    def _realign_labels(self, labels: List[int]) -> List[int]:
         pass
