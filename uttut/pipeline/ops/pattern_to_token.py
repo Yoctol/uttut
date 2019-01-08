@@ -15,8 +15,9 @@ class PatternRecognizer(Operator):
     REGEX_PATTERN: Pattern
     TOKEN: str
 
-    def __init__(self, realigner):
-        super().__init__(input_type=str, output_type=str, realigner=realigner)
+    def __init__(self, realigner_class):
+        super().__init__(input_type=str, output_type=str)
+        self._realigner_class = realigner_class
 
     def _gen_forward_replacement_group(
             self,
@@ -58,7 +59,7 @@ class PatternRecognizer(Operator):
         updated_labels = propagate_by_replacement_group(
             labels, forward_replacement_group, self._forward_reduce_func)
 
-        realigner = self._realigner(
+        realigner = self._realigner_class(
             edit=inverse_replacement_group,
             input_length=len(output_sequence),
             output_length=len(input_sequence),

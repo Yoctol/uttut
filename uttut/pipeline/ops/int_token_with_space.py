@@ -37,7 +37,7 @@ class IntTokenWithSpace(PatternRecognizer):
     TOKEN = INT_TOKEN_WITH_SPACE
 
     def __init__(self):
-        super().__init__(realigner=IntTokenWithSpaceRealigner)
+        super().__init__(realigner_class=IntTokenWithSpaceRealigner)
 
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return _forward_reduce_func(labels=labels, output_size=output_size, token=self.TOKEN)

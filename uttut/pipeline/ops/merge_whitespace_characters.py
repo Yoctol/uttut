@@ -35,7 +35,7 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
     TOKEN = " "
 
     def __init__(self):
-        super().__init__(realigner=MergeWhiteSpaceCharactersRealigner)
+        super().__init__(realigner_class=MergeWhiteSpaceCharactersRealigner)
 
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return _get_most_common_label(

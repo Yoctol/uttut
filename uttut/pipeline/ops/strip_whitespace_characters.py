@@ -28,7 +28,7 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
     TOKEN = ""
 
     def __init__(self):
-        super().__init__(realigner=StripWhiteSpaceCharactersRealigner)
+        super().__init__(realigner_class=StripWhiteSpaceCharactersRealigner)
 
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return [0] * output_size

@@ -30,7 +30,7 @@ class FloatTokenWithSpace(PatternRecognizer):
     TOKEN = FLOAT_TOKEN_WITH_SPACE
 
     def __init__(self):
-        super().__init__(realigner=IntTokenWithSpaceRealigner)
+        super().__init__(realigner_class=IntTokenWithSpaceRealigner)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(

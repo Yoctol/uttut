@@ -35,7 +35,7 @@ class IntToken(PatternRecognizer):
     TOKEN = INT_TOKEN
 
     def __init__(self):
-        super().__init__(realigner=IntTokenRealigner)
+        super().__init__(realigner_class=IntTokenRealigner)
 
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return _forward_reduce_func(labels=labels, output_size=output_size)

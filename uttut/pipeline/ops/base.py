@@ -11,14 +11,12 @@ class Operator(ABC):
     Attributes:
         input_type: input type of sequence to transform
         output_type: output type of transformed sequence
-        realigner: a subclass of Realigner
 
     """
 
-    def __init__(self, input_type, output_type, realigner):
+    def __init__(self, input_type, output_type):
         self._input_type = input_type
         self._output_type = output_type
-        self._realigner = realigner
 
     @property
     def input_type(self):
