@@ -20,10 +20,3 @@ def _validate_disjoint(sorted_objs: Sequence[object]):
         if obj.start < current:  # type: ignore
             raise ValueError(f"overlapped")
         current = obj.end  # type: ignore
-
-
-def _validate_type_of_each_elements(objs: Sequence[object]):
-    target_type = type(objs[0])
-    for i, element in enumerate(objs):
-        if not isinstance(element, target_type):
-            raise TypeError(f"{i}-th element is not a(an) {target_type.__name__}")
