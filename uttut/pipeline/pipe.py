@@ -1,9 +1,13 @@
-from typing import List, Callable
+from typing import List
 
 import json
 
+from uttut.elements import Datum
+
+from .ops.base import Realigner
 from .step import Step
 from .ops import op_factory as default_factory
+from .utils import unpack_datum
 
 
 class Pipe:
@@ -61,34 +65,37 @@ class Pipe:
             },
         )
 
-    def transform(self, input_sequence, labels: List[int]):
+    def transform(self, datum: Datum):
         """Process data based on Steps(Ops).
 
-        This method processes input sequence according to the Pipe's steps.
+        This method processes datum according to the Pipe's steps.
 
-        Args:
-            input_sequence: string or list of strings (tokens)
+        Arg:
+            datum (Datum)
 
         Returns:
             output_sequence: transfromed sequence
-            labels: updated labels
+            intent_labels (ints):
+            entity_labels (ints):
             realigners: list of Realigners
-        """
-        realigners = Realigners()
-        for step in self._steps:
-            input_sequence, labels, realigner = step.transform(input_sequence, labels)
-            realigners.add(realigner)
-        return input_sequence, labels, realigners
 
-    def serialize(self, path):
-        with open(path, 'wb') as fw:
-            json.dump(self.step_info, fw)
+        """
+        input_sequence, intent_labels, entity_labels = unpack_datum(datum)
+
+        realigners = SequentialRealigner()
+        for step in self._steps:
+            input_sequence, entity_labels, realigner = step.transform(input_sequence, entity_labels)
+            realigners.add(realigner)
+        return input_sequence, intent_labels, entity_labels, realigners
+
+    def serialize(self) -> str:
+        return json.dumps(self._step_info)
 
     @classmethod
-    def restore_from_json(cls, path: str, operator_factory=None):
+    def deserialize(cls, serialized_str: str, operator_factory=None) -> 'Pipe':
         pipe = cls(operator_factory)
-        with open(path, 'rb') as f:
-            step_infos = json.load(f)
+
+        step_infos = json.loads(serialized_str)
 
         # restore steps
         for step_info in step_infos:
@@ -99,15 +106,30 @@ class Pipe:
         return pipe
 
 
-class Realigners:
+class SequentialRealigner:
 
     def __init__(self):
         self.collections = []
 
-    def add(self, realigner: Callable[[List[int]], List[int]]):
+    def add(self, realigner: Realigner):
+        """Append realigner into collections
+
+        Arg:
+            realigner: an instance of Realigner
+        """
         self.collections.append(realigner)
 
     def __call__(self, labels: List[int]) -> List[int]:
+        """Realign model prediction to its original input
+
+        Arg:
+            labels (ints): model prediction (entity)
+
+        Return:
+            ints: updated labels which has the same length as
+                  original input (utterance)
+
+        """
         for realigner in self.collections[::-1]:
             labels = realigner(labels)
         return labels
