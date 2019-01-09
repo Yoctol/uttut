@@ -89,6 +89,10 @@ def reduce_by_span_group(
     if transduce_func is None:
         transduce_func = _get_most_common_label
 
+    # empty span group and empty labels pair
+    if (len(span_group) == 0) and (len(labels) == 0):
+        return labels
+
     if len(labels) != span_group[-1].end:
         raise ValueError('labels and span_group are not compatible.')
 
@@ -106,8 +110,13 @@ def expand_by_span_group(
         span_group: SpanGroup,
     ) -> List[int]:
     # use case: list -> str
+
     if len(span_group) != len(labels):
         raise ValueError('labels and span_group are not compatible.')
+
+    # empty span group and empty labels pair
+    if len(span_group) == 0:
+        return labels
 
     output_len = span_group[-1].end
     output_labels = [0] * output_len

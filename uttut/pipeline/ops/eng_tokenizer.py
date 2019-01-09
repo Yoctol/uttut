@@ -8,8 +8,22 @@ from .label_transducer import get_most_common_nonzero
 
 class EngTokenizer(Tokenizer):
 
-    """
-    Copy from https://github.com/google-research/bert/blob/master/tokenization.py
+    """English Word level tokenizer
+
+    All of following functions are copied from BERT.
+    https://github.com/google-research/bert/blob/master/tokenization.py
+
+    E.g.
+    >>> from uttut.pipeline.ops.eng_tokenizer import EngTokenizer
+    >>> op = EngTokenizer()
+    >>> output_seq, output_labels, realigner = op.transform("a b", [1, 2, 3])
+    >>> output_seq
+    ["a", "b"]
+    >>> output_labels
+    [1, 3]
+    >>> realigner(output_labels)
+    [1, 0, 3]
+
     """
 
     def __init__(self):
@@ -24,9 +38,13 @@ class EngTokenizer(Tokenizer):
         return output_tokens
 
     def _run_split_on_punc(self, text: str) -> List[str]:
-        """Splits punctuation on a piece of text
+        """
+        Recognize punctuations and seperate them into independent tokens.
 
-        Copy from https://github.com/google-research/bert/blob/master/tokenization.py
+        E.g.
+        1. "abc, cdf" -> ["abc", ",", " ", "cdf"]
+        2. "I like apples." -> ["I", "like", "apples", "."]
+
         """
         chars = list(text)
         i = 0
@@ -43,18 +61,18 @@ class EngTokenizer(Tokenizer):
                 start_new_word = False
                 output[-1].append(char)
             i += 1
-
         return ["".join(x) for x in output]
 
 
 def whitespace_tokenize(text: str) -> List[str]:
-    """Runs basic whitespace cleaning and splitting on a piece of text
+    """Split text into list by whitespace characters
 
-    Copy from https://github.com/google-research/bert/blob/master/tokenization.py
+    E.g.
+    1. "a  \t\t\n\n b" -> ["a", "b"]
+    2. "  \n\t\n  " -> []
+    3. "  a b \t\n" -> ["a", "b"]
+
     """
-    text = text.strip()
-    if not text:
-        return []
     tokens = text.split()
     return tokens
 
@@ -62,12 +80,11 @@ def whitespace_tokenize(text: str) -> List[str]:
 def _is_punctuation(char):
     """Checks whether `chars` is a punctuation character.
 
-    Copy from https://github.com/google-research/bert/blob/master/tokenization.py
-
     We treat all non-letter/number ASCII as punctuation.
     Characters such as "^", "$", and "`" are not in the Unicode
     Punctuation class but we treat them as punctuation anyways, for
     consistency.
+
     """
     cp = ord(char)
     if (

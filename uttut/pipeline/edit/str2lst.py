@@ -50,5 +50,9 @@ def gen_replacement_group(input_str: str, tokens: List[str]) -> ReplacementGroup
         if input_str[shift: start] != '':
             replacement_group.add(shift, start, '')
         shift = start + len(token)
+
+    if shift != len(input_str):
+        replacement_group.add(shift, len(input_str), '')
+
     replacement_group.done()
     return replacement_group

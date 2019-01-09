@@ -6,14 +6,35 @@ from .eng_tokenizer import EngTokenizer
 
 class ZhCharTokenizer(EngTokenizer):
 
+    """Chinese Character level tokenizer
+
+    All of following functions are copied from BERT.
+    https://github.com/google-research/bert/blob/master/tokenization.py
+
+    E.g.
+    >>> from uttut.pipeline.ops.zh_char_tokenizer import ZhCharTokenizer
+    >>> op = ZhCharTokenizer()
+    >>> output_seq, output_labels, realigner = op.transform("這是a b", [1, 2, 3, 4, 5])
+    >>> output_seq
+    ["這", "是", "a", "b"]
+    >>> output_labels
+    [1, 2, 3, 5]
+    >>> realigner(output_labels)
+    [1, 2, 3, 0, 5]
+
+    """
+
     def _tokenize(self, input_str: str) -> List[str]:
         text = self._tokenize_chinese_chars(input_str)
         return super()._tokenize(text)
 
     def _tokenize_chinese_chars(self, text):
-        """Adds whitespace around any CJK character.
+        """Recognize CJK character and add whitespace around it
 
-        Copy from https://github.com/google-research/bert/blob/master/tokenization.py
+        E.g.
+        1. "我喜歡吃蘋果" -> " 我  喜  歡  吃  蘋  果 "
+        2. "我喜歡吃apples." -> " 我  喜  歡  吃 apples."
+
         """
         output = []
         for char in text:
@@ -28,8 +49,6 @@ class ZhCharTokenizer(EngTokenizer):
 
     def _is_chinese_char(self, code_position):
         """Checks whether CP is the codepoint of a CJK character.
-
-        Copy from https://github.com/google-research/bert/blob/master/tokenization.py
 
         This defines a "chinese character" as anything in the CJK Unicode block:
         https://en.wikipedia.org/wiki/CJK_Unified_Ideographs_(Unicode_block)
