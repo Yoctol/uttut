@@ -3,6 +3,7 @@ from typing import List
 import re
 
 from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
+from .label_transducer import get_zero
 
 
 class StripWhiteSpaceCharacters(PatternRecognizer):
@@ -31,7 +32,7 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
         super().__init__(realigner_class=StripWhiteSpaceCharactersRealigner)
 
     def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [0] * output_size
+        return get_zero(labels=labels, output_size=output_size)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(
@@ -43,4 +44,4 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
 class StripWhiteSpaceCharactersRealigner(PatternRecognizerRealigner):
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [0] * output_size
+        return get_zero(labels=labels, output_size=output_size)

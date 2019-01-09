@@ -38,6 +38,13 @@ test_cases = [
         [1, 1, 2, 2],
         id='identity',
     ),
+    pytest.param(
+        "",
+        [],
+        "",
+        [],
+        id='empty string',
+    ),
 ]
 
 (
@@ -46,3 +53,16 @@ test_cases = [
     test_realign_labels,
     test_realign_labels_fails,
 ) = pattern_to_token_tests(test_cases)
+
+
+def test_all_whitespaces(op):
+    # labels are not invertible
+    output_seq, output_labels, realigner = op.transform(
+        "  \n\n\t\t",
+        [1, 2, 3, 4, 5, 6],
+    )
+    assert "" == output_seq
+    assert [] == output_labels
+
+    output = realigner([])
+    assert output == [0, 0, 0, 0, 0, 0]

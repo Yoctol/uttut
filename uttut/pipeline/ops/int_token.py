@@ -5,12 +5,7 @@ from collections import Counter
 
 from .tokens import INT_TOKEN
 from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
-
-
-def _forward_transduce_func(labels: List[int], output_size: int) -> List[int]:
-    counter = Counter(labels)
-    common_label = counter.most_common()[0][0]
-    return [common_label] * output_size
+from .label_transducer import get_most_common
 
 
 class IntToken(PatternRecognizer):
@@ -38,7 +33,7 @@ class IntToken(PatternRecognizer):
         super().__init__(realigner_class=IntTokenRealigner)
 
     def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return _forward_transduce_func(labels=labels, output_size=output_size)
+        return get_most_common(labels=labels, output_size=output_size)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(

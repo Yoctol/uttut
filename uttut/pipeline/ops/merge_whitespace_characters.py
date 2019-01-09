@@ -1,15 +1,9 @@
 from typing import List
 
 import re
-from collections import Counter
 
 from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
-
-
-def _get_most_common_label(labels: List[int], output_size: int) -> List[int]:
-    counter = Counter(labels)
-    common_label = counter.most_common()[0][0]
-    return [common_label] * output_size
+from .label_transducer import get_most_common
 
 
 class MergeWhiteSpaceCharacters(PatternRecognizer):
@@ -38,13 +32,10 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
         super().__init__(realigner_class=MergeWhiteSpaceCharactersRealigner)
 
     def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return _get_most_common_label(
-            labels=labels,
-            output_size=output_size,
-        )
+        return get_most_common(labels=labels, output_size=output_size)
 
 
 class MergeWhiteSpaceCharactersRealigner(PatternRecognizerRealigner):
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return _get_most_common_label(labels=labels, output_size=output_size)
+        return get_most_common(labels=labels, output_size=output_size)
