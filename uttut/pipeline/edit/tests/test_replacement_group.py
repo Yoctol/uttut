@@ -1,6 +1,6 @@
 import pytest
 
-from ..replacement import StrReplacement, LstReplacement, ReplacementGroup
+from ..replacement import ReplacementGroup, Replacement
 
 
 @pytest.mark.filterwarnings("ignore")
@@ -12,21 +12,21 @@ def test_correctly_init():
 
 
 @pytest.mark.parametrize(
-    "dtype,objs",
+    "objs",
     [
-        pytest.param(StrReplacement, [(0, 0, 'a'), (0, 2, 'b')], id='str-replacement'),
-        pytest.param(StrReplacement, [(0, 0, 'a', 'ohoh'), (0, 2, 'b', 'ohoh1')],
+        pytest.param([(0, 0, 'a'), (0, 2, 'b')], id='str-replacement'),
+        pytest.param([(0, 0, 'a', 'ohoh'), (0, 2, 'b', 'ohoh1')],
                      id='str-replacement with annotation'),
-        pytest.param(LstReplacement, [(0, 0, ['a']), (0, 2, ['b'])], id='list-replacement'),
-        pytest.param(LstReplacement, [(0, 0, ['a'], 'ohoh'), (0, 2, ['b'], 'ohoh1')],
+        pytest.param([(0, 0, ['a']), (0, 2, ['b'])], id='list-replacement'),
+        pytest.param([(0, 0, ['a'], 'ohoh'), (0, 2, ['b'], 'ohoh1')],
                      id='list-replacement with annotation'),
     ],
 )
-def test_add_all(dtype, objs):
+def test_add_all(objs):
     replacement_group = ReplacementGroup.add_all(objs)
     assert replacement_group._is_done is True
     assert len(replacement_group) == len(objs)
-    assert [dtype(*obj) for obj in objs] == replacement_group[:]
+    assert [Replacement(*obj) for obj in objs] == replacement_group[:]
 
 
 def test_add_all_empty():
@@ -50,9 +50,8 @@ def test_not_done_error():
 @pytest.mark.parametrize(
     "obj,error_type",
     [
-        pytest.param([(0,)], ValueError, id='lack of elements'),
-        pytest.param([(0, 0, 'a', 'a', 'a')], ValueError, id='has redundant elements'),
-        pytest.param([(0, 0, 12.3)], TypeError, id='not supported replacement type'),
+        pytest.param([(0,)], TypeError, id='lack of elements'),
+        pytest.param([(0, 0, 'a', 'a', 'a')], TypeError, id='has redundant elements'),
         pytest.param([(0, 1, 'a'), (0, 2, ['b'])], TypeError, id='mixed replacements'),
     ],
 )
@@ -62,46 +61,47 @@ def test_add_fails(obj, error_type):
 
 
 @pytest.mark.parametrize(
-    "group1,group2",
+    "input1,input2",
     [
-        pytest.param(ReplacementGroup.add_all([]), ReplacementGroup.add_all([]), id='empty'),
-        pytest.param(ReplacementGroup.add_all([(0, 0, 'a'), (1, 2, 'b')]),
-                     ReplacementGroup.add_all([(0, 0, 'a'), (1, 2, 'b')]),
+        pytest.param([], [], id='empty'),
+        pytest.param([(0, 0, 'a'), (1, 2, 'b')], [(0, 0, 'a'), (1, 2, 'b')],
                      id='str-replacement'),
-        pytest.param(ReplacementGroup.add_all([(0, 0, ['a']), (1, 2, ['b'])]),
-                     ReplacementGroup.add_all([(0, 0, ['a']), (1, 2, ['b'])]),
+        pytest.param([(0, 0, ['a']), (1, 2, ['b'])], [(0, 0, ['a']), (1, 2, ['b'])],
                      id='list-replacement'),
     ],
 )
-def test_equal(group1, group2):
+def test_equal(input1, input2):
+    group1 = ReplacementGroup.add_all(input1)
+    group2 = ReplacementGroup.add_all(input2)
     assert group1 == group2
 
 
 @pytest.mark.parametrize(
-    "group1,group2",
+    "input1,input2",
     [
-        pytest.param(ReplacementGroup.add_all([(0, 0, 'a')]), [(0, 0, 'a')],
-                     id='different type'),
-        pytest.param(ReplacementGroup.add_all([(0, 0, 'a')]),
-                     ReplacementGroup.add_all([(0, 0, 'a'), (1, 2, 'b')]),
+        pytest.param([(0, 0, 'a')], [(0, 0, 'a'), (1, 2, 'b')],
                      id='different length'),
-        pytest.param(ReplacementGroup.add_all([(0, 0, 'a'), (1, 2, 'b')]),
-                     ReplacementGroup.add_all([(0, 0, 'a'), (1, 3, 'b')]),
+        pytest.param([(0, 0, 'a'), (1, 2, 'b')], [(0, 0, 'a'), (1, 3, 'b')],
                      id='different element'),
-        pytest.param(ReplacementGroup.add_all([(0, 0, 'a'), (1, 2, 'b')]),
-                     ReplacementGroup.add_all([(0, 0, ['a']), (1, 3, ['b'])]),
+        pytest.param([(0, 0, 'a'), (1, 2, 'b')], [(0, 0, ['a']), (1, 3, ['b'])],
                      id='different type of replacement'),
     ],
 )
-def test_not_equal(group1, group2):
+def test_not_equal(input1, input2):
+    group1 = ReplacementGroup.add_all(input1)
+    group2 = ReplacementGroup.add_all(input2)
     assert group1 != group2
+
+
+def test_different_type():
+    input_lst = [(0, 0, 'a')]
+    assert input_lst != ReplacementGroup.add_all(input_lst)
 
 
 @pytest.mark.parametrize(
     "objs,expected_objs",
     [
-        pytest.param([(1, 2, 'b'), (0, 1, 'a')], [
-                     StrReplacement(0, 1, 'a'), StrReplacement(1, 2, 'b')]),
+        pytest.param([(1, 2, 'b'), (0, 1, 'a')], [Replacement(0, 1, 'a'), Replacement(1, 2, 'b')]),
     ],
 )
 def test_need_sorted(objs, expected_objs):
@@ -122,14 +122,12 @@ def test_validate_disjoint(objs):
 
 
 @pytest.mark.parametrize(
-    "name,group",
+    "representation,input_lst",
     [
-        pytest.param('StrReplacementGroup', ReplacementGroup.add_all(
-            [(0, 0, 'a')]), id='str-replacement'),
-        pytest.param('LstReplacementGroup', ReplacementGroup.add_all(
-            [(0, 0, ['a'])]), id='list-replacement'),
-        pytest.param('EmptyReplacementGroup', ReplacementGroup.add_all([]), id='empty'),
+        pytest.param('ReplacementGroup has 1 elements', [(0, 0, 'a')], id='str-replacement'),
+        pytest.param('ReplacementGroup has 0 elements', [], id='empty'),
     ],
 )
-def test_representation(name, group):
-    assert name == repr(group)
+def test_representation(representation, input_lst):
+    group = ReplacementGroup.add_all(input_lst)
+    assert representation == repr(group)
