@@ -60,6 +60,8 @@ def test_not_equal(obj1, obj2):
         pytest.param((10, 15, '薄餡亂入'), "(10, 15) => '薄餡亂入'", id='str-replacement'),
         pytest.param((10, 15, ['薄餡亂入']),
                      "(10, 15) => '['薄餡亂入']'", id='lst-replacement'),
+        pytest.param((10, 15, 10000),
+                     "(10, 15) => '10000'", id='int-replacement'),
     ],
 )
 def test_str(input_tuple, expected):
@@ -78,10 +80,16 @@ def test_str(input_tuple, expected):
                      id='str-replacement with annotation'),
         pytest.param((10, 15, ['薄餡亂入']),
                      "Replacement(10, 15, ['薄餡亂入'], annotation=None)",
-                     id='str-replacement no annotation'),
+                     id='lst-replacement no annotation'),
         pytest.param((10, 15, ['薄餡亂入'], 'ohoh'),
                      "Replacement(10, 15, ['薄餡亂入'], annotation=ohoh)",
-                     id='str-replacement with annotation'),
+                     id='lst-replacement with annotation'),
+        pytest.param((10, 15, 10000),
+                     "Replacement(10, 15, 10000, annotation=None)",
+                     id='int-replacement no annotation'),
+        pytest.param((10, 15, 10000, 'ohoh'),
+                     "Replacement(10, 15, 10000, annotation=ohoh)",
+                     id='int-replacement with annotation'),
     ],
 )
 def test_representation(input_tuple, expected):
