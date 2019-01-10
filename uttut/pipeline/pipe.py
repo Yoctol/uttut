@@ -27,8 +27,8 @@ class Pipe:
         is created.
 
         Args:
-            op_name:
-            op_kwargs,
+            op_name (str)
+            op_kwargs (dict)
 
         Raises:
             KeyError
@@ -64,6 +64,12 @@ class Pipe:
                 'op_kwargs': kwargs,
             },
         )
+
+    def __eq__(self, other):
+        same_op_factory = self.operator_factory == other.operator_factory
+        same_steps = self._steps == other._steps
+        same_step_info = self._step_info == other._step_info
+        return same_op_factory and same_steps and same_step_info
 
     def transform(self, datum: Datum):
         """Process data based on Steps(Ops).

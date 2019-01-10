@@ -6,8 +6,9 @@ from ..step import Step
 
 class MockedOperator(Operator):
 
-    def __init__(self):
+    def __init__(self, state=None):
         super().__init__('in', 'out')
+        self.state = state
 
     def transform(self, input_sequence, labels):
         pass
@@ -16,6 +17,11 @@ class MockedOperator(Operator):
 @pytest.fixture
 def step():
     yield Step(MockedOperator())
+
+
+def test_equal(step):
+    assert step != Step(MockedOperator('123'))
+    assert step != ()
 
 
 def test_transform(step, mocker):

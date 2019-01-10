@@ -7,6 +7,11 @@ class Step:
     def __init__(self, op: Operator):
         self.op = op
 
+    def __eq__(self, other):
+        if not isinstance(other, Step):
+            return False
+        return self.op == other.op
+
     @property
     def input_type(self):
         return self.op.input_type

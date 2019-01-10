@@ -23,3 +23,8 @@ class OperatorFactory:
         if op_name not in self._factory:
             raise KeyError(f"{op_name} is not registered")
         return self._factory[op_name]
+
+    def __eq__(self, other):
+        if not isinstance(other, OperatorFactory):
+            return False
+        return self._factory == other._factory
