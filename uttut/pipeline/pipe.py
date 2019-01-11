@@ -42,10 +42,10 @@ class Pipe:
 
         self._validate_steps(step)
 
-        self.update_steps(step)
-        self.update_step_info(op_name, op_kwargs)
+        self._push_step(step)
+        self._push_step_info(op_name, op_kwargs)
 
-    def _validate_steps(self, step):
+    def _validate_steps(self, step: Step):
         if len(self._steps) > 0:
             target_type = self._steps[-1].output_type
             in_type = step.input_type
@@ -54,10 +54,10 @@ class Pipe:
                     "InputType of the step op is not valid."
                     f"Got {in_type}, but requires {target_type}")
 
-    def update_steps(self, step: Step):
+    def _push_step(self, step: Step):
         self._steps.append(step)
 
-    def update_step_info(self, name, kwargs):
+    def _push_step_info(self, name: str, kwargs: dict):
         self._step_info.append(
             {  # for serialization
                 'op_name': name,
