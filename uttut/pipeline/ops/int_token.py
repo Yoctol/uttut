@@ -1,11 +1,10 @@
 from typing import List
 
 import re
-from collections import Counter
 
 from .tokens import INT_TOKEN
 from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
-from .label_transducer import get_most_common
+from .label_transducer import get_most_common, get_most_common_except_not_entity
 
 
 class IntToken(PatternRecognizer):
@@ -45,7 +44,4 @@ class IntToken(PatternRecognizer):
 class IntTokenRealigner(PatternRecognizerRealigner):
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        nonzero_labels = [l for l in labels if l > 0]
-        counter = Counter(nonzero_labels)
-        common_label = counter.most_common()[0][0]
-        return [common_label] * output_size
+        return get_most_common_except_not_entity(labels, output_size)

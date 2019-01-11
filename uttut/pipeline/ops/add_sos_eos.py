@@ -2,10 +2,10 @@ from typing import List, Tuple
 
 from .base import Operator, Realigner
 from .tokens import START_TOKEN, END_TOKEN
-
 from ..edit import lst2lst
 from ..edit.replacement import ReplacementGroup
 from ..edit.label_propagation import propagate_by_replacement_group
+from uttut import ENTITY_LABEL
 
 
 class AddSosEos(Operator):
@@ -74,13 +74,13 @@ class AddSosEos(Operator):
         return replacement_group
 
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [0] * output_size
+        return [ENTITY_LABEL['NOT_ENTITY']] * output_size
 
 
 class AddSosEosRealigner(Realigner):
 
     def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [0] * output_size
+        return [ENTITY_LABEL['NOT_ENTITY']] * output_size
 
     def _realign_labels(self, labels: List[int]) -> List[int]:
         return propagate_by_replacement_group(labels, self._edit, self._backward_reduce_func)

@@ -2,6 +2,8 @@ from typing import List
 
 from collections import Counter
 
+from uttut import ENTITY_LABEL
+
 
 def get_most_common(labels: List[int], output_size: int) -> List[int]:
     counter = Counter(labels)
@@ -9,12 +11,12 @@ def get_most_common(labels: List[int], output_size: int) -> List[int]:
     return [common_label] * output_size
 
 
-def get_most_common_nonzero(labels: List[int], output_size: int) -> List[int]:
-    nonzero_labels = [l for l in labels if l > 0]
-    if len(nonzero_labels) == 0:
-        return get_zero(labels, output_size)
-    return get_most_common(nonzero_labels, output_size)
+def get_most_common_except_not_entity(labels: List[int], output_size: int) -> List[int]:
+    meaningful_labels = [label for label in labels if label != ENTITY_LABEL['NOT_ENTITY']]
+    if len(meaningful_labels) == 0:
+        return get_not_entity(labels, output_size)
+    return get_most_common(meaningful_labels, output_size)
 
 
-def get_zero(labels: List[int], output_size: int) -> List[int]:
-    return [0] * output_size
+def get_not_entity(labels: List[int], output_size: int) -> List[int]:
+    return [ENTITY_LABEL['NOT_ENTITY']] * output_size
