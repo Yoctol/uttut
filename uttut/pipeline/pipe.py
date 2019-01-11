@@ -88,7 +88,7 @@ class Pipe:
         """
         input_sequence, intent_labels, entity_labels = unpack_datum(datum)
 
-        realigners = SequentialRealigner()
+        realigners = RealignerSequence()
         for step in self._steps:
             input_sequence, entity_labels, realigner = step.transform(input_sequence, entity_labels)
             realigners.add(realigner)
@@ -112,7 +112,7 @@ class Pipe:
         return pipe
 
 
-class SequentialRealigner:
+class RealignerSequence:
 
     def __init__(self):
         self.collections = []
