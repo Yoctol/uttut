@@ -24,7 +24,9 @@ ext_modules = []
 
 if use_cython:
     ext_modules += [
-        Extension('uttut.elements', ['uttut/elements.pyx']),
+        Extension('uttut.elements.intent', ['uttut/elements/intent.pyx']),
+        Extension('uttut.elements.entity', ['uttut/elements/entity.pyx']),
+        Extension('uttut.elements.datum', ['uttut/elements/datum.pyx']),
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.pyx']),
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.pyx']),
         Extension('uttut.toolkits.partition_by_entities', [
@@ -42,7 +44,9 @@ if use_cython:
 
 else:
     ext_modules += [
-        Extension('uttut.elements', ['uttut/elements.c']),
+        Extension('uttut.elements.intent', ['uttut/elements/intent.c']),
+        Extension('uttut.elements.entity', ['uttut/elements/entity.c']),
+        Extension('uttut.elements.datum', ['uttut/elements/datum.c']),
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.c']),
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.c']),
         Extension('uttut.toolkits.partition_by_entities', [

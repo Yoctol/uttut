@@ -3,7 +3,12 @@ from typing import List, Tuple, Union
 from functools import reduce
 from operator import mul
 
+<<<<<<< HEAD
 from .elements import (Datum, Entity)
+=======
+from .elements import Datum, Entity
+
+>>>>>>> elements have independent folder
 from .toolkits.get_kth_combination import get_kth_combination
 from .toolkits.partition_by_entities import partition_by_entities
 
