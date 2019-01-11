@@ -5,13 +5,15 @@ from collections import Counter
 
 from .tokens import INT_TOKEN_WITH_SPACE
 from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
+from uttut import ENTITY_LABEL
 
 
 def _forward_transduce_func(labels: List[int], output_size: int, token: str) -> List[int]:
     counter = Counter(labels)
     common_label = counter.most_common()[0][0]
     token_len = len(token) - 2
-    output_label = [0] + [common_label] * token_len + [0]
+    output_label = [ENTITY_LABEL['NOT_ENTITY']] + \
+        [common_label] * token_len + [ENTITY_LABEL['NOT_ENTITY']]
     return output_label
 
 

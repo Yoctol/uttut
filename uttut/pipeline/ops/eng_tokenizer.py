@@ -3,7 +3,7 @@ from typing import List
 import unicodedata
 
 from .tokenizer import Tokenizer, TokenizerRealigner
-from .label_transducer import get_most_common_nonzero
+from .label_transducer import get_most_common_except_not_entity
 
 
 class EngTokenizer(Tokenizer):
@@ -103,4 +103,4 @@ def _is_punctuation(char):
 class EngTokenizerRealigner(TokenizerRealigner):
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_nonzero(labels, output_size)
+        return get_most_common_except_not_entity(labels, output_size)
