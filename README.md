@@ -37,6 +37,7 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 >>> p.add('StripWhiteSpaceCharacters')
 >>> p.add('EngTokenizer')  # word-level (ref: BERT)
 >>> p.add('AddSosEos')
+>>> p.add_checkpoint()
 >>> p.add('Pad')
 >>> p.add(
     'Token2Index',
@@ -56,13 +57,15 @@ Let's create a Pipe to preprocess a Datum with English utterance.
     intents=[Intent(label=1), Intent(label=2)],
     entities=[Entity(start=7, end=12, value='apples', label=7)],
 )
->>> output_indices, intent_labels, entity_labels, realigner = p.transform(datum)
+>>> output_indices, intent_labels, entity_labels, realigner, intermediate = p.transform(datum)
 >>> output_indices
 [0, 6, 2, 7, 1, 3, 3]
 >>> intent_labels
 [1, 2]
 >>> entity_labels
 [0, 0, 0, 7, 0, 0, 0]
+>>> intermediate.get()
+(["<sos>", "I", "like", "apples", "<eos>"], [0, 0, 0, 7, 0]) 
 
 >>> realigner(entity_labels)
 [0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 0] 
