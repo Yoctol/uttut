@@ -12,8 +12,7 @@ class Intermediate:
     """
 
     def __init__(self, checkpoints: List[int]):
-        self.collection: list
-        self.collection = []
+        self.collection: list = []
         self.checkpoints = checkpoints
 
     def add(self, intermediate):
@@ -25,7 +24,7 @@ class Intermediate:
         """
         self.collection.append(intermediate)
 
-    def get(self, index: int = 0):
+    def get_from_checkpoint(self, index: int = 0):
         """Query intermediate in collection according to input index
 
         Arg:

@@ -15,5 +15,5 @@ def test_all():
         intm.add(input_lst)
         expected_record.append(input_lst.copy())
     assert expected_record == intm[:]
-    assert expected_record[1] == intm.get()
-    assert expected_record[3] == intm.get(1)
+    assert expected_record[1] == intm.get_from_checkpoint()
+    assert expected_record[3] == intm.get_from_checkpoint(1)
