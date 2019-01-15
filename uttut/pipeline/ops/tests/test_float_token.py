@@ -32,6 +32,13 @@ test_cases = [
         id='invalid float',
     ),
     pytest.param(
+        "9.99",
+        [0, 0, 0, 0],
+        "_float_",
+        [0, 0, 0, 0, 0, 0, 0],
+        id='float with label 0',
+    ),
+    pytest.param(
         "奇利利有12.3億元",
         [1, 1, 1, 2, 3, 3, 3, 3, 3, 3],
         "奇利利有_float_億元",

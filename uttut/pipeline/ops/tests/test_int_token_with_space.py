@@ -25,6 +25,13 @@ test_cases = [
         id='float int float',
     ),
     pytest.param(
+        "999",
+        [0, 0, 0],
+        " _int_ ",
+        [0, 0, 0, 0, 0, 0, 0],
+        id='int with label 0',
+    ),
+    pytest.param(
         "GB亂入",
         [1, 1, 2, 2],
         "GB亂入",
