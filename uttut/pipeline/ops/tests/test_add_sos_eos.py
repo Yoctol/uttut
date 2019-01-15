@@ -25,3 +25,12 @@ test_cases = [
     test_realign_labels,
     test_realign_labels_fails,
 ) = pattern_to_token_tests(test_cases)
+
+
+def test_equal(op):
+    assert op == AddSosEos()
+
+
+def test_not_equal(op):
+    custom_op = AddSosEos(start_token='custom_SOS', end_token='custom_EOS')
+    assert custom_op != op

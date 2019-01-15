@@ -13,12 +13,12 @@ class MockRealigner(Realigner):
 class MockStr2StrOp(Operator):
 
     def __init__(self, **kwargs):
+        self.kwargs = kwargs
         super().__init__(str, str)
 
     def __eq__(self, other):
-        if not isinstance(other, MockStr2StrOp):
-            return False
-        return True
+        same_kwargs = self.kwargs == other.kwargs
+        return same_kwargs and super().__eq__(other)
 
     def transform(self, input_sequence: str, labels: List[int]):  # type: ignore
         return input_sequence, labels, MockRealigner(
@@ -31,12 +31,12 @@ class MockStr2StrOp(Operator):
 class MockLst2LstOp(Operator):
 
     def __init__(self, **kwargs):
+        self.kwargs = kwargs
         super().__init__(list, list)
 
     def __eq__(self, other):
-        if not isinstance(other, MockLst2LstOp):
-            return False
-        return True
+        same_kwargs = self.kwargs == other.kwargs
+        return same_kwargs and super().__eq__(other)
 
     def transform(self, input_sequence: List[str], labels: List[int]):  # type: ignore
         return input_sequence, labels, MockRealigner(
@@ -49,12 +49,12 @@ class MockLst2LstOp(Operator):
 class MockStr2LstOp(Operator):
 
     def __init__(self, **kwargs):
+        self.kwargs = kwargs
         super().__init__(str, list)
 
     def __eq__(self, other):
-        if not isinstance(other, MockStr2LstOp):
-            return False
-        return True
+        same_kwargs = self.kwargs == other.kwargs
+        return same_kwargs and super().__eq__(other)
 
     def transform(self, input_sequence: str, labels: List[int]):  # type: ignore
         output_sequence = list(input_sequence)

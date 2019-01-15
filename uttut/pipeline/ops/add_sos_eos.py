@@ -36,6 +36,11 @@ class AddSosEos(Operator):
         self.start_token = start_token
         self.end_token = end_token
 
+    def __eq__(self, other):
+        same_start_token = self.start_token == other.start_token
+        same_end_token = self.end_token == other.end_token
+        return same_start_token and same_end_token and super().__eq__(other)
+
     def transform(  # type: ignore
             self,
             input_sequence: List[str],
