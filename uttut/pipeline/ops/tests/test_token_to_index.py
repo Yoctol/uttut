@@ -48,3 +48,15 @@ test_cases = [
 def test_invalid_token2index(error, token2index, unk_token):
     with pytest.raises(error):
         Token2Index(token2index=token2index, unk_token=unk_token)
+
+
+def test_equal(op):
+    assert op == Token2Index({UNK_TOKEN: 0, '薄餡': 1, '要': 2, '帶': 3, '妹': 4})
+
+
+def test_not_equal():
+    op1 = Token2Index(token2index={'薄餡': 0, '要': 1, '帶': 2, '妹': 3, 'UNK': 4}, unk_token='UNK')
+    op2 = Token2Index(token2index={'薄餡': 0, '要': 1, '帶': 2, '妹': 3, UNK_TOKEN: 4})
+    op3 = Token2Index(token2index={'薄餡': 0, UNK_TOKEN: 1})
+    assert op1 != op2
+    assert op2 != op3

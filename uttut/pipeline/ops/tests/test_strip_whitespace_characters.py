@@ -66,3 +66,7 @@ def test_all_whitespaces(op):
 
     output = realigner([])
     assert output == [0, 0, 0, 0, 0, 0]
+
+
+def test_equal(op):
+    assert StripWhiteSpaceCharacters() == op

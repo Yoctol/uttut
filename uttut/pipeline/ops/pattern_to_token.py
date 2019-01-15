@@ -19,6 +19,10 @@ class PatternRecognizer(Operator):
         super().__init__(input_type=str, output_type=str)
         self._realigner_class = realigner_class
 
+    def __eq__(self, other):
+        same_realigner_class = self._realigner_class == other._realigner_class
+        return same_realigner_class and super().__eq__(other)
+
     def _gen_forward_replacement_group(
             self,
             input_str: str,

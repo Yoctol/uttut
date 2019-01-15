@@ -10,6 +10,12 @@ class MockedOperator(Operator):
         super().__init__('in', 'out')
         self.state = state
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        same_state = self.state == other.state
+        return same_state and super().__eq__(other)
+
     def transform(self, input_sequence, labels):
         pass
 
@@ -19,8 +25,8 @@ def step():
     yield Step(MockedOperator())
 
 
-def test_equal(step):
-    assert step != Step(MockedOperator('123'))
+def test_not_equal(step):
+    assert step != Step(MockedOperator({'argg': '123'}))
     assert step != ()
 
 
