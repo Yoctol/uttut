@@ -38,16 +38,18 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 >>> p.add('EngTokenizer')  # word-level (ref: BERT)
 >>> p.add('AddSosEos')
 >>> p.add_checkpoint()
->>> p.add('Pad')
+>>> p.add('Pad', {'maxlen': 5})
 >>> p.add(
     'Token2Index',
     {
-        '<sos>': 0, '<eos>': 1,  # for  AddSosEos
-        '<unk>': 2, '<pad>': 3,  # for Pad
-        '_int_': 4,  # for IntTokenWithSpace
-        '_float_': 5,  # for FloatTokenWithSpace
-        'I': 6,
-        'apples': 7,
+       'token2index': {
+            '<sos>': 0, '<eos>': 1,  # for  AddSosEos
+            '<unk>': 2, '<pad>': 3,  # for Pad
+            '_int_': 4,  # for IntTokenWithSpace
+            '_float_': 5,  # for FloatTokenWithSpace
+            'I': 6,
+            'apples': 7,
+        },
     },
 )
 
@@ -55,7 +57,7 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 >>> datum = Datum(
     utterance='I like apples.',
     intents=[Intent(label=1), Intent(label=2)],
-    entities=[Entity(start=7, end=12, value='apples', label=7)],
+    entities=[Entity(start=7, end=13, value='apples', label=7)],
 )
 >>> output_indices, intent_labels, entity_labels, realigner, intermediate = p.transform(datum)
 >>> output_indices
@@ -64,7 +66,7 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 [1, 2]
 >>> entity_labels
 [0, 0, 0, 7, 0, 0, 0]
->>> intermediate.get()
+>>> intermediate.get_from_checkpoint()
 (["<sos>", "I", "like", "apples", "<eos>"], [0, 0, 0, 7, 0]) 
 
 >>> realigner(entity_labels)
