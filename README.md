@@ -36,6 +36,7 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 >>> p.add('MergeWhiteSpaceCharacters')
 >>> p.add('StripWhiteSpaceCharacters')
 >>> p.add('EngTokenizer')  # word-level (ref: BERT)
+>>> p.add_checkpoint('tokenized')
 >>> p.add('AddSosEos')
 >>> p.add_checkpoint()
 >>> p.add('Pad', {'maxlen': 5})
@@ -66,7 +67,9 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 [1, 2]
 >>> entity_labels
 [0, 0, 0, 7, 0, 0, 0]
->>> intermediate.get_by_checkpoint_index(0)
+>>> intermediate['tokenized']
+(['I', 'like', 'apples', '!', '_', 'int', '_', '!', '!'], [0, 0, 7, 0, 0, 0, 0, 0, 0])
+>>> intermediate.get_by_checkpoint_index(1)
 (["<sos>", "I", "like", "apples", "<eos>"], [0, 0, 0, 7, 0]) 
 
 >>> realigner(entity_labels)
