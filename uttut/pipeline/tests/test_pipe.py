@@ -60,7 +60,7 @@ def test_transform(fake_pipe, dummy_datum):
     assert output_seq == ['1', '2', '3']
     assert intent_labels == [1]
     assert entity_labels == [1, 2, 3]
-    assert [] == intermediate.get()
+    assert [] == intermediate.get_from_checkpoint()
     assert [('123', [1, 2, 3]), ('123', [1, 2, 3]),
             (['1', '2', '3'], [1, 2, 3]), (['1', '2', '3'], [1, 2, 3])] == intermediate[:]
 
@@ -75,8 +75,8 @@ def test_transform_with_checkpoints(fake_pipe_with_checkpoints, dummy_datum):
     assert output_seq == ['1', '2', '3']
     assert intent_labels == [1]
     assert entity_labels == [1, 2, 3]
-    assert ('123', [1, 2, 3]) == intermediate.get()
-    assert (['1', '2', '3'], [1, 2, 3]) == intermediate.get(1)
+    assert ('123', [1, 2, 3]) == intermediate.get_from_checkpoint()
+    assert (['1', '2', '3'], [1, 2, 3]) == intermediate.get_from_checkpoint(1)
     assert [('123', [1, 2, 3]), ('123', [1, 2, 3]),
             (['1', '2', '3'], [1, 2, 3]), (['1', '2', '3'], [1, 2, 3])] == intermediate[:]
 
