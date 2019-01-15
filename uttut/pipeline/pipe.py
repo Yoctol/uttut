@@ -22,6 +22,7 @@ class Pipe:
             self.operator_factory = default_factory
 
         self.checkpoints = []
+        self.checkpoint_names = []
 
     def add(self, op_name: str, op_kwargs=None):
         """Add steps based on the operation name.
@@ -48,8 +49,11 @@ class Pipe:
         self._push_step(step)
         self._push_step_info(op_name, op_kwargs)
 
-    def add_checkpoint(self):
+    def add_checkpoint(self, name=None):
         self.checkpoints.append(len(self._steps))
+        if name is None:
+            name = str(self._step_info[-1]['op_name'] + '__result')
+        self.checkpoint_names.append(name)
 
     def _validate_steps(self, step: Step):
         if len(self._steps) > 0:
@@ -94,7 +98,7 @@ class Pipe:
             intermediate: an instance of Intermediate
 
         """
-        intermediate = Intermediate(self.checkpoints)
+        intermediate = Intermediate(self.checkpoints, self.checkpoint_names)
         realigners = RealignerSequence()
 
         input_sequence, intent_labels, entity_labels = unpack_datum(datum)

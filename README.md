@@ -66,7 +66,7 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 [1, 2]
 >>> entity_labels
 [0, 0, 0, 7, 0, 0, 0]
->>> intermediate.get_from_checkpoint()
+>>> intermediate.get_by_checkpoint_index(0)
 (["<sos>", "I", "like", "apples", "<eos>"], [0, 0, 0, 7, 0]) 
 
 >>> realigner(entity_labels)
