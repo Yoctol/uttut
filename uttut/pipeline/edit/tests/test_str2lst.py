@@ -83,7 +83,7 @@ def test_gen_span_group(input_str, tokens, span_group):
     ],
 )
 def test_gen_span_group_fail(input_str, tokens):
-    with pytest.raises(ValueError, message='input_str and tokens are not compatible.'):
+    with pytest.raises(ValueError, match='input_str and tokens are not compatible'):
         str2lst.gen_span_group(input_str, tokens)
 
 
@@ -130,5 +130,5 @@ def test_gen_replacement_group(input_str, tokens, replacement_group):
     ],
 )
 def test_gen_replacement_group_fail(input_str, tokens):
-    with pytest.raises(ValueError, message='input_str and tokens are not compatible.'):
+    with pytest.raises(ValueError, match='input_str and tokens are not compatible'):
         str2lst.gen_replacement_group(input_str, tokens)

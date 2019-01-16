@@ -43,7 +43,7 @@ def test_not_done_warning():
 def test_not_done_error():
     replacement_group = ReplacementGroup()
     replacement_group.add(1, 3, 'abc')
-    with pytest.raises(RuntimeError, message='Please call `done` first.'):
+    with pytest.raises(RuntimeError, match='Please call `done` first.'):
         replacement_group[0]
 
 

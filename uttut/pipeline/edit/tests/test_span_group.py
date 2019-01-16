@@ -45,7 +45,7 @@ def test_not_done_warning():
 def test_not_done_error():
     span_group = SpanGroup()
     span_group.add(1, 3)
-    with pytest.raises(RuntimeError, message='Please call `done` first.'):
+    with pytest.raises(RuntimeError, match='Please call `done` first.'):
         span_group[0]
 
 
