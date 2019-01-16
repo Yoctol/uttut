@@ -18,6 +18,13 @@ class Operator(ABC):
         self._input_type = input_type
         self._output_type = output_type
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        same_input_type = self._input_type == other._input_type
+        same_output_type = self._output_type == other._output_type
+        return same_input_type and same_output_type
+
     @property
     def input_type(self):
         return self._input_type

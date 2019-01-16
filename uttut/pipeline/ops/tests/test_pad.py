@@ -46,3 +46,15 @@ def test_longer_case(op):
 
     output = realigner([1, 2, 3, 4, 5])
     assert output == [1, 2, 3, 4, 5, 0, 0]
+
+
+def test_equal(op):
+    assert Pad(5) == op
+
+
+def test_not_equal():
+    op1 = Pad(pad_token='PAD', maxlen=10)
+    op2 = Pad(pad_token='PAD', maxlen=15)
+    op3 = Pad(maxlen=10)
+    assert op1 != op2
+    assert op2 != op3

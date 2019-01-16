@@ -60,3 +60,7 @@ test_cases = [
     test_realign_labels,
     test_realign_labels_fails,
 ) = pattern_to_token_tests(test_cases)
+
+
+def test_equal(op):
+    assert FloatTokenWithSpace() == op

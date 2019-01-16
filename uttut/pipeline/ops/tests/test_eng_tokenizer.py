@@ -80,3 +80,7 @@ def test_invertible_cases(
 
     realigned_labels = realigner(output_labels)
     assert expected_realigned_labels == realigned_labels
+
+
+def test_equal(op):
+    assert EngTokenizer() == op

@@ -35,6 +35,11 @@ class Pad(Operator):
         self.pad_token = pad_token
         self.maxlen = maxlen
 
+    def __eq__(self, other):
+        same_pad_token = self.pad_token == other.pad_token
+        same_maxlen = self.maxlen == other.maxlen
+        return same_pad_token and same_maxlen and super().__eq__(other)
+
     def transform(  # type: ignore
             self,
             input_sequence: List[str],

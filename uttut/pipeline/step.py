@@ -10,7 +10,8 @@ class Step:
     def __eq__(self, other):
         if not isinstance(other, Step):
             return False
-        return self.op == other.op
+        same_op = self.op == other.op
+        return same_op
 
     @property
     def input_type(self):

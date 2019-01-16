@@ -19,6 +19,10 @@ class Tokenizer(Operator):
         super().__init__(input_type=str, output_type=list)
         self._realigner_class = realigner_class
 
+    def __eq__(self, other):
+        same_realigner_class = self._realigner_class == other._realigner_class
+        return same_realigner_class and super().__eq__(other)
+
     def transform(  # type: ignore
             self,
             input_sequence: str,
