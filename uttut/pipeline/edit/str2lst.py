@@ -46,7 +46,7 @@ def gen_replacement_group(input_str: str, tokens: List[str]) -> ReplacementGroup
     for token in tokens:
         start = input_str.find(token, shift)
         if start == -1:
-            ValueError('input_str and tokens are not compatible')
+            raise ValueError('input_str and tokens are not compatible')
         if input_str[shift: start] != '':
             replacement_group.add(shift, start, '')
         shift = start + len(token)
