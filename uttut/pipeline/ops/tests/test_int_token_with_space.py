@@ -1,7 +1,7 @@
 import pytest
 
 from ..int_token_with_space import IntTokenWithSpace
-from .common_tests_for_pattern_to_token import pattern_to_token_tests
+from .common_tests import common_test, update_locals
 
 
 @pytest.fixture
@@ -47,12 +47,9 @@ test_cases = [
     ),
 ]
 
-(
-    test_data,
-    test_transform,
-    test_realign_labels,
-    test_realign_labels_fails,
-) = pattern_to_token_tests(test_cases)
+
+funcs = common_test(test_cases)
+update_locals(locals(), funcs)
 
 
 def test_equal(op):
