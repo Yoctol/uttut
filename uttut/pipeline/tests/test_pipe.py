@@ -18,11 +18,9 @@ def fake_pipe():
 @pytest.fixture
 def fake_pipe_with_checkpoints():
     p_custom = Pipe(mock_factory)
-    p_custom.add('Str2Str', {'1': 1})
-    p_custom.add_checkpoint()
+    p_custom.add('Str2Str', {'1': 1}, out='1')
     p_custom.add('Str2Lst', {})
-    p_custom.add('Lst2Lst', {})
-    p_custom.add_checkpoint()
+    p_custom.add('Lst2Lst', {}, out='2')
     return p_custom
 
 
@@ -46,11 +44,24 @@ def test_pipe_init_use_correct_factory():
     assert p_custom.operator_factory == mock_factory
 
 
-def test_pipe_fails_to_add():
+def test_pipe_has_invalid_op():
     p = Pipe(mock_factory)
     p.add('Lst2Lst')
     with pytest.raises(TypeError):
         p.add('Str2Str')
+
+
+def test_pipe_has_duplicated_checkpoints():
+    p = Pipe(mock_factory)
+    p.add('Str2Str', out='1')
+    with pytest.raises(KeyError):
+        p.add('Str2Lst', out='1')
+
+
+def test_pipe_can_have_duplicated_ops():
+    p = Pipe(mock_factory)
+    p.add('Str2Str', out='1')
+    p.add('Str2Str', out='2')
 
 
 def test_transform(fake_pipe, dummy_datum):
@@ -60,7 +71,6 @@ def test_transform(fake_pipe, dummy_datum):
     assert output_seq == ['1', '2', '3']
     assert intent_labels == [1]
     assert entity_labels == [1, 2, 3]
-    assert [] == intermediate.get_from_checkpoint()
     assert [('123', [1, 2, 3]), ('123', [1, 2, 3]),
             (['1', '2', '3'], [1, 2, 3]), (['1', '2', '3'], [1, 2, 3])] == intermediate[:]
 
@@ -75,11 +85,17 @@ def test_transform_with_checkpoints(fake_pipe_with_checkpoints, dummy_datum):
     assert output_seq == ['1', '2', '3']
     assert intent_labels == [1]
     assert entity_labels == [1, 2, 3]
-    assert ('123', [1, 2, 3]) == intermediate.get_from_checkpoint()
-    assert (['1', '2', '3'], [1, 2, 3]) == intermediate.get_from_checkpoint(1)
+
+    # intermediate
+    assert ('123', [1, 2, 3]) == intermediate.get_from_checkpoint('1')
+    assert (['1', '2', '3'], [1, 2, 3]) == intermediate.get_from_checkpoint('2')
     assert [('123', [1, 2, 3]), ('123', [1, 2, 3]),
             (['1', '2', '3'], [1, 2, 3]), (['1', '2', '3'], [1, 2, 3])] == intermediate[:]
 
+    with pytest.raises(KeyError):
+        intermediate.get_from_checkpoint('薄餡亂入')
+
+    # realign labels
     output = realigner(entity_labels)
     assert output == [1, 2, 3]
 

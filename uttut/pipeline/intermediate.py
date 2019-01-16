@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict
 
 
 class Intermediate:
@@ -7,42 +7,41 @@ class Intermediate:
 
     attributes:
         collection (list): store input intermediates
-        checkpoints (ints): indices of intermediates for query
+        checkpoints (dict): (key, value) = (name, index)
 
     """
 
-    def __init__(self, checkpoints: List[int]):
-        self.collection: list = []
-        self.checkpoints = checkpoints
+    def __init__(self, checkpoints: Dict[str, int]):
+        self._collection: list = []
+        self._checkpoints = checkpoints
 
     def add(self, intermediate):
-        """Append intermediate into self.collection
+        """Append intermediate into self._collection
 
         Arg:
             intermediate: object to be stored in self.collection
 
         """
-        self.collection.append(intermediate)
+        self._collection.append(intermediate)
 
-    def get_from_checkpoint(self, index: int = 0):
-        """Query intermediate in collection according to input index
+    def get_from_checkpoint(self, name: str):
+        """Retrieve intermediate in collection according to name of checkpoint
 
         Arg:
-            index (int)
+            name (str): name of checkpoint
 
         Raise:
-            IndexError: list index out of range
-            if input index >= len(self.checkpoints) or
-            self.checkpoints(index) >= len(self.collection)
+            KeyError if name is not in self._checkpoints
+            IndexError if self._checkpoints[name] >= len(self._collection)
 
         """
-        if len(self.checkpoints) == 0:
-            return []
-        ck_index = self.checkpoints[index]
-        return self.collection[ck_index]
+        if name not in self._checkpoints:
+            raise KeyError(f"{name} is not found.")
+        ck_index = self._checkpoints[name]
+        return self._collection[ck_index]
 
     def __getitem__(self, key):
-        """Query intermediates by index or slice
+        """Retrieve intermediates by index or slice
 
         Arg:
             key (int or slice)
@@ -54,4 +53,4 @@ class Intermediate:
             IndexError: list index out of range if input index >= len(self.collection)
 
         """
-        return self.collection[key]
+        return self._collection[key]

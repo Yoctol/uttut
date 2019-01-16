@@ -7,7 +7,7 @@ def _transform(input_lst, index):
 
 
 def test_all():
-    intm = Intermediate([1, 3])
+    intm = Intermediate({'1': 1, '3': 3})
     input_lst = [0]
     expected_record = []
     for i in range(10):
@@ -15,5 +15,5 @@ def test_all():
         intm.add(input_lst)
         expected_record.append(input_lst.copy())
     assert expected_record == intm[:]
-    assert expected_record[1] == intm.get_from_checkpoint()
-    assert expected_record[3] == intm.get_from_checkpoint(1)
+    assert expected_record[1] == intm.get_from_checkpoint('1')
+    assert expected_record[3] == intm.get_from_checkpoint('3')

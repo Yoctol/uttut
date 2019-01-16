@@ -16,25 +16,25 @@ class Pipe:
     def __init__(self, operator_factory=None):
         self._steps = []
         self._step_info = []
+        self._checkpoints = {}
 
         self.operator_factory = operator_factory
         if self.operator_factory is None:
             self.operator_factory = default_factory
 
-        self.checkpoints = []
-
-    def add(self, op_name: str, op_kwargs=None):
+    def add(self, op_name: str, op_kwargs=None, out=None):
         """Add steps based on the operation name.
 
         This method creates a step, which has an op. The op
         is created.
 
         Args:
-            op_name (str)
-            op_kwargs (dict)
+            op_name (str): the name of operator
+            op_kwargs (dict): the corresponding of keyword arguments
+            out (str): the name of checkpoint
 
         Raises:
-            KeyError
+            KeyError if out is duplicated
 
         """
         if op_kwargs is None:
@@ -47,9 +47,7 @@ class Pipe:
 
         self._push_step(step)
         self._push_step_info(op_name, op_kwargs)
-
-    def add_checkpoint(self):
-        self.checkpoints.append(len(self._steps))
+        self._push_checkpoint(out)
 
     def _validate_steps(self, step: Step):
         if len(self._steps) > 0:
@@ -59,6 +57,12 @@ class Pipe:
                 raise TypeError(
                     "InputType of the step op is not valid."
                     f"Got {in_type}, but requires {target_type}")
+
+    def _push_checkpoint(self, name: str):
+        if name is not None:
+            if name in self._checkpoints:
+                raise KeyError(f"duplicated checkpoints {name}")
+            self._checkpoints[name] = len(self._steps)
 
     def _push_step(self, step: Step):
         self._steps.append(step)
@@ -75,7 +79,7 @@ class Pipe:
         same_op_factory = self.operator_factory == other.operator_factory
         same_steps = self._steps == other._steps
         same_step_info = self._step_info == other._step_info
-        same_checkpoints = self.checkpoints == other.checkpoints
+        same_checkpoints = self._checkpoints == other._checkpoints
         return same_op_factory and same_steps and same_step_info and same_checkpoints
 
     def transform(self, datum: Datum):
@@ -94,7 +98,7 @@ class Pipe:
             intermediate: an instance of Intermediate
 
         """
-        intermediate = Intermediate(self.checkpoints)
+        intermediate = Intermediate(self._checkpoints)
         realigners = RealignerSequence()
 
         input_sequence, intent_labels, entity_labels = unpack_datum(datum)
@@ -109,7 +113,7 @@ class Pipe:
     def serialize(self) -> str:
         to_serialize = {
             'steps': self._step_info,
-            'checkpoints': self.checkpoints,
+            'checkpoints': self._checkpoints,
         }
         return json.dumps(to_serialize)
 
@@ -125,7 +129,7 @@ class Pipe:
                 op_kwargs=step_info['op_kwargs'],
             )
         # restore checkpoints
-        pipe.checkpoints = pipe_bundle['checkpoints']
+        pipe._checkpoints = pipe_bundle['checkpoints']
         return pipe
 
 
