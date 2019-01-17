@@ -18,9 +18,9 @@ def fake_pipe():
 @pytest.fixture
 def fake_pipe_with_checkpoints():
     p_custom = Pipe(mock_factory)
-    p_custom.add('Str2Str', {'1': 1}, out='1')
+    p_custom.add('Str2Str', {'1': 1}, checkpoint='1')
     p_custom.add('Str2Lst', {})
-    p_custom.add('Lst2Lst', {}, out='2')
+    p_custom.add('Lst2Lst', {}, checkpoint='2')
     return p_custom
 
 
@@ -53,15 +53,15 @@ def test_pipe_has_invalid_op():
 
 def test_pipe_has_duplicated_checkpoints():
     p = Pipe(mock_factory)
-    p.add('Str2Str', out='1')
+    p.add('Str2Str', checkpoint='1')
     with pytest.raises(KeyError):
-        p.add('Str2Lst', out='1')
+        p.add('Str2Lst', checkpoint='1')
 
 
 def test_pipe_can_have_duplicated_ops():
     p = Pipe(mock_factory)
-    p.add('Str2Str', out='1')
-    p.add('Str2Str', out='2')
+    p.add('Str2Str', checkpoint='1')
+    p.add('Str2Str', checkpoint='2')
 
 
 def test_transform(fake_pipe, dummy_datum):

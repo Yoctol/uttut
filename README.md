@@ -36,7 +36,7 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 >>> p.add('MergeWhiteSpaceCharacters')
 >>> p.add('StripWhiteSpaceCharacters')
 >>> p.add('EngTokenizer')  # word-level (ref: BERT)
->>> p.add('AddSosEos', out='result_of_add_sos_eos')
+>>> p.add('AddSosEos', checkpoint='result_of_add_sos_eos')
 >>> p.add('Pad', {'maxlen': 5})
 >>> p.add(
     'Token2Index',

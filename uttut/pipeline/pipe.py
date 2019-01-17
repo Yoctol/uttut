@@ -22,7 +22,7 @@ class Pipe:
         if self.operator_factory is None:
             self.operator_factory = default_factory
 
-    def add(self, op_name: str, op_kwargs=None, out=None):
+    def add(self, op_name: str, op_kwargs=None, checkpoint=None):
         """Add steps based on the operation name.
 
         This method creates a step, which has an op. The op
@@ -31,10 +31,10 @@ class Pipe:
         Args:
             op_name (str): the name of operator
             op_kwargs (dict): the corresponding of keyword arguments
-            out (str): the name of checkpoint
+            checkpoint (str): the name of checkpoint
 
         Raises:
-            KeyError if out is duplicated
+            KeyError if the input checkpoint has existed in self._checkpoints
 
         """
         if op_kwargs is None:
@@ -47,7 +47,7 @@ class Pipe:
 
         self._push_step(step)
         self._push_step_info(op_name, op_kwargs)
-        self._push_checkpoint(out)
+        self._push_checkpoint(checkpoint)
 
     def _validate_steps(self, step: Step):
         if len(self._steps) > 0:
@@ -94,7 +94,7 @@ class Pipe:
             output_sequence: transfromed sequence
             intent_labels (ints):
             entity_labels (ints):
-            realigners: list of Realigners
+            realigners: an instance of RealignerSequence
             intermediate: an instance of Intermediate
 
         """
