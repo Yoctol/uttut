@@ -18,6 +18,13 @@ test_cases = [
         id='all a-z',
     ),
     pytest.param(
+        "Hello hoW are U",
+        [1, 2, 3, 4, 5, 0, 6, 7, 8, 0, 9, 10, 11, 0, 12],
+        "hello how are u",
+        [1, 2, 3, 4, 5, 0, 6, 7, 8, 0, 9, 10, 11, 0, 12],
+        id='mixed uppercase and lowercase eng',
+    ),
+    pytest.param(
         "薄餡亂入",
         [0, 1, 2, 3],
         "薄餡亂入",

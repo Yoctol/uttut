@@ -68,7 +68,7 @@ class Lowercase(Operator):
             match = self.REGEX_PATTERN.search(input_str, shift)
             if match is None:
                 break
-            matched_str = input_str[shift + match.start(): shift + match.end()]
+            matched_str = input_str[match.start(): match.end()]
             replacement_group.add(
                 start=match.start(),
                 end=match.end(),
