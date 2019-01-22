@@ -10,7 +10,7 @@ def op():
 
 
 test_cases = [
-    pytest.param(
+    pytest.param(  # ref: Bert tokenization_test.py#L64
         u"H\u00E9llo",
         [1, 2, 3, 4, 5],
         "Hello",

@@ -10,6 +10,23 @@ from ..edit.label_propagation import propagate_by_replacement_group
 
 class StripAccentToken(Operator):
 
+    """
+    Strip accent token
+
+    E.g.
+    >>> from uttut.pipeline.ops.strip_accent_token import StripAccentToken
+    >>> op = StripAccentToken()
+    >>> output_seq, output_labels, realigner = op.transform(
+        u"H\u00E9llo", [1, 2, 3, 4, 5])
+    >>> output_seq
+    "Hello"
+    >>> output_labels
+    [1, 2, 3, 4, 5]
+    >>> realigner(output_labels)
+    [1, 2, 3, 4, 5]
+
+    """
+
     def __init__(self):
         super().__init__(input_type=str, output_type=str)
         self._realigner_class = StripAccentTokenRealigner
@@ -78,7 +95,13 @@ class StripAccentTokenRealigner(Realigner):
 
 
 def _strip_accents(text: str) -> str:
-    """Strips accents from a piece of text."""
+
+    """Strips accents from a piece of text
+
+    This code is copied from Bert `tokenization.py`.
+
+    """
+
     text = unicodedata.normalize("NFD", text)
     output = []
     for char in text:
