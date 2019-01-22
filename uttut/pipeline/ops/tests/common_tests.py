@@ -37,7 +37,7 @@ def common_test(test_cases):
         )
 
     """
-    def test_data(input_sequence, input_labels, output_sequence, output_labels):
+    def test_data(input_sequence, input_labels, output_sequence, output_labels, op):
         assert len(input_sequence) == len(input_labels)
         assert len(output_sequence) == len(output_labels)
 
