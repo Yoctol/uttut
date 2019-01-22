@@ -9,6 +9,7 @@ from uttut import ENTITY_LABEL
 
 
 class AddWhitespaceAroundCharacter(Operator):
+
     """
     Base class for Operators which recognize the characters using function `_is_valid_char`
     and add whitespace around the matched one

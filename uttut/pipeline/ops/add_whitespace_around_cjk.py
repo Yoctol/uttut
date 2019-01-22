@@ -3,7 +3,25 @@ from .add_whitespace_around_character import AddWhitespaceAroundCharacter
 
 class AddWhitespaceAroundCJK(AddWhitespaceAroundCharacter):
 
+    """
+    Recognize CJK characters and add whitespace around each CJK character
+
+    E.g.
+    >>> from uttut.pipeline.ops.add_whitespace_around_cjk import AddWhitespaceAroundCJK
+    >>> op = AddWhitespaceAroundCJK()
+    >>> output_seq, output_labels, realigner = op.transform(
+        "GB亂入", [1, 1, 2, 3])
+    >>> output_seq
+    "GB 亂  入 "
+    >>> output_labels
+    [1, 1, 0, 2, 0, 0, 3, 0]
+    >>> realigner(output_labels)
+    [1, 1, 2, 3]
+
+    """
+
     def _is_valid_char(self, char: str) -> bool:
+        
         """Check whether input char is the codepoint of a CJK character.
 
         This code is copied from Bert `tokenization.py`.
