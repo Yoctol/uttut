@@ -21,7 +21,7 @@ class AddWhitespaceAroundCJK(AddWhitespaceAroundCharacter):
     """
 
     def _is_valid_char(self, char: str) -> bool:
-        
+
         """Check whether input char is the codepoint of a CJK character.
 
         This code is copied from Bert `tokenization.py`.

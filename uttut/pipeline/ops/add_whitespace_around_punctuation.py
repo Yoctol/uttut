@@ -9,7 +9,8 @@ class AddWhitespaceAroundPunctuation(AddWhitespaceAroundCharacter):
     Recognize punctuation characters and add whitespace around each punctuation character
 
     E.g.
-    >>> from uttut.pipeline.ops.add_whitespace_around_punctuation import AddWhitespaceAroundPunctuation
+    >>> from uttut.pipeline.ops.add_whitespace_around_punctuation import (
+        AddWhitespaceAroundPunctuation)
     >>> op = AddWhitespaceAroundPunctuation()
     >>> output_seq, output_labels, realigner = op.transform(
         "GB,薄餡亂入", [1, 1, 2, 3, 3, 4, 5])
@@ -21,8 +22,9 @@ class AddWhitespaceAroundPunctuation(AddWhitespaceAroundCharacter):
     [1, 1, 2, 3, 3, 4, 5]
 
     """
+
     def _is_valid_char(self, char: str) -> bool:
-        
+
         """Check whether char is a punctuation character.
 
         This code is copied from Bert `tokenization.py`.
