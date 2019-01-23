@@ -45,7 +45,6 @@ class AddWhitespaceAroundPunctuation(AddWhitespaceAroundCharacter):
             return True
 
         cat = unicodedata.category(char)
-        print(cat)
         # For more details, please take a look at
         # https://www.fileformat.info/info/unicode/category/index.htm
         if cat.startswith("P"):
