@@ -133,10 +133,10 @@ def span_subwords(
 
     E.g.
     >>> span_subwords(
-        word="unaffable",
-        vocab={"un": 0, "##aff": 1, "##able": 2},
-        max_input_chars_per_word=200,
-    )
+            word="unaffable",
+            vocab={"un": 0, "##aff": 1, "##able": 2},
+            max_input_chars_per_word=200,
+        )
     ["un", "##aff", "##able"]
 
     """
