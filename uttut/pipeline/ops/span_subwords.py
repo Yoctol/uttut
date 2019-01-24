@@ -91,8 +91,12 @@ class SpanSubwords(Operator):
                 max_input_chars_per_word=self.maxlen_per_token,
             )
             if subtokens != [token]:
-                replacement_group.add(start=i, end=i + 1, new_value=subtokens,
-                                      annotation='span-subwords')
+                replacement_group.add(
+                    start=i,
+                    end=i + 1,
+                    new_value=subtokens,
+                    annotation='span-subwords',
+                )
         replacement_group.done()
 
         return replacement_group
