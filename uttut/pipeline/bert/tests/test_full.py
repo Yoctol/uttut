@@ -4,7 +4,7 @@ import tempfile
 
 import pytest
 
-from .tokenization import FullTokenizer
+from .tokenization import FullTokenizer as BertFullTokenizer
 from ..full import full_pipe, vocab_tokens
 from uttut.elements import Datum
 
@@ -28,7 +28,7 @@ def tokenizer():
 
         vocab_file = vocab_writer.name
 
-    tokenizer = FullTokenizer(vocab_file)
+    tokenizer = BertFullTokenizer(vocab_file)
     yield tokenizer
     os.unlink(vocab_file)
 

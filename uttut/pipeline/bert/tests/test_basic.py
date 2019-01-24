@@ -1,6 +1,6 @@
 import pytest
 
-from .tokenization import BasicTokenizer
+from .tokenization import BasicTokenizer as BertBasicTokenizer
 from ..basic import basic_pipe
 
 from uttut.elements import Datum
@@ -28,7 +28,7 @@ test_cases = [
 
 @pytest.fixture
 def tokenizer():
-    yield BasicTokenizer()
+    yield BertBasicTokenizer()
 
 
 @pytest.mark.parametrize("input_str", test_cases)

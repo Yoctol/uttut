@@ -1,6 +1,6 @@
 import pytest
 
-from .tokenization import WordpieceTokenizer
+from .tokenization import WordpieceTokenizer as BertWordpieceTokenizer
 from ..word_piece import word_piece_pipe, vocab
 
 from uttut.elements import Datum
@@ -20,7 +20,7 @@ test_cases = [
 
 @pytest.fixture
 def tokenizer():
-    yield WordpieceTokenizer(vocab)
+    yield BertWordpieceTokenizer(vocab)
 
 
 @pytest.mark.parametrize("input_str", test_cases)
