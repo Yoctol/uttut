@@ -1456,7 +1456,7 @@ static PyObject *__pyx_pf_5uttut_8toolkits_19get_kth_combination_get_kth_combina
 /* "uttut/toolkits/get_kth_combination.pyx":14
  * 
  * 
- * cdef list get_kth_combination_in_c(             # <<<<<<<<<<<<<<
+ * cdef list get_kth_combination_in_c(  # noqa: E999             # <<<<<<<<<<<<<<
  *         list iterables,
  *         int k,
  */
@@ -1600,7 +1600,7 @@ static PyObject *__pyx_f_5uttut_8toolkits_19get_kth_combination_get_kth_combinat
   /* "uttut/toolkits/get_kth_combination.pyx":14
  * 
  * 
- * cdef list get_kth_combination_in_c(             # <<<<<<<<<<<<<<
+ * cdef list get_kth_combination_in_c(  # noqa: E999             # <<<<<<<<<<<<<<
  *         list iterables,
  *         int k,
  */
