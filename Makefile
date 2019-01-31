@@ -16,7 +16,6 @@ install-dev:
 .PHONY: lint
 lint:
 	flake8
-	mypy --config-file=.mypy uttut
 
 .PHONY: test
 test:

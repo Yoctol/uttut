@@ -14,7 +14,6 @@ ipdb = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-mock = "*"
-mypy = "==v0.650"
 
 [requires]
 python_version = "3.6"

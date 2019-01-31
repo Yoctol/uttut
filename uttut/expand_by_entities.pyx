@@ -3,10 +3,7 @@ from typing import List, Tuple, Union
 from functools import reduce
 from operator import mul
 
-from .elements import (
-    Datum,
-    Entity,
-)
+from .elements import (Datum, Entity)
 from .toolkits.get_kth_combination import get_kth_combination
 from .toolkits.partition_by_entities import partition_by_entities
 
@@ -17,7 +14,7 @@ __all__ = [
 
 
 def _aggregate_entities(
-        list segments,
+        list segments,  # noqa: E999
         list entity_labels,
     ):
     cdef list entities = []
@@ -43,14 +40,14 @@ def _aggregate_entities(
 
 def expand_by_entities(
         datum,
-        sampling_method = None,
-        bint include_orig = False,
+        sampling_method=None,
+        bint include_orig=False,
     ):
     if not datum.has_entities():
         return [datum]
 
     if sampling_method is None:
-        sampling_method = lambda n_combinations: list(range(n_combinations))
+        sampling_method = lambda n_combinations: list(range(n_combinations))  # noqa: E731
         # return all possible combinations
 
     parts, entity_labels = partition_by_entities(datum, include_orig)

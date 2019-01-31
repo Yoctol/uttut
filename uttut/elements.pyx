@@ -1,6 +1,6 @@
 from typing import List, Iterable
 import pprint
-cimport cython
+cimport cython  # noqa: E999
 
 from .exceptions import (
     EntityOverlapping,
@@ -12,7 +12,6 @@ from .utils import (
     msg_entity_wrong_position,
     msg_entity_overlapping,
 )
-
 
 
 cdef class Entity:
@@ -117,8 +116,8 @@ cdef class Datum:
     def __init__(
             self,
             str utterance,
-            list intents = None,  # : List[Intent] = None,
-            list entities = None,  # : List[Entity] = None,
+            list intents=None,  # : List[Intent] = None,
+            list entities=None,  # : List[Entity] = None,
         ):
         self.utterance = utterance
         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
@@ -152,7 +151,8 @@ cdef class Datum:
     def __repr__(self):
         intent_str = pprint.pformat(self.intents)
         entity_str = pprint.pformat(self.entities)
-        return f"<Datum {self.utterance}\n with intents: {intent_str}\n with entities:\n{entity_str}>"
+        return f"<Datum {self.utterance}\n with intents: "\
+            f"{intent_str}\n with entities:\n{entity_str}>"
 
     def has_same_utterance_as(self, other):
         return self.utterance == other.utterance
