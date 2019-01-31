@@ -1,4 +1,5 @@
 from typing import List, Iterable
+import pprint
 cimport cython
 
 from .exceptions import (
@@ -98,7 +99,7 @@ cdef class Intent:
         self.label = label
 
     def __repr__(self):
-        return str(self.label)
+        return f"<Intent {self.label}>"
 
     def __hash__(self):
         return hash(self.label)
@@ -149,11 +150,9 @@ cdef class Datum:
             return True
 
     def __repr__(self):
-        return "<Datum {} {} with entities: {}>".format(
-            self.utterance,
-            self.intents,
-            self.entities,
-        )
+        intent_str = pprint.pformat(self.intents)
+        entity_str = pprint.pformat(self.entities)
+        return f"<Datum {self.utterance}\n with intents: {intent_str}\n with entities:\n{entity_str}>"
 
     def has_same_utterance_as(self, other):
         return self.utterance == other.utterance

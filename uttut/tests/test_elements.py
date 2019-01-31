@@ -13,10 +13,15 @@ from ..exceptions import (
 
 class ElementIntentTestCase(TestCase):
 
+    def setUp(self):
+        self.intent_label = 1
+        self.intent = Intent(self.intent_label)
+
     def test_init(self):
-        intent_label = 1
-        intent = Intent(intent_label)
-        self.assertEqual(intent.label, intent_label)
+        self.assertEqual(self.intent.label, self.intent_label)
+
+    def test_representation(self):
+        self.assertEqual(f"<Intent {self.intent_label}>", self.intent.__repr__())
 
 
 class ElementEntityTestCase(TestCase):
@@ -29,6 +34,7 @@ class ElementEntityTestCase(TestCase):
             end=3,
         )
         self.assertTrue(ent.no_replacements())
+        self.assertEqual("<Entity 1: 紐約 at 1 - 3, with replacements: >", ent.__repr__())
 
     def test_has_replacements(self):
         ent = Entity(
@@ -39,6 +45,7 @@ class ElementEntityTestCase(TestCase):
             replacements=['台北'],
         )
         self.assertFalse(ent.no_replacements())
+        self.assertEqual("<Entity 1: 紐約 at 1 - 3, with replacements: 台北>", ent.__repr__())
 
     def test_from_dict(self):
         label = 1
@@ -59,6 +66,13 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent.start, start)
         self.assertEqual(ent.end, end)
         self.assertEqual(ent.replacements, set(replacements))
+        self.assertIn(
+            ent.__repr__(),
+            [
+                "<Entity 1: 紐約 at 1 - 3, with replacements: 斯堪地那維亞, KIX>",
+                "<Entity 1: 紐約 at 1 - 3, with replacements: KIX, 斯堪地那維亞>",
+            ],
+        )
 
     def test_from_dict_no_replacements(self):
         label = 1
@@ -77,6 +91,7 @@ class ElementEntityTestCase(TestCase):
         self.assertEqual(ent.start, start)
         self.assertEqual(ent.end, end)
         self.assertEqual(ent.replacements, set([]))
+        self.assertEqual("<Entity 1: 紐約 at 1 - 3, with replacements: >", ent.__repr__())
 
     def test_to_dict(self):
         label = 1
