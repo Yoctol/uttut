@@ -5,7 +5,7 @@ from ..elements import (
     Datum,
     Entity,
 )
-from ..exceptions import DifferentUtterance
+from ..elements.exceptions import DifferentUtterance
 
 from ..entity_overlapping_ratio import (
     check_utter_index_in_entity,

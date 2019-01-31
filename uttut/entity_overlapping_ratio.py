@@ -1,5 +1,5 @@
 from .elements import Datum, Entity
-from .exceptions import DifferentUtterance
+from .elements.exceptions import DifferentUtterance
 from . import ENTITY_LABEL
 
 NOT_ENTITY = ENTITY_LABEL['NOT_ENTITY']
