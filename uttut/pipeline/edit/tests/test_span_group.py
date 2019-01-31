@@ -6,7 +6,6 @@ from ..span import Span, SpanGroup
 @pytest.mark.filterwarnings("ignore")
 def test_correctly_init():
     span_group = SpanGroup()
-    assert span_group._is_done is False
     assert span_group.is_empty() is True
     assert len(span_group) == 0
 
@@ -26,7 +25,6 @@ def test_span_group_should_be_contiguous(spans):
 def test_add_all():
     objs = [(0, 0), (0, 2)]
     span_group = SpanGroup.add_all(objs)
-    assert span_group._is_done is True
     assert len(span_group) == len(objs)
     assert [Span(*obj) for obj in objs] == span_group[:]
 

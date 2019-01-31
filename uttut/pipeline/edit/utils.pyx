@@ -1,16 +1,19 @@
 from typing import List, Sequence, MutableSequence, Union
 
-from .replacement import ReplacementGroup
+from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
 
 
 def _transform_sequence(
         input_seq: Union[str, List[str]],
-        replacement_group: ReplacementGroup,
-        output: MutableSequence,
+        ReplacementGroup replacement_group,
+        list output,
     ) -> Sequence:
     '''
     input_seq: list of str or pure str
     '''
+
+    cdef unsigned int start, i
+    cdef Replacement replacement
 
     start = 0
     i = 0
@@ -28,15 +31,23 @@ def _transform_sequence(
 
 def _gen_inverse_replacement_group(
         input_seq: Union[str, List[str]],
-        replacement_group: ReplacementGroup,
+        ReplacementGroup replacement_group,
     ) -> ReplacementGroup:
     '''
     input_seq: list of str or pure str
     '''
-    if replacement_group.is_empty():
-        return ReplacementGroup.add_all([])
+
+    cdef unsigned int n_replacement, start, dist
+    cdef list dists
+    cdef Replacement replacement
+    cdef ReplacementGroup inverse_replacement_group
 
     inverse_replacement_group = ReplacementGroup()
+
+    if replacement_group.is_empty():
+        inverse_replacement_group.done()
+        return inverse_replacement_group
+
     n_replacement = len(replacement_group)
 
     dists = get_dist_bt_replacement_group(replacement_group)
@@ -57,7 +68,8 @@ def _gen_inverse_replacement_group(
     return inverse_replacement_group
 
 
-def get_dist_bt_replacement_group(replacement_group: ReplacementGroup) -> List[int]:
+def get_dist_bt_replacement_group(ReplacementGroup replacement_group) -> List[int]:
+
     '''Compute the distance between replacement_group
 
     The distance is the length of sequence.
@@ -73,11 +85,18 @@ def get_dist_bt_replacement_group(replacement_group: ReplacementGroup) -> List[i
     Return:
         dist (ints)
     '''
+
+    cdef unsigned int n_replacement, dist
+    cdef list dists
+    cdef Replacement current_replacement, next_replacement
+
     n_replacement = len(replacement_group)
     dists = [0] * (n_replacement - 1)
 
     for i in range(n_replacement - 1):
-        dist = replacement_group[i + 1].start - replacement_group[i].end
+        current_replacement = replacement_group[i]
+        next_replacement = replacement_group[i + 1]
+        dist = next_replacement.start - current_replacement.end
         dists[i] = dist
 
     return dists

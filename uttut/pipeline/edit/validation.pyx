@@ -1,20 +1,22 @@
-from typing import Sequence
+def _validate_start_end(start, end):
+    _validate_start_end_in_c(start, end)
 
 
-def _validate_start_end(start: int, end: int):
+def _validate_disjoint(sorted_objs):
+    _validate_disjoint_in_c(sorted_objs)
 
-    if not isinstance(start, int) or not isinstance(end, int):
-        raise TypeError("start and end must be integers")
-    if start < 0 or end < 0:
-        raise ValueError("start and end must be positive integers")
+
+cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999
     if start > end:
         raise ValueError("start cannot be greater than end")
 
 
-def _validate_disjoint(sorted_objs: Sequence[object]):
+cdef void _validate_disjoint_in_c(list sorted_objs) except *:
     '''
     An object must have two integer properties `start` and `end`.
     '''
+    cdef unsigned int current
+
     current = sorted_objs[0].end  # type: ignore
     for obj in sorted_objs[1:]:
         if obj.start < current:  # type: ignore
