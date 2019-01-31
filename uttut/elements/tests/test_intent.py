@@ -10,4 +10,10 @@ def test_init():
 def test_representation():
     intent_label = 1
     intent = Intent(intent_label)
-    assert f"<Intent {self.intent_label}>" == intent.__repr__()
+    assert f"<Intent {intent_label}>" == intent.__repr__()
+
+
+def test_equal():
+    intent_1 = Intent(1)
+    intent_2 = Intent(1)
+    assert intent_1 == intent_2

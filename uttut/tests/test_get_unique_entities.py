@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 from unittest import TestCase
 
-from uttut.elements import (
+from ..elements import (
     Datum,
     Intent,
     Entity,

@@ -1,4 +1,4 @@
-cdef class Datum:
+cdef class Datum:  # noqa: E999
 
     cdef public str utterance
     cdef public object intents

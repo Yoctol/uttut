@@ -836,7 +836,7 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_5uttut_8elements_6entity_Entity;
 
 /* "uttut/elements/entity.pxd":1
- * cdef class Entity:             # <<<<<<<<<<<<<<
+ * cdef class Entity:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef public unsigned int label
  */
@@ -853,7 +853,7 @@ struct __pyx_obj_5uttut_8elements_6entity_Entity {
 
 
 /* "uttut/elements/entity.pyx":1
- * cdef class Entity:             # <<<<<<<<<<<<<<
+ * cdef class Entity:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(
  */
@@ -1517,7 +1517,7 @@ static PyObject *__pyx_tuple__3;
 /* Late includes */
 
 /* "uttut/elements/entity.pyx":3
- * cdef class Entity:
+ * cdef class Entity:  # noqa: E999
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
  *             self,
@@ -1542,7 +1542,7 @@ static int __pyx_pw_5uttut_8elements_6entity_6Entity_1__cinit__(PyObject *__pyx_
     /* "uttut/elements/entity.pyx":9
  *             unsigned int start,
  *             unsigned int end,
- *             object replacements = None,             # <<<<<<<<<<<<<<
+ *             object replacements=None,             # <<<<<<<<<<<<<<
  *         ) -> None:
  * 
  */
@@ -1627,7 +1627,7 @@ static int __pyx_pw_5uttut_8elements_6entity_6Entity_1__cinit__(PyObject *__pyx_
   __pyx_r = __pyx_pf_5uttut_8elements_6entity_6Entity___cinit__(((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_self), __pyx_v_label, __pyx_v_value, __pyx_v_start, __pyx_v_end, __pyx_v_replacements);
 
   /* "uttut/elements/entity.pyx":3
- * cdef class Entity:
+ * cdef class Entity:  # noqa: E999
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
  *             self,
@@ -1732,7 +1732,7 @@ static int __pyx_pf_5uttut_8elements_6entity_6Entity___cinit__(struct __pyx_obj_
   __pyx_t_1 = 0;
 
   /* "uttut/elements/entity.pyx":3
- * cdef class Entity:
+ * cdef class Entity:  # noqa: E999
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
  *             self,
@@ -2876,7 +2876,7 @@ static PyObject *__pyx_pf_5uttut_8elements_6entity_6Entity_12from_dict(PyTypeObj
 }
 
 /* "uttut/elements/entity.pxd":3
- * cdef class Entity:
+ * cdef class Entity:  # noqa: E999
  * 
  *     cdef public unsigned int label             # <<<<<<<<<<<<<<
  *     cdef public str value
@@ -4128,7 +4128,7 @@ if (!__Pyx_RefNanny) {
   PyType_Modified(__pyx_ptype_5uttut_8elements_6entity_Entity);
 
   /* "uttut/elements/entity.pyx":1
- * cdef class Entity:             # <<<<<<<<<<<<<<
+ * cdef class Entity:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(
  */

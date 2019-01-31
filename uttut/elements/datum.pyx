@@ -1,11 +1,13 @@
-from .intent cimport Intent
+import pprint
+
+from .intent cimport Intent  # noqa: E999
 from .entity cimport Entity
 
 from .exceptions import (
     EntityOverlapping,
     EntityPositionError,
 )
-from .utils cimport (
+from .utils cimport (  # noqa: E211
     entity_position_correct,
     overlap,
     msg_entity_wrong_position,
@@ -18,8 +20,8 @@ cdef class Datum:
     def __cinit__(
             self,
             str utterance,
-            object intents = None,  # : List[Intent] = None,
-            object entities = None,  # : List[Entity] = None,
+            object intents=None,  # : List[Intent] = None,
+            object entities=None,  # : List[Entity] = None,
         ):
         self.utterance = utterance
         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
@@ -47,11 +49,10 @@ cdef class Datum:
         return True
 
     def __repr__(self):
-        return "<Datum {} {} with entities: {}>".format(
-            self.utterance,
-            self.intents,
-            self.entities,
-        )
+        intent_str = pprint.pformat(self.intents)
+        entity_str = pprint.pformat(self.entities)
+        return f"<Datum {self.utterance}\n with intents: "\
+            f"{intent_str}\n with entities:\n{entity_str}>"
 
     cpdef bint has_same_utterance_as(self, Datum other):
         return self.utterance == other.utterance

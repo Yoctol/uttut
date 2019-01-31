@@ -835,7 +835,7 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_5uttut_8elements_6entity_Entity;
 
 /* "entity.pxd":1
- * cdef class Entity:             # <<<<<<<<<<<<<<
+ * cdef class Entity:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef public unsigned int label
  */
@@ -2104,7 +2104,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_TraceCall("__Pyx_PyMODINIT_FUNC PyInit_utils(void)", __pyx_f[0], 1, 0, __PYX_ERR(0, 1, __pyx_L1_error));
 
   /* "uttut/elements/utils.pyx":1
- * from .entity cimport Entity             # <<<<<<<<<<<<<<
+ * from .entity cimport Entity  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  * 
  */

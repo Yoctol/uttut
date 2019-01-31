@@ -1,4 +1,4 @@
-cdef class Entity:
+cdef class Entity:  # noqa: E999
 
     def __cinit__(
             self,
@@ -6,7 +6,7 @@ cdef class Entity:
             str value,
             unsigned int start,
             unsigned int end,
-            object replacements = None,
+            object replacements=None,
         ) -> None:
 
         self.label = label

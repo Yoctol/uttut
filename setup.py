@@ -48,6 +48,7 @@ else:
         Extension('uttut.elements.intent', ['uttut/elements/intent.c']),
         Extension('uttut.elements.entity', ['uttut/elements/entity.c']),
         Extension('uttut.elements.datum', ['uttut/elements/datum.c']),
+        Extension('uttut.elements.utils', ['uttut/elements/utils.c']),
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.c']),
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.c']),
         Extension('uttut.toolkits.partition_by_entities', [

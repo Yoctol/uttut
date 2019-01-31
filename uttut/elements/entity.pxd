@@ -1,4 +1,4 @@
-cdef class Entity:
+cdef class Entity:  # noqa: E999
 
     cdef public unsigned int label
     cdef public str value

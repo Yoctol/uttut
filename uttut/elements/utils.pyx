@@ -1,4 +1,4 @@
-from .entity cimport Entity
+from .entity cimport Entity  # noqa: E999
 
 
 cdef bint entity_position_correct(str utterance, Entity entity):

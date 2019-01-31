@@ -1,10 +1,10 @@
-cdef class Intent:
+cdef class Intent:  # noqa: E999
 
     def __cinit__(self, int label):
         self.label = label
 
     def __repr__(self):
-        return str(self.label)
+        return f"<Intent {self.label}>"
 
     def __hash__(self):
         return hash(self.label)
