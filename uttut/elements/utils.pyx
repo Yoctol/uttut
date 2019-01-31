@@ -1,4 +1,8 @@
-def entity_position_correct(utterance: str, entity) -> bool:
+from .entity cimport Entity
+
+
+cdef bint entity_position_correct(str utterance, Entity entity):
+    cdef unsigned int start, end
     start = entity.start
     end = entity.end
     if entity.value == utterance[start: end]:
@@ -6,11 +10,12 @@ def entity_position_correct(utterance: str, entity) -> bool:
     return False
 
 
-def overlap(entity, next_entity) -> bool:
-    return bool(entity.end > next_entity.start)
+cdef bint overlap(Entity entity, Entity next_entity):
+    return entity.end > next_entity.start
 
 
-def msg_entity_wrong_position(utterance: str, entity) -> str:
+cdef str msg_entity_wrong_position(str utterance, Entity entity):
+    cdef unsigned int start, end
     start = entity.start
     end = entity.end
     return """
@@ -24,7 +29,7 @@ def msg_entity_wrong_position(utterance: str, entity) -> str:
     )
 
 
-def msg_entity_overlapping(utterance: str, entity, next_entity) -> str:
+cdef str msg_entity_overlapping(str utterance: str, Entity entity, Entity next_entity):
     return """
         For utterance {utt}, entity {sv} ends at {se}, and entity {nv} starts at {ns},
         which are overlapping. Currently, uttut doesn't support overlapping or hierachy entities.

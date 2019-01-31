@@ -5,7 +5,7 @@ from .exceptions import (
     EntityOverlapping,
     EntityPositionError,
 )
-from .utils import (
+from .utils cimport (
     entity_position_correct,
     overlap,
     msg_entity_wrong_position,
@@ -15,11 +15,11 @@ from .utils import (
 
 cdef class Datum:
 
-    def __init__(
+    def __cinit__(
             self,
             str utterance,
-            list intents = None,  # : List[Intent] = None,
-            list entities = None,  # : List[Entity] = None,
+            object intents = None,  # : List[Intent] = None,
+            object entities = None,  # : List[Entity] = None,
         ):
         self.utterance = utterance
         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
@@ -37,18 +37,14 @@ cdef class Datum:
             if overlap(entity, next_entity):
                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError('can only compare datum to datum')
-
+    def __eq__(self, Datum other):
         if not self.has_same_utterance_as(other):
             return False
-        elif not self.has_same_intents_as(other):
+        if not self.has_same_intents_as(other):
             return False
-        elif not self.has_same_entities_as(other):
+        if not self.has_same_entities_as(other):
             return False
-        else:
-            return True
+        return True
 
     def __repr__(self):
         return "<Datum {} {} with entities: {}>".format(
@@ -57,13 +53,13 @@ cdef class Datum:
             self.entities,
         )
 
-    def has_same_utterance_as(self, other):
+    cpdef bint has_same_utterance_as(self, Datum other):
         return self.utterance == other.utterance
 
-    def has_same_intents_as(self, other):
+    cpdef bint has_same_intents_as(self, Datum other):
         return set(self.intents) == set(other.intents)
 
-    def has_same_entities_as(self, other):
+    cpdef bint has_same_entities_as(self, Datum other):
         same_entities = False
         if len(self.entities) == len(other.entities):
             for self_entity, other_entity in zip(self.entities, other.entities):
@@ -73,11 +69,12 @@ cdef class Datum:
                 same_entities = True
         return same_entities
 
-    def has_entities(self):
+    cpdef bint has_entities(self):
         return len(self.entities) > 0
 
-    def has_intents(self):
+    cpdef bint has_intents(self):
         return len(self.intents) > 0
 
-    def copy_intents(self):
+    cpdef list copy_intents(self):
+        cdef Intent intent
         return [Intent(intent.label) for intent in self.intents]

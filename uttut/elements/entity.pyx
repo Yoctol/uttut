@@ -1,18 +1,13 @@
 cdef class Entity:
 
-    def __init__(
+    def __cinit__(
             self,
-            int label,
+            unsigned int label,
             str value,
-            int start,
-            int end,
-            replacements = None,
+            unsigned int start,
+            unsigned int end,
+            object replacements = None,
         ) -> None:
-
-        """
-
-        replacements: List[str]
-        """
 
         self.label = label
         self.value = value
@@ -21,14 +16,11 @@ cdef class Entity:
         cdef list _replacements = [] if replacements is None else list(replacements)
         self.replacements = set(_replacements)
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError('can only compare entity to entity')
-        cdef bint same_label = self.label == other.label
-        cdef bint same_value = self.value == other.value
-        cdef bint same_position = (self.start == other.start) and (self.end == other.end)
-        cdef bint same_replacements = self.replacements == other.replacements
-        return same_label and same_value and same_position and same_replacements
+    def __eq__(self, Entity other):
+        cdef tuple self_attrs, other_attrs
+        self_attrs = (self.label, self.value, self.start, self.end, self.replacements)
+        other_attrs = (other.label, other.value, other.start, other.end, other.replacements)
+        return self_attrs == other_attrs
 
     def __repr__(self):
         return "<Entity {}: {} at {} - {}, with replacements: {}>".format(
@@ -39,13 +31,14 @@ cdef class Entity:
             ', '.join(list(self.replacements)),
         )
 
-    def no_replacements(self) -> bool:
+    cpdef bint no_replacements(self):
         return len(self.replacements) == 0
 
-    def n_replacements(self):
+    cpdef unsigned int n_replacements(self):
         return len(self.replacements) + 1
 
-    def to_dict(self) -> dict:
+    cpdef dict to_dict(self):
+        cdef dict result
         result = {
             'label': self.label,
             'start': self.start,
