@@ -23,6 +23,8 @@ cdef class Datum:
             object intents=None,  # : List[Intent] = None,
             object entities=None,  # : List[Entity] = None,
         ):
+        cdef Entity entity, next_entity
+        cdef unsigned int idx
         self.utterance = utterance
         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)
@@ -40,13 +42,10 @@ cdef class Datum:
                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
 
     def __eq__(self, Datum other):
-        if not self.has_same_utterance_as(other):
-            return False
-        if not self.has_same_intents_as(other):
-            return False
-        if not self.has_same_entities_as(other):
-            return False
-        return True
+        cdef bint same_utterance = self.has_same_utterance_as(other)
+        cdef bint same_intents = self.has_same_intents_as(other)
+        cdef bint same_entities = self.has_same_entities_as(other)
+        return same_utterance and same_intents and same_entities
 
     def __repr__(self):
         intent_str = pprint.pformat(self.intents)
@@ -61,14 +60,7 @@ cdef class Datum:
         return set(self.intents) == set(other.intents)
 
     cpdef bint has_same_entities_as(self, Datum other):
-        same_entities = False
-        if len(self.entities) == len(other.entities):
-            for self_entity, other_entity in zip(self.entities, other.entities):
-                if self_entity != other_entity:
-                    break
-            else:
-                same_entities = True
-        return same_entities
+        return self.entities == other.entities
 
     cpdef bint has_entities(self):
         return len(self.entities) > 0

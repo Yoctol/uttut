@@ -1397,21 +1397,6 @@ static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
                                                      int is_list, int wraparound, int boundscheck);
 
-/* ObjectGetItem.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
-#else
-#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
-#endif
-
-/* PyIntBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
-#else
-#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
-    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
-
 /* PyUnicode_Unicode.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj);
 
@@ -1454,18 +1439,6 @@ static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int 
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
-
-/* RaiseTooManyValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
-
-/* RaiseNeedMoreValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
-
-/* IterFinish.proto */
-static CYTHON_INLINE int __Pyx_IterFinish(void);
-
-/* UnpackItemEndCheck.proto */
-static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
 
 /* PyObjectCallNoArg.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1558,10 +1531,16 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_int(unsigned int value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE unsigned int __Pyx_PyInt_As_unsigned_int(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -1619,11 +1598,9 @@ int __pyx_module_is_main_uttut__elements__datum = 0;
 /* Implementation of 'uttut.elements.datum' */
 static PyObject *__pyx_builtin_sorted;
 static PyObject *__pyx_builtin_range;
-static PyObject *__pyx_builtin_zip;
 static PyObject *__pyx_builtin_TypeError;
 static const char __pyx_k_[] = ">";
 static const char __pyx_k_key[] = "key";
-static const char __pyx_k_zip[] = "zip";
 static const char __pyx_k_None[] = "None";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
@@ -1702,7 +1679,6 @@ static PyObject *__pyx_n_s_utterance;
 static PyObject *__pyx_n_s_uttut_elements_datum;
 static PyObject *__pyx_kp_u_with_entities;
 static PyObject *__pyx_kp_u_with_intents;
-static PyObject *__pyx_n_s_zip;
 static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_i); /* proto */
 static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_e); /* proto */
 static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_self, PyObject *__pyx_v_utterance, PyObject *__pyx_v_intents, PyObject *__pyx_v_entities); /* proto */
@@ -1726,7 +1702,6 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_8entities_4__del__(struct __p
 static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_18__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_20__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_5uttut_8elements_5datum_Datum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_int_1;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 /* Late includes */
@@ -1766,7 +1741,7 @@ static int __pyx_pw_5uttut_8elements_5datum_5Datum_1__cinit__(PyObject *__pyx_v_
  *             object intents=None,  # : List[Intent] = None,
  *             object entities=None,  # : List[Entity] = None,             # <<<<<<<<<<<<<<
  *         ):
- *         self.utterance = utterance
+ *         cdef Entity entity, next_entity
  */
     values[2] = ((PyObject *)Py_None);
     if (unlikely(__pyx_kwds)) {
@@ -1846,8 +1821,8 @@ static int __pyx_pw_5uttut_8elements_5datum_5Datum_1__cinit__(PyObject *__pyx_v_
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":27
- *         ):
+/* "uttut/elements/datum.pyx":29
+ *         cdef unsigned int idx
  *         self.utterance = utterance
  *         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))             # <<<<<<<<<<<<<<
  *         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)
@@ -1875,10 +1850,10 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   Py_hash_t __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("lambda", 0);
-  __Pyx_TraceCall("lambda", __pyx_f[0], 27, 0, __PYX_ERR(0, 27, __pyx_L1_error));
+  __Pyx_TraceCall("lambda", __pyx_f[0], 29, 0, __PYX_ERR(0, 29, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyObject_Hash(__pyx_v_i); if (unlikely(__pyx_t_1 == ((Py_hash_t)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_FromHash_t(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Hash(__pyx_v_i); if (unlikely(__pyx_t_1 == ((Py_hash_t)-1))) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FromHash_t(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -1896,7 +1871,7 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":28
+/* "uttut/elements/datum.pyx":30
  *         self.utterance = utterance
  *         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
  *         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)             # <<<<<<<<<<<<<<
@@ -1924,9 +1899,9 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("lambda1", 0);
-  __Pyx_TraceCall("lambda1", __pyx_f[0], 28, 0, __PYX_ERR(0, 28, __pyx_L1_error));
+  __Pyx_TraceCall("lambda1", __pyx_f[0], 30, 0, __PYX_ERR(0, 30, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1953,9 +1928,9 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
  */
 
 static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_self, PyObject *__pyx_v_utterance, PyObject *__pyx_v_intents, PyObject *__pyx_v_entities) {
-  PyObject *__pyx_v_entity = NULL;
-  PyObject *__pyx_v_idx = NULL;
-  PyObject *__pyx_v_next_entity = NULL;
+  struct __pyx_obj_5uttut_8elements_6entity_Entity *__pyx_v_entity = 0;
+  struct __pyx_obj_5uttut_8elements_6entity_Entity *__pyx_v_next_entity = 0;
+  unsigned int __pyx_v_idx;
   int __pyx_r;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -1965,14 +1940,16 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  Py_ssize_t __pyx_t_8;
+  unsigned int __pyx_t_9;
+  long __pyx_t_10;
   __Pyx_RefNannySetupContext("__cinit__", 0);
   __Pyx_TraceCall("__cinit__", __pyx_f[0], 20, 0, __PYX_ERR(0, 20, __pyx_L1_error));
 
-  /* "uttut/elements/datum.pyx":26
- *             object entities=None,  # : List[Entity] = None,
- *         ):
+  /* "uttut/elements/datum.pyx":28
+ *         cdef Entity entity, next_entity
+ *         cdef unsigned int idx
  *         self.utterance = utterance             # <<<<<<<<<<<<<<
  *         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
  *         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)
@@ -1983,8 +1960,8 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
   __Pyx_DECREF(__pyx_v_self->utterance);
   __pyx_v_self->utterance = __pyx_v_utterance;
 
-  /* "uttut/elements/datum.pyx":27
- *         ):
+  /* "uttut/elements/datum.pyx":29
+ *         cdef unsigned int idx
  *         self.utterance = utterance
  *         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))             # <<<<<<<<<<<<<<
  *         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)
@@ -1992,36 +1969,37 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
  */
   __pyx_t_2 = (__pyx_v_intents == Py_None);
   if ((__pyx_t_2 != 0)) {
-    __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = __pyx_t_3;
     __pyx_t_3 = 0;
   } else {
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_intents);
     __Pyx_GIVEREF(__pyx_v_intents);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_intents);
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8elements_5datum_5Datum_9__cinit___lambda, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_uttut_elements_datum, __pyx_d, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8elements_5datum_5Datum_9__cinit___lambda, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_uttut_elements_datum, __pyx_d, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (!(likely(PyList_CheckExact(__pyx_t_5))||((__pyx_t_5) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_5)->tp_name), 0))) __PYX_ERR(0, 29, __pyx_L1_error)
     __pyx_t_1 = __pyx_t_5;
     __pyx_t_5 = 0;
   }
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->intents);
   __Pyx_DECREF(__pyx_v_self->intents);
-  __pyx_v_self->intents = __pyx_t_1;
+  __pyx_v_self->intents = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "uttut/elements/datum.pyx":28
+  /* "uttut/elements/datum.pyx":30
  *         self.utterance = utterance
  *         self.intents = [] if intents is None else sorted(intents, key=lambda i: hash(i))
  *         self.entities = [] if entities is None else sorted(entities, key=lambda e: e.start)             # <<<<<<<<<<<<<<
@@ -2030,85 +2008,61 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
  */
   __pyx_t_2 = (__pyx_v_entities == Py_None);
   if ((__pyx_t_2 != 0)) {
-    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 30, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_1 = __pyx_t_5;
     __pyx_t_5 = 0;
   } else {
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 30, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_v_entities);
     __Pyx_GIVEREF(__pyx_v_entities);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_v_entities);
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 30, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8elements_5datum_5Datum_9__cinit___1lambda1, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_uttut_elements_datum, __pyx_d, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8elements_5datum_5Datum_9__cinit___1lambda1, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_uttut_elements_datum, __pyx_d, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 30, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 30, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 30, __pyx_L1_error)
     __pyx_t_1 = __pyx_t_3;
     __pyx_t_3 = 0;
   }
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->entities);
   __Pyx_DECREF(__pyx_v_self->entities);
-  __pyx_v_self->entities = __pyx_t_1;
+  __pyx_v_self->entities = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "uttut/elements/datum.pyx":31
+  /* "uttut/elements/datum.pyx":33
  * 
  *         # check entity has correct value and position
  *         for entity in self.entities:             # <<<<<<<<<<<<<<
  *             if not entity_position_correct(self.utterance, entity):
  *                 raise EntityPositionError(msg_entity_wrong_position(self.utterance, entity))
  */
-  if (likely(PyList_CheckExact(__pyx_v_self->entities)) || PyTuple_CheckExact(__pyx_v_self->entities)) {
-    __pyx_t_1 = __pyx_v_self->entities; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_self->entities); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (unlikely(__pyx_v_self->entities == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+    __PYX_ERR(0, 33, __pyx_L1_error)
   }
+  __pyx_t_1 = __pyx_v_self->entities; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
   for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_1))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
-        #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
-        #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        #endif
-      }
-    } else {
-      __pyx_t_3 = __pyx_t_7(__pyx_t_1);
-      if (unlikely(!__pyx_t_3)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 31, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_3);
-    }
-    __Pyx_XDECREF_SET(__pyx_v_entity, __pyx_t_3);
+    if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
+    #else
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    #endif
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 33, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_entity, ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "uttut/elements/datum.pyx":32
+    /* "uttut/elements/datum.pyx":34
  *         # check entity has correct value and position
  *         for entity in self.entities:
  *             if not entity_position_correct(self.utterance, entity):             # <<<<<<<<<<<<<<
@@ -2117,25 +2071,23 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
  */
     __pyx_t_3 = __pyx_v_self->utterance;
     __Pyx_INCREF(__pyx_t_3);
-    if (!(likely(((__pyx_v_entity) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_entity, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 32, __pyx_L1_error)
-    __pyx_t_2 = ((!(__pyx_f_5uttut_8elements_5utils_entity_position_correct(((PyObject*)__pyx_t_3), ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_entity)) != 0)) != 0);
+    __pyx_t_2 = ((!(__pyx_f_5uttut_8elements_5utils_entity_position_correct(((PyObject*)__pyx_t_3), __pyx_v_entity) != 0)) != 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (unlikely(__pyx_t_2)) {
 
-      /* "uttut/elements/datum.pyx":33
+      /* "uttut/elements/datum.pyx":35
  *         for entity in self.entities:
  *             if not entity_position_correct(self.utterance, entity):
  *                 raise EntityPositionError(msg_entity_wrong_position(self.utterance, entity))             # <<<<<<<<<<<<<<
  * 
  *         # check overlapping entities
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_EntityPositionError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_EntityPositionError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_5 = __pyx_v_self->utterance;
       __Pyx_INCREF(__pyx_t_5);
-      if (!(likely(((__pyx_v_entity) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_entity, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 33, __pyx_L1_error)
-      __pyx_t_8 = __pyx_f_5uttut_8elements_5utils_msg_entity_wrong_position(((PyObject*)__pyx_t_5), ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_entity)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 33, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
+      __pyx_t_7 = __pyx_f_5uttut_8elements_5utils_msg_entity_wrong_position(((PyObject*)__pyx_t_5), __pyx_v_entity); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -2147,17 +2099,17 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
           __Pyx_DECREF_SET(__pyx_t_4, function);
         }
       }
-      __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_8) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_8);
+      __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 33, __pyx_L1_error)
+      __PYX_ERR(0, 35, __pyx_L1_error)
 
-      /* "uttut/elements/datum.pyx":32
+      /* "uttut/elements/datum.pyx":34
  *         # check entity has correct value and position
  *         for entity in self.entities:
  *             if not entity_position_correct(self.utterance, entity):             # <<<<<<<<<<<<<<
@@ -2166,7 +2118,7 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
  */
     }
 
-    /* "uttut/elements/datum.pyx":31
+    /* "uttut/elements/datum.pyx":33
  * 
  *         # check entity has correct value and position
  *         for entity in self.entities:             # <<<<<<<<<<<<<<
@@ -2176,7 +2128,7 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/elements/datum.pyx":36
+  /* "uttut/elements/datum.pyx":38
  * 
  *         # check overlapping entities
  *         for idx in range(len(self.entities) - 1):             # <<<<<<<<<<<<<<
@@ -2185,132 +2137,97 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
  */
   __pyx_t_1 = __pyx_v_self->entities;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyInt_FromSsize_t((__pyx_t_6 - 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
-    __pyx_t_1 = __pyx_t_3; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (unlikely(__pyx_t_1 == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 38, __pyx_L1_error)
   }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_1))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 36, __pyx_L1_error)
-        #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 36, __pyx_L1_error)
-        #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        #endif
-      }
-    } else {
-      __pyx_t_3 = __pyx_t_7(__pyx_t_1);
-      if (unlikely(!__pyx_t_3)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 36, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_3);
-    }
-    __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_3);
-    __pyx_t_3 = 0;
+  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_8 = (__pyx_t_6 - 1);
+  __pyx_t_6 = __pyx_t_8;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_6; __pyx_t_9+=1) {
+    __pyx_v_idx = __pyx_t_9;
 
-    /* "uttut/elements/datum.pyx":37
+    /* "uttut/elements/datum.pyx":39
  *         # check overlapping entities
  *         for idx in range(len(self.entities) - 1):
  *             entity = self.entities[idx]             # <<<<<<<<<<<<<<
  *             next_entity = self.entities[idx + 1]
  *             if overlap(entity, next_entity):
  */
-    __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_v_self->entities, __pyx_v_idx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_XDECREF_SET(__pyx_v_entity, __pyx_t_3);
-    __pyx_t_3 = 0;
+    if (unlikely(__pyx_v_self->entities == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 39, __pyx_L1_error)
+    }
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->entities, __pyx_v_idx, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 39, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_entity, ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_t_1));
+    __pyx_t_1 = 0;
 
-    /* "uttut/elements/datum.pyx":38
+    /* "uttut/elements/datum.pyx":40
  *         for idx in range(len(self.entities) - 1):
  *             entity = self.entities[idx]
  *             next_entity = self.entities[idx + 1]             # <<<<<<<<<<<<<<
  *             if overlap(entity, next_entity):
  *                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
  */
-    __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_idx, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_self->entities, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_next_entity, __pyx_t_4);
-    __pyx_t_4 = 0;
+    if (unlikely(__pyx_v_self->entities == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 40, __pyx_L1_error)
+    }
+    __pyx_t_10 = (__pyx_v_idx + 1);
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->entities, __pyx_t_10, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 40, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_next_entity, ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_t_1));
+    __pyx_t_1 = 0;
 
-    /* "uttut/elements/datum.pyx":39
+    /* "uttut/elements/datum.pyx":41
  *             entity = self.entities[idx]
  *             next_entity = self.entities[idx + 1]
  *             if overlap(entity, next_entity):             # <<<<<<<<<<<<<<
  *                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
  * 
  */
-    if (!(likely(((__pyx_v_entity) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_entity, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 39, __pyx_L1_error)
-    if (!(likely(((__pyx_v_next_entity) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_next_entity, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 39, __pyx_L1_error)
-    __pyx_t_2 = (__pyx_f_5uttut_8elements_5utils_overlap(((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_entity), ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_next_entity)) != 0);
+    __pyx_t_2 = (__pyx_f_5uttut_8elements_5utils_overlap(__pyx_v_entity, __pyx_v_next_entity) != 0);
     if (unlikely(__pyx_t_2)) {
 
-      /* "uttut/elements/datum.pyx":40
+      /* "uttut/elements/datum.pyx":42
  *             next_entity = self.entities[idx + 1]
  *             if overlap(entity, next_entity):
  *                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))             # <<<<<<<<<<<<<<
  * 
  *     def __eq__(self, Datum other):
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_EntityOverlapping); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_EntityOverlapping); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = __pyx_v_self->utterance;
-      __Pyx_INCREF(__pyx_t_8);
-      if (!(likely(((__pyx_v_entity) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_entity, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 40, __pyx_L1_error)
-      if (!(likely(((__pyx_v_next_entity) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_next_entity, __pyx_ptype_5uttut_8elements_6entity_Entity))))) __PYX_ERR(0, 40, __pyx_L1_error)
-      __pyx_t_5 = __pyx_f_5uttut_8elements_5utils_msg_entity_overlapping(((PyObject*)__pyx_t_8), ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_entity), ((struct __pyx_obj_5uttut_8elements_6entity_Entity *)__pyx_v_next_entity)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = NULL;
+      __pyx_t_4 = __pyx_v_self->utterance;
+      __Pyx_INCREF(__pyx_t_4);
+      __pyx_t_7 = __pyx_f_5uttut_8elements_5utils_msg_entity_overlapping(((PyObject*)__pyx_t_4), __pyx_v_entity, __pyx_v_next_entity); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 42, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_8)) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
           PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_8);
+          __Pyx_INCREF(__pyx_t_4);
           __Pyx_INCREF(function);
           __Pyx_DECREF_SET(__pyx_t_3, function);
         }
       }
-      __pyx_t_4 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_8, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 40, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7);
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_Raise(__pyx_t_4, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(0, 40, __pyx_L1_error)
+      __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __PYX_ERR(0, 42, __pyx_L1_error)
 
-      /* "uttut/elements/datum.pyx":39
+      /* "uttut/elements/datum.pyx":41
  *             entity = self.entities[idx]
  *             next_entity = self.entities[idx + 1]
  *             if overlap(entity, next_entity):             # <<<<<<<<<<<<<<
@@ -2318,16 +2235,7 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
  * 
  */
     }
-
-    /* "uttut/elements/datum.pyx":36
- * 
- *         # check overlapping entities
- *         for idx in range(len(self.entities) - 1):             # <<<<<<<<<<<<<<
- *             entity = self.entities[idx]
- *             next_entity = self.entities[idx + 1]
- */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "uttut/elements/datum.pyx":20
  * cdef class Datum:
@@ -2345,24 +2253,23 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum___cinit__(struct __pyx_obj_5u
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("uttut.elements.datum.Datum.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_entity);
-  __Pyx_XDECREF(__pyx_v_idx);
-  __Pyx_XDECREF(__pyx_v_next_entity);
+  __Pyx_XDECREF((PyObject *)__pyx_v_entity);
+  __Pyx_XDECREF((PyObject *)__pyx_v_next_entity);
   __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":42
+/* "uttut/elements/datum.pyx":44
  *                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
  * 
  *     def __eq__(self, Datum other):             # <<<<<<<<<<<<<<
- *         if not self.has_same_utterance_as(other):
- *             return False
+ *         cdef bint same_utterance = self.has_same_utterance_as(other)
+ *         cdef bint same_intents = self.has_same_intents_as(other)
  */
 
 /* Python wrapper */
@@ -2371,7 +2278,7 @@ static PyObject *__pyx_pw_5uttut_8elements_5datum_5Datum_3__eq__(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__eq__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 44, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8elements_5datum_5Datum_2__eq__(((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_self), ((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_other));
 
   /* function exit code */
@@ -2384,128 +2291,89 @@ static PyObject *__pyx_pw_5uttut_8elements_5datum_5Datum_3__eq__(PyObject *__pyx
 }
 
 static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_2__eq__(struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_self, struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_other) {
+  int __pyx_v_same_utterance;
+  int __pyx_v_same_intents;
+  int __pyx_v_same_entities;
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__eq__", 0);
-  __Pyx_TraceCall("__eq__", __pyx_f[0], 42, 0, __PYX_ERR(0, 42, __pyx_L1_error));
-
-  /* "uttut/elements/datum.pyx":43
- * 
- *     def __eq__(self, Datum other):
- *         if not self.has_same_utterance_as(other):             # <<<<<<<<<<<<<<
- *             return False
- *         if not self.has_same_intents_as(other):
- */
-  __pyx_t_1 = ((!(((struct __pyx_vtabstruct_5uttut_8elements_5datum_Datum *)__pyx_v_self->__pyx_vtab)->has_same_utterance_as(__pyx_v_self, __pyx_v_other, 0) != 0)) != 0);
-  if (__pyx_t_1) {
-
-    /* "uttut/elements/datum.pyx":44
- *     def __eq__(self, Datum other):
- *         if not self.has_same_utterance_as(other):
- *             return False             # <<<<<<<<<<<<<<
- *         if not self.has_same_intents_as(other):
- *             return False
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(Py_False);
-    __pyx_r = Py_False;
-    goto __pyx_L0;
-
-    /* "uttut/elements/datum.pyx":43
- * 
- *     def __eq__(self, Datum other):
- *         if not self.has_same_utterance_as(other):             # <<<<<<<<<<<<<<
- *             return False
- *         if not self.has_same_intents_as(other):
- */
-  }
+  __Pyx_TraceCall("__eq__", __pyx_f[0], 44, 0, __PYX_ERR(0, 44, __pyx_L1_error));
 
   /* "uttut/elements/datum.pyx":45
- *         if not self.has_same_utterance_as(other):
- *             return False
- *         if not self.has_same_intents_as(other):             # <<<<<<<<<<<<<<
- *             return False
- *         if not self.has_same_entities_as(other):
+ * 
+ *     def __eq__(self, Datum other):
+ *         cdef bint same_utterance = self.has_same_utterance_as(other)             # <<<<<<<<<<<<<<
+ *         cdef bint same_intents = self.has_same_intents_as(other)
+ *         cdef bint same_entities = self.has_same_entities_as(other)
  */
-  __pyx_t_1 = ((!(((struct __pyx_vtabstruct_5uttut_8elements_5datum_Datum *)__pyx_v_self->__pyx_vtab)->has_same_intents_as(__pyx_v_self, __pyx_v_other, 0) != 0)) != 0);
-  if (__pyx_t_1) {
+  __pyx_v_same_utterance = ((struct __pyx_vtabstruct_5uttut_8elements_5datum_Datum *)__pyx_v_self->__pyx_vtab)->has_same_utterance_as(__pyx_v_self, __pyx_v_other, 0);
 
-    /* "uttut/elements/datum.pyx":46
- *             return False
- *         if not self.has_same_intents_as(other):
- *             return False             # <<<<<<<<<<<<<<
- *         if not self.has_same_entities_as(other):
- *             return False
+  /* "uttut/elements/datum.pyx":46
+ *     def __eq__(self, Datum other):
+ *         cdef bint same_utterance = self.has_same_utterance_as(other)
+ *         cdef bint same_intents = self.has_same_intents_as(other)             # <<<<<<<<<<<<<<
+ *         cdef bint same_entities = self.has_same_entities_as(other)
+ *         return same_utterance and same_intents and same_entities
  */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(Py_False);
-    __pyx_r = Py_False;
-    goto __pyx_L0;
-
-    /* "uttut/elements/datum.pyx":45
- *         if not self.has_same_utterance_as(other):
- *             return False
- *         if not self.has_same_intents_as(other):             # <<<<<<<<<<<<<<
- *             return False
- *         if not self.has_same_entities_as(other):
- */
-  }
+  __pyx_v_same_intents = ((struct __pyx_vtabstruct_5uttut_8elements_5datum_Datum *)__pyx_v_self->__pyx_vtab)->has_same_intents_as(__pyx_v_self, __pyx_v_other, 0);
 
   /* "uttut/elements/datum.pyx":47
- *         if not self.has_same_intents_as(other):
- *             return False
- *         if not self.has_same_entities_as(other):             # <<<<<<<<<<<<<<
- *             return False
- *         return True
- */
-  __pyx_t_1 = ((!(((struct __pyx_vtabstruct_5uttut_8elements_5datum_Datum *)__pyx_v_self->__pyx_vtab)->has_same_entities_as(__pyx_v_self, __pyx_v_other, 0) != 0)) != 0);
-  if (__pyx_t_1) {
-
-    /* "uttut/elements/datum.pyx":48
- *             return False
- *         if not self.has_same_entities_as(other):
- *             return False             # <<<<<<<<<<<<<<
- *         return True
+ *         cdef bint same_utterance = self.has_same_utterance_as(other)
+ *         cdef bint same_intents = self.has_same_intents_as(other)
+ *         cdef bint same_entities = self.has_same_entities_as(other)             # <<<<<<<<<<<<<<
+ *         return same_utterance and same_intents and same_entities
  * 
  */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(Py_False);
-    __pyx_r = Py_False;
-    goto __pyx_L0;
+  __pyx_v_same_entities = ((struct __pyx_vtabstruct_5uttut_8elements_5datum_Datum *)__pyx_v_self->__pyx_vtab)->has_same_entities_as(__pyx_v_self, __pyx_v_other, 0);
 
-    /* "uttut/elements/datum.pyx":47
- *         if not self.has_same_intents_as(other):
- *             return False
- *         if not self.has_same_entities_as(other):             # <<<<<<<<<<<<<<
- *             return False
- *         return True
- */
-  }
-
-  /* "uttut/elements/datum.pyx":49
- *         if not self.has_same_entities_as(other):
- *             return False
- *         return True             # <<<<<<<<<<<<<<
+  /* "uttut/elements/datum.pyx":48
+ *         cdef bint same_intents = self.has_same_intents_as(other)
+ *         cdef bint same_entities = self.has_same_entities_as(other)
+ *         return same_utterance and same_intents and same_entities             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(Py_True);
-  __pyx_r = Py_True;
+  if (__pyx_v_same_utterance) {
+  } else {
+    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_same_utterance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __pyx_t_2;
+    __pyx_t_2 = 0;
+    goto __pyx_L3_bool_binop_done;
+  }
+  if (__pyx_v_same_intents) {
+  } else {
+    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_same_intents); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __pyx_t_2;
+    __pyx_t_2 = 0;
+    goto __pyx_L3_bool_binop_done;
+  }
+  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_same_entities); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  __pyx_L3_bool_binop_done:;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":42
+  /* "uttut/elements/datum.pyx":44
  *                 raise EntityOverlapping(msg_entity_overlapping(self.utterance, entity, next_entity))
  * 
  *     def __eq__(self, Datum other):             # <<<<<<<<<<<<<<
- *         if not self.has_same_utterance_as(other):
- *             return False
+ *         cdef bint same_utterance = self.has_same_utterance_as(other)
+ *         cdef bint same_intents = self.has_same_intents_as(other)
  */
 
   /* function exit code */
   __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("uttut.elements.datum.Datum.__eq__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -2515,8 +2383,8 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_2__eq__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":51
- *         return True
+/* "uttut/elements/datum.pyx":50
+ *         return same_utterance and same_intents and same_entities
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         intent_str = pprint.pformat(self.intents)
@@ -2548,18 +2416,18 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   Py_ssize_t __pyx_t_4;
   Py_UCS4 __pyx_t_5;
   __Pyx_RefNannySetupContext("__repr__", 0);
-  __Pyx_TraceCall("__repr__", __pyx_f[0], 51, 0, __PYX_ERR(0, 51, __pyx_L1_error));
+  __Pyx_TraceCall("__repr__", __pyx_f[0], 50, 0, __PYX_ERR(0, 50, __pyx_L1_error));
 
-  /* "uttut/elements/datum.pyx":52
+  /* "uttut/elements/datum.pyx":51
  * 
  *     def __repr__(self):
  *         intent_str = pprint.pformat(self.intents)             # <<<<<<<<<<<<<<
  *         entity_str = pprint.pformat(self.entities)
  *         return f"<Datum {self.utterance}\n with intents: "\
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_pprint); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_pprint); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pformat); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pformat); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -2574,22 +2442,22 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_v_self->intents) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_self->intents);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_intent_str = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "uttut/elements/datum.pyx":53
+  /* "uttut/elements/datum.pyx":52
  *     def __repr__(self):
  *         intent_str = pprint.pformat(self.intents)
  *         entity_str = pprint.pformat(self.entities)             # <<<<<<<<<<<<<<
  *         return f"<Datum {self.utterance}\n with intents: "\
  *             f"{intent_str}\n with entities:\n{entity_str}>"
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pprint); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pprint); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_pformat); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_pformat); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -2604,13 +2472,13 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_self->entities) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_self->entities);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_entity_str = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "uttut/elements/datum.pyx":54
+  /* "uttut/elements/datum.pyx":53
  *         intent_str = pprint.pformat(self.intents)
  *         entity_str = pprint.pformat(self.entities)
  *         return f"<Datum {self.utterance}\n with intents: "\             # <<<<<<<<<<<<<<
@@ -2618,7 +2486,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = 0;
   __pyx_t_5 = 127;
@@ -2626,7 +2494,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   __pyx_t_4 += 7;
   __Pyx_GIVEREF(__pyx_kp_u_Datum);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_Datum);
-  __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_self->utterance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_self->utterance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_5;
   __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
@@ -2638,14 +2506,14 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   __Pyx_GIVEREF(__pyx_kp_u_with_intents);
   PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_with_intents);
 
-  /* "uttut/elements/datum.pyx":55
+  /* "uttut/elements/datum.pyx":54
  *         entity_str = pprint.pformat(self.entities)
  *         return f"<Datum {self.utterance}\n with intents: "\
  *             f"{intent_str}\n with entities:\n{entity_str}>"             # <<<<<<<<<<<<<<
  * 
  *     cpdef bint has_same_utterance_as(self, Datum other):
  */
-  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_intent_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_intent_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_5;
   __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
@@ -2656,7 +2524,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   __pyx_t_4 += 17;
   __Pyx_GIVEREF(__pyx_kp_u_with_entities);
   PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u_with_entities);
-  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_entity_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_entity_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_5;
   __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
@@ -2668,22 +2536,22 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u_);
 
-  /* "uttut/elements/datum.pyx":54
+  /* "uttut/elements/datum.pyx":53
  *         intent_str = pprint.pformat(self.intents)
  *         entity_str = pprint.pformat(self.entities)
  *         return f"<Datum {self.utterance}\n with intents: "\             # <<<<<<<<<<<<<<
  *             f"{intent_str}\n with entities:\n{entity_str}>"
  * 
  */
-  __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 7, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 7, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":51
- *         return True
+  /* "uttut/elements/datum.pyx":50
+ *         return same_utterance and same_intents and same_entities
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         intent_str = pprint.pformat(self.intents)
@@ -2706,7 +2574,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_4__repr__(struct __pyx_
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":57
+/* "uttut/elements/datum.pyx":56
  *             f"{intent_str}\n with entities:\n{entity_str}>"
  * 
  *     cpdef bint has_same_utterance_as(self, Datum other):             # <<<<<<<<<<<<<<
@@ -2725,7 +2593,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_utterance_as(struct _
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("has_same_utterance_as", 0);
-  __Pyx_TraceCall("has_same_utterance_as", __pyx_f[0], 57, 0, __PYX_ERR(0, 57, __pyx_L1_error));
+  __Pyx_TraceCall("has_same_utterance_as", __pyx_f[0], 56, 0, __PYX_ERR(0, 56, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -2736,7 +2604,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_utterance_as(struct _
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_same_utterance_as); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_same_utterance_as); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8elements_5datum_5Datum_7has_same_utterance_as)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -2752,10 +2620,10 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_utterance_as(struct _
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_other)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2774,18 +2642,18 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_utterance_as(struct _
     #endif
   }
 
-  /* "uttut/elements/datum.pyx":58
+  /* "uttut/elements/datum.pyx":57
  * 
  *     cpdef bint has_same_utterance_as(self, Datum other):
  *         return self.utterance == other.utterance             # <<<<<<<<<<<<<<
  * 
  *     cpdef bint has_same_intents_as(self, Datum other):
  */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_self->utterance, __pyx_v_other->utterance, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_self->utterance, __pyx_v_other->utterance, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 57, __pyx_L1_error)
   __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":57
+  /* "uttut/elements/datum.pyx":56
  *             f"{intent_str}\n with entities:\n{entity_str}>"
  * 
  *     cpdef bint has_same_utterance_as(self, Datum other):             # <<<<<<<<<<<<<<
@@ -2813,7 +2681,7 @@ static PyObject *__pyx_pw_5uttut_8elements_5datum_5Datum_7has_same_utterance_as(
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("has_same_utterance_as (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 57, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 56, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8elements_5datum_5Datum_6has_same_utterance_as(((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_self), ((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_other));
 
   /* function exit code */
@@ -2831,9 +2699,9 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_6has_same_utterance_as(
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_same_utterance_as", 0);
-  __Pyx_TraceCall("has_same_utterance_as (wrapper)", __pyx_f[0], 57, 0, __PYX_ERR(0, 57, __pyx_L1_error));
+  __Pyx_TraceCall("has_same_utterance_as (wrapper)", __pyx_f[0], 56, 0, __PYX_ERR(0, 56, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_same_utterance_as(__pyx_v_self, __pyx_v_other, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_same_utterance_as(__pyx_v_self, __pyx_v_other, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2851,7 +2719,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_6has_same_utterance_as(
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":60
+/* "uttut/elements/datum.pyx":59
  *         return self.utterance == other.utterance
  * 
  *     cpdef bint has_same_intents_as(self, Datum other):             # <<<<<<<<<<<<<<
@@ -2870,7 +2738,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_intents_as(struct __p
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("has_same_intents_as", 0);
-  __Pyx_TraceCall("has_same_intents_as", __pyx_f[0], 60, 0, __PYX_ERR(0, 60, __pyx_L1_error));
+  __Pyx_TraceCall("has_same_intents_as", __pyx_f[0], 59, 0, __PYX_ERR(0, 59, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -2881,7 +2749,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_intents_as(struct __p
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_same_intents_as); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_same_intents_as); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8elements_5datum_5Datum_9has_same_intents_as)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -2897,10 +2765,10 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_intents_as(struct __p
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_other)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2919,26 +2787,26 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_intents_as(struct __p
     #endif
   }
 
-  /* "uttut/elements/datum.pyx":61
+  /* "uttut/elements/datum.pyx":60
  * 
  *     cpdef bint has_same_intents_as(self, Datum other):
  *         return set(self.intents) == set(other.intents)             # <<<<<<<<<<<<<<
  * 
  *     cpdef bint has_same_entities_as(self, Datum other):
  */
-  __pyx_t_1 = PySet_New(__pyx_v_self->intents); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(__pyx_v_self->intents); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PySet_New(__pyx_v_other->intents); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_2 = PySet_New(__pyx_v_other->intents); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":60
+  /* "uttut/elements/datum.pyx":59
  *         return self.utterance == other.utterance
  * 
  *     cpdef bint has_same_intents_as(self, Datum other):             # <<<<<<<<<<<<<<
@@ -2966,7 +2834,7 @@ static PyObject *__pyx_pw_5uttut_8elements_5datum_5Datum_9has_same_intents_as(Py
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("has_same_intents_as (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 59, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8elements_5datum_5Datum_8has_same_intents_as(((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_self), ((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_other));
 
   /* function exit code */
@@ -2984,9 +2852,9 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_8has_same_intents_as(st
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_same_intents_as", 0);
-  __Pyx_TraceCall("has_same_intents_as (wrapper)", __pyx_f[0], 60, 0, __PYX_ERR(0, 60, __pyx_L1_error));
+  __Pyx_TraceCall("has_same_intents_as (wrapper)", __pyx_f[0], 59, 0, __PYX_ERR(0, 59, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_same_intents_as(__pyx_v_self, __pyx_v_other, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_same_intents_as(__pyx_v_self, __pyx_v_other, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3004,19 +2872,16 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_8has_same_intents_as(st
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":63
+/* "uttut/elements/datum.pyx":62
  *         return set(self.intents) == set(other.intents)
  * 
  *     cpdef bint has_same_entities_as(self, Datum other):             # <<<<<<<<<<<<<<
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):
+ *         return self.entities == other.entities
+ * 
  */
 
 static PyObject *__pyx_pw_5uttut_8elements_5datum_5Datum_11has_same_entities_as(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
 static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_self, struct __pyx_obj_5uttut_8elements_5datum_Datum *__pyx_v_other, int __pyx_skip_dispatch) {
-  int __pyx_v_same_entities;
-  PyObject *__pyx_v_self_entity = NULL;
-  PyObject *__pyx_v_other_entity = NULL;
   int __pyx_r;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -3025,13 +2890,8 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(struct __
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
-  Py_ssize_t __pyx_t_6;
-  Py_ssize_t __pyx_t_7;
-  PyObject *(*__pyx_t_8)(PyObject *);
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *(*__pyx_t_10)(PyObject *);
   __Pyx_RefNannySetupContext("has_same_entities_as", 0);
-  __Pyx_TraceCall("has_same_entities_as", __pyx_f[0], 63, 0, __PYX_ERR(0, 63, __pyx_L1_error));
+  __Pyx_TraceCall("has_same_entities_as", __pyx_f[0], 62, 0, __PYX_ERR(0, 62, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -3042,7 +2902,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(struct __
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_same_entities_as); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_same_entities_as); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8elements_5datum_5Datum_11has_same_entities_as)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3058,10 +2918,10 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(struct __
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_other)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other));
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3080,227 +2940,25 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(struct __
     #endif
   }
 
-  /* "uttut/elements/datum.pyx":64
+  /* "uttut/elements/datum.pyx":63
  * 
  *     cpdef bint has_same_entities_as(self, Datum other):
- *         same_entities = False             # <<<<<<<<<<<<<<
- *         if len(self.entities) == len(other.entities):
- *             for self_entity, other_entity in zip(self.entities, other.entities):
- */
-  __pyx_v_same_entities = 0;
-
-  /* "uttut/elements/datum.pyx":65
- *     cpdef bint has_same_entities_as(self, Datum other):
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):             # <<<<<<<<<<<<<<
- *             for self_entity, other_entity in zip(self.entities, other.entities):
- *                 if self_entity != other_entity:
- */
-  __pyx_t_1 = __pyx_v_self->entities;
-  __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_v_other->entities;
-  __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_7 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = ((__pyx_t_6 == __pyx_t_7) != 0);
-  if (__pyx_t_5) {
-
-    /* "uttut/elements/datum.pyx":66
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):
- *             for self_entity, other_entity in zip(self.entities, other.entities):             # <<<<<<<<<<<<<<
- *                 if self_entity != other_entity:
- *                     break
- */
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(__pyx_v_self->entities);
-    __Pyx_GIVEREF(__pyx_v_self->entities);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_self->entities);
-    __Pyx_INCREF(__pyx_v_other->entities);
-    __Pyx_GIVEREF(__pyx_v_other->entities);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_other->entities);
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
-      __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_7 = 0;
-      __pyx_t_8 = NULL;
-    } else {
-      __pyx_t_7 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_8 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 66, __pyx_L1_error)
-    }
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_8)) {
-        if (likely(PyList_CheckExact(__pyx_t_1))) {
-          if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_1)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
-          #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          #endif
-        } else {
-          if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
-          #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          #endif
-        }
-      } else {
-        __pyx_t_2 = __pyx_t_8(__pyx_t_1);
-        if (unlikely(!__pyx_t_2)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 66, __pyx_L1_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_2);
-      }
-      if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
-        PyObject* sequence = __pyx_t_2;
-        Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-        if (unlikely(size != 2)) {
-          if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-          else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 66, __pyx_L1_error)
-        }
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        if (likely(PyTuple_CheckExact(sequence))) {
-          __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-          __pyx_t_4 = PyTuple_GET_ITEM(sequence, 1); 
-        } else {
-          __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-          __pyx_t_4 = PyList_GET_ITEM(sequence, 1); 
-        }
-        __Pyx_INCREF(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_4);
-        #else
-        __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 66, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        #endif
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      } else {
-        Py_ssize_t index = -1;
-        __pyx_t_9 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 66, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
-        index = 0; __pyx_t_3 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_3)) goto __pyx_L6_unpacking_failed;
-        __Pyx_GOTREF(__pyx_t_3);
-        index = 1; __pyx_t_4 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_4)) goto __pyx_L6_unpacking_failed;
-        __Pyx_GOTREF(__pyx_t_4);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
-        __pyx_t_10 = NULL;
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        goto __pyx_L7_unpacking_done;
-        __pyx_L6_unpacking_failed:;
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        __pyx_t_10 = NULL;
-        if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 66, __pyx_L1_error)
-        __pyx_L7_unpacking_done:;
-      }
-      __Pyx_XDECREF_SET(__pyx_v_self_entity, __pyx_t_3);
-      __pyx_t_3 = 0;
-      __Pyx_XDECREF_SET(__pyx_v_other_entity, __pyx_t_4);
-      __pyx_t_4 = 0;
-
-      /* "uttut/elements/datum.pyx":67
- *         if len(self.entities) == len(other.entities):
- *             for self_entity, other_entity in zip(self.entities, other.entities):
- *                 if self_entity != other_entity:             # <<<<<<<<<<<<<<
- *                     break
- *             else:
- */
-      __pyx_t_2 = PyObject_RichCompare(__pyx_v_self_entity, __pyx_v_other_entity, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 67, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (__pyx_t_5) {
-
-        /* "uttut/elements/datum.pyx":68
- *             for self_entity, other_entity in zip(self.entities, other.entities):
- *                 if self_entity != other_entity:
- *                     break             # <<<<<<<<<<<<<<
- *             else:
- *                 same_entities = True
- */
-        goto __pyx_L5_break;
-
-        /* "uttut/elements/datum.pyx":67
- *         if len(self.entities) == len(other.entities):
- *             for self_entity, other_entity in zip(self.entities, other.entities):
- *                 if self_entity != other_entity:             # <<<<<<<<<<<<<<
- *                     break
- *             else:
- */
-      }
-
-      /* "uttut/elements/datum.pyx":66
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):
- *             for self_entity, other_entity in zip(self.entities, other.entities):             # <<<<<<<<<<<<<<
- *                 if self_entity != other_entity:
- *                     break
- */
-    }
-    /*else*/ {
-
-      /* "uttut/elements/datum.pyx":70
- *                     break
- *             else:
- *                 same_entities = True             # <<<<<<<<<<<<<<
- *         return same_entities
- * 
- */
-      __pyx_v_same_entities = 1;
-    }
-
-    /* "uttut/elements/datum.pyx":66
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):
- *             for self_entity, other_entity in zip(self.entities, other.entities):             # <<<<<<<<<<<<<<
- *                 if self_entity != other_entity:
- *                     break
- */
-    __pyx_L5_break:;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "uttut/elements/datum.pyx":65
- *     cpdef bint has_same_entities_as(self, Datum other):
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):             # <<<<<<<<<<<<<<
- *             for self_entity, other_entity in zip(self.entities, other.entities):
- *                 if self_entity != other_entity:
- */
-  }
-
-  /* "uttut/elements/datum.pyx":71
- *             else:
- *                 same_entities = True
- *         return same_entities             # <<<<<<<<<<<<<<
+ *         return self.entities == other.entities             # <<<<<<<<<<<<<<
  * 
  *     cpdef bint has_entities(self):
  */
-  __pyx_r = __pyx_v_same_entities;
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_self->entities, __pyx_v_other->entities, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":63
+  /* "uttut/elements/datum.pyx":62
  *         return set(self.intents) == set(other.intents)
  * 
  *     cpdef bint has_same_entities_as(self, Datum other):             # <<<<<<<<<<<<<<
- *         same_entities = False
- *         if len(self.entities) == len(other.entities):
+ *         return self.entities == other.entities
+ * 
  */
 
   /* function exit code */
@@ -3309,12 +2967,9 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(struct __
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_WriteUnraisable("uttut.elements.datum.Datum.has_same_entities_as", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_self_entity);
-  __Pyx_XDECREF(__pyx_v_other_entity);
   __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -3326,7 +2981,7 @@ static PyObject *__pyx_pw_5uttut_8elements_5datum_5Datum_11has_same_entities_as(
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("has_same_entities_as (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_5uttut_8elements_5datum_Datum, 1, "other", 0))) __PYX_ERR(0, 62, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8elements_5datum_5Datum_10has_same_entities_as(((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_self), ((struct __pyx_obj_5uttut_8elements_5datum_Datum *)__pyx_v_other));
 
   /* function exit code */
@@ -3344,9 +2999,9 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_10has_same_entities_as(
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_same_entities_as", 0);
-  __Pyx_TraceCall("has_same_entities_as (wrapper)", __pyx_f[0], 63, 0, __PYX_ERR(0, 63, __pyx_L1_error));
+  __Pyx_TraceCall("has_same_entities_as (wrapper)", __pyx_f[0], 62, 0, __PYX_ERR(0, 62, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(__pyx_v_self, __pyx_v_other, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_same_entities_as(__pyx_v_self, __pyx_v_other, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3364,8 +3019,8 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_10has_same_entities_as(
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":73
- *         return same_entities
+/* "uttut/elements/datum.pyx":65
+ *         return self.entities == other.entities
  * 
  *     cpdef bint has_entities(self):             # <<<<<<<<<<<<<<
  *         return len(self.entities) > 0
@@ -3384,7 +3039,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_entities(struct __pyx_obj_
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("has_entities", 0);
-  __Pyx_TraceCall("has_entities", __pyx_f[0], 73, 0, __PYX_ERR(0, 73, __pyx_L1_error));
+  __Pyx_TraceCall("has_entities", __pyx_f[0], 65, 0, __PYX_ERR(0, 65, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -3395,7 +3050,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_entities(struct __pyx_obj_
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_entities); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_entities); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8elements_5datum_5Datum_13has_entities)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3411,10 +3066,10 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_entities(struct __pyx_obj_
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3433,7 +3088,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_entities(struct __pyx_obj_
     #endif
   }
 
-  /* "uttut/elements/datum.pyx":74
+  /* "uttut/elements/datum.pyx":66
  * 
  *     cpdef bint has_entities(self):
  *         return len(self.entities) > 0             # <<<<<<<<<<<<<<
@@ -3442,13 +3097,17 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_entities(struct __pyx_obj_
  */
   __pyx_t_1 = __pyx_v_self->entities;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (unlikely(__pyx_t_1 == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 66, __pyx_L1_error)
+  }
+  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = (__pyx_t_6 > 0);
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":73
- *         return same_entities
+  /* "uttut/elements/datum.pyx":65
+ *         return self.entities == other.entities
  * 
  *     cpdef bint has_entities(self):             # <<<<<<<<<<<<<<
  *         return len(self.entities) > 0
@@ -3488,9 +3147,9 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_12has_entities(struct _
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_entities", 0);
-  __Pyx_TraceCall("has_entities (wrapper)", __pyx_f[0], 73, 0, __PYX_ERR(0, 73, __pyx_L1_error));
+  __Pyx_TraceCall("has_entities (wrapper)", __pyx_f[0], 65, 0, __PYX_ERR(0, 65, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_entities(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_entities(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3508,7 +3167,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_12has_entities(struct _
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":76
+/* "uttut/elements/datum.pyx":68
  *         return len(self.entities) > 0
  * 
  *     cpdef bint has_intents(self):             # <<<<<<<<<<<<<<
@@ -3528,7 +3187,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_intents(struct __pyx_obj_5
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("has_intents", 0);
-  __Pyx_TraceCall("has_intents", __pyx_f[0], 76, 0, __PYX_ERR(0, 76, __pyx_L1_error));
+  __Pyx_TraceCall("has_intents", __pyx_f[0], 68, 0, __PYX_ERR(0, 68, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -3539,7 +3198,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_intents(struct __pyx_obj_5
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_intents); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_intents); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8elements_5datum_5Datum_15has_intents)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3555,10 +3214,10 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_intents(struct __pyx_obj_5
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3577,7 +3236,7 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_intents(struct __pyx_obj_5
     #endif
   }
 
-  /* "uttut/elements/datum.pyx":77
+  /* "uttut/elements/datum.pyx":69
  * 
  *     cpdef bint has_intents(self):
  *         return len(self.intents) > 0             # <<<<<<<<<<<<<<
@@ -3586,12 +3245,16 @@ static int __pyx_f_5uttut_8elements_5datum_5Datum_has_intents(struct __pyx_obj_5
  */
   __pyx_t_1 = __pyx_v_self->intents;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (unlikely(__pyx_t_1 == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 69, __pyx_L1_error)
+  }
+  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = (__pyx_t_6 > 0);
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":76
+  /* "uttut/elements/datum.pyx":68
  *         return len(self.entities) > 0
  * 
  *     cpdef bint has_intents(self):             # <<<<<<<<<<<<<<
@@ -3632,9 +3295,9 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_14has_intents(struct __
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_intents", 0);
-  __Pyx_TraceCall("has_intents (wrapper)", __pyx_f[0], 76, 0, __PYX_ERR(0, 76, __pyx_L1_error));
+  __Pyx_TraceCall("has_intents (wrapper)", __pyx_f[0], 68, 0, __PYX_ERR(0, 68, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_intents(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8elements_5datum_5Datum_has_intents(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3652,7 +3315,7 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_14has_intents(struct __
   return __pyx_r;
 }
 
-/* "uttut/elements/datum.pyx":79
+/* "uttut/elements/datum.pyx":71
  *         return len(self.intents) > 0
  * 
  *     cpdef list copy_intents(self):             # <<<<<<<<<<<<<<
@@ -3671,9 +3334,8 @@ static PyObject *__pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(struct __py
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   Py_ssize_t __pyx_t_5;
-  PyObject *(*__pyx_t_6)(PyObject *);
   __Pyx_RefNannySetupContext("copy_intents", 0);
-  __Pyx_TraceCall("copy_intents", __pyx_f[0], 79, 0, __PYX_ERR(0, 79, __pyx_L1_error));
+  __Pyx_TraceCall("copy_intents", __pyx_f[0], 71, 0, __PYX_ERR(0, 71, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -3684,7 +3346,7 @@ static PyObject *__pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(struct __py
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_copy_intents); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_copy_intents); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8elements_5datum_5Datum_17copy_intents)) {
         __Pyx_XDECREF(__pyx_r);
@@ -3701,10 +3363,10 @@ static PyObject *__pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(struct __py
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 79, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 71, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3723,63 +3385,37 @@ static PyObject *__pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(struct __py
     #endif
   }
 
-  /* "uttut/elements/datum.pyx":81
+  /* "uttut/elements/datum.pyx":73
  *     cpdef list copy_intents(self):
  *         cdef Intent intent
  *         return [Intent(intent.label) for intent in self.intents]             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L5_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L5_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (likely(PyList_CheckExact(__pyx_v_self->intents)) || PyTuple_CheckExact(__pyx_v_self->intents)) {
-      __pyx_t_2 = __pyx_v_self->intents; __Pyx_INCREF(__pyx_t_2); __pyx_t_5 = 0;
-      __pyx_t_6 = NULL;
-    } else {
-      __pyx_t_5 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_self->intents); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L5_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L5_error)
+    if (unlikely(__pyx_v_self->intents == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+      __PYX_ERR(0, 73, __pyx_L5_error)
     }
+    __pyx_t_2 = __pyx_v_self->intents; __Pyx_INCREF(__pyx_t_2); __pyx_t_5 = 0;
     for (;;) {
-      if (likely(!__pyx_t_6)) {
-        if (likely(PyList_CheckExact(__pyx_t_2))) {
-          if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 81, __pyx_L5_error)
-          #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L5_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          #endif
-        } else {
-          if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 81, __pyx_L5_error)
-          #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L5_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          #endif
-        }
-      } else {
-        __pyx_t_3 = __pyx_t_6(__pyx_t_2);
-        if (unlikely(!__pyx_t_3)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 81, __pyx_L5_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_3);
-      }
-      if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5uttut_8elements_6intent_Intent))))) __PYX_ERR(0, 81, __pyx_L5_error)
+      if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
+      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+      __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 73, __pyx_L5_error)
+      #else
+      __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L5_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      #endif
+      if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5uttut_8elements_6intent_Intent))))) __PYX_ERR(0, 73, __pyx_L5_error)
       __Pyx_XDECREF_SET(__pyx_7genexpr__pyx_v_intent, ((struct __pyx_obj_5uttut_8elements_6intent_Intent *)__pyx_t_3));
       __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_7genexpr__pyx_v_intent->label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L5_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_7genexpr__pyx_v_intent->label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5uttut_8elements_6intent_Intent), __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L5_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5uttut_8elements_6intent_Intent), __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 81, __pyx_L5_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 73, __pyx_L5_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3794,7 +3430,7 @@ static PyObject *__pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(struct __py
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "uttut/elements/datum.pyx":79
+  /* "uttut/elements/datum.pyx":71
  *         return len(self.intents) > 0
  * 
  *     cpdef list copy_intents(self):             # <<<<<<<<<<<<<<
@@ -3837,9 +3473,9 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_16copy_intents(struct _
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("copy_intents", 0);
-  __Pyx_TraceCall("copy_intents (wrapper)", __pyx_f[0], 79, 0, __PYX_ERR(0, 79, __pyx_L1_error));
+  __Pyx_TraceCall("copy_intents (wrapper)", __pyx_f[0], 71, 0, __PYX_ERR(0, 71, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5uttut_8elements_5datum_5Datum_copy_intents(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3861,8 +3497,8 @@ static PyObject *__pyx_pf_5uttut_8elements_5datum_5Datum_16copy_intents(struct _
  * cdef class Datum:  # noqa: E999
  * 
  *     cdef public str utterance             # <<<<<<<<<<<<<<
- *     cdef public object intents
- *     cdef public object entities
+ *     cdef public list intents
+ *     cdef public list entities
  */
 
 /* Python wrapper */
@@ -3982,8 +3618,8 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_9utterance_4__del__(struct __
 /* "uttut/elements/datum.pxd":4
  * 
  *     cdef public str utterance
- *     cdef public object intents             # <<<<<<<<<<<<<<
- *     cdef public object entities
+ *     cdef public list intents             # <<<<<<<<<<<<<<
+ *     cdef public list entities
  * 
  */
 
@@ -4039,18 +3675,23 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_7intents_2__set__(struct __py
   int __pyx_r;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__set__", 0);
   __Pyx_TraceCall("__set__", __pyx_f[2], 4, 0, __PYX_ERR(2, 4, __pyx_L1_error));
-  __Pyx_INCREF(__pyx_v_value);
-  __Pyx_GIVEREF(__pyx_v_value);
+  if (!(likely(PyList_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(2, 4, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_value;
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->intents);
   __Pyx_DECREF(__pyx_v_self->intents);
-  __pyx_v_self->intents = __pyx_v_value;
+  __pyx_v_self->intents = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* function exit code */
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("uttut.elements.datum.Datum.intents.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -4082,7 +3723,7 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_7intents_4__del__(struct __py
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->intents);
   __Pyx_DECREF(__pyx_v_self->intents);
-  __pyx_v_self->intents = Py_None;
+  __pyx_v_self->intents = ((PyObject*)Py_None);
 
   /* function exit code */
   __pyx_r = 0;
@@ -4098,8 +3739,8 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_7intents_4__del__(struct __py
 
 /* "uttut/elements/datum.pxd":5
  *     cdef public str utterance
- *     cdef public object intents
- *     cdef public object entities             # <<<<<<<<<<<<<<
+ *     cdef public list intents
+ *     cdef public list entities             # <<<<<<<<<<<<<<
  * 
  *     cpdef bint has_same_utterance_as(self, Datum other)
  */
@@ -4156,18 +3797,23 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_8entities_2__set__(struct __p
   int __pyx_r;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__set__", 0);
   __Pyx_TraceCall("__set__", __pyx_f[2], 5, 0, __PYX_ERR(2, 5, __pyx_L1_error));
-  __Pyx_INCREF(__pyx_v_value);
-  __Pyx_GIVEREF(__pyx_v_value);
+  if (!(likely(PyList_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(2, 5, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_value;
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->entities);
   __Pyx_DECREF(__pyx_v_self->entities);
-  __pyx_v_self->entities = __pyx_v_value;
+  __pyx_v_self->entities = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* function exit code */
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("uttut.elements.datum.Datum.entities.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -4199,7 +3845,7 @@ static int __pyx_pf_5uttut_8elements_5datum_5Datum_8entities_4__del__(struct __p
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->entities);
   __Pyx_DECREF(__pyx_v_self->entities);
-  __pyx_v_self->entities = Py_None;
+  __pyx_v_self->entities = ((PyObject*)Py_None);
 
   /* function exit code */
   __pyx_r = 0;
@@ -4339,8 +3985,8 @@ static PyObject *__pyx_tp_new_5uttut_8elements_5datum_Datum(PyTypeObject *t, PyO
   p = ((struct __pyx_obj_5uttut_8elements_5datum_Datum *)o);
   p->__pyx_vtab = __pyx_vtabptr_5uttut_8elements_5datum_Datum;
   p->utterance = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->intents = Py_None; Py_INCREF(Py_None);
-  p->entities = Py_None; Py_INCREF(Py_None);
+  p->intents = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->entities = ((PyObject*)Py_None); Py_INCREF(Py_None);
   if (unlikely(__pyx_pw_5uttut_8elements_5datum_5Datum_1__cinit__(o, a, k) < 0)) goto bad;
   return o;
   bad:
@@ -4378,10 +4024,10 @@ static int __pyx_tp_clear_5uttut_8elements_5datum_Datum(PyObject *o) {
   PyObject* tmp;
   struct __pyx_obj_5uttut_8elements_5datum_Datum *p = (struct __pyx_obj_5uttut_8elements_5datum_Datum *)o;
   tmp = ((PyObject*)p->intents);
-  p->intents = Py_None; Py_INCREF(Py_None);
+  p->intents = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->entities);
-  p->entities = Py_None; Py_INCREF(Py_None);
+  p->entities = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
@@ -4610,13 +4256,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_uttut_elements_datum, __pyx_k_uttut_elements_datum, sizeof(__pyx_k_uttut_elements_datum), 0, 0, 1, 1},
   {&__pyx_kp_u_with_entities, __pyx_k_with_entities, sizeof(__pyx_k_with_entities), 0, 1, 0, 0},
   {&__pyx_kp_u_with_intents, __pyx_k_with_intents, sizeof(__pyx_k_with_intents), 0, 1, 0, 0},
-  {&__pyx_n_s_zip, __pyx_k_zip, sizeof(__pyx_k_zip), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(0, 27, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 36, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 38, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -4654,7 +4298,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -6559,157 +6202,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
 }
 
-/* ObjectGetItem */
-#if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
-        return NULL;
-    }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
-    }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
-}
-#endif
-
-/* PyIntBinop */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long x;
-        long a = PyInt_AS_LONG(op1);
-            x = (long)((unsigned long)a + b);
-            if (likely((x^a) >= 0 || (x^b) >= 0))
-                return PyInt_FromLong(x);
-            return PyLong_Type.tp_as_number->nb_add(op1, op2);
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        const long b = intval;
-        long a, x;
-#ifdef HAVE_LONG_LONG
-        const PY_LONG_LONG llb = intval;
-        PY_LONG_LONG lla, llx;
-#endif
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        if (likely(__Pyx_sst_abs(size) <= 1)) {
-            a = likely(size) ? digits[0] : 0;
-            if (size == -1) a = -a;
-        } else {
-            switch (size) {
-                case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
-            }
-        }
-                x = a + b;
-            return PyLong_FromLong(x);
-#ifdef HAVE_LONG_LONG
-        long_long:
-                llx = lla + llb;
-            return PyLong_FromLongLong(llx);
-#endif
-        
-        
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-            double result;
-            PyFPE_START_PROTECT("add", return NULL)
-            result = ((double)a) + (double)b;
-            PyFPE_END_PROTECT(result)
-            return PyFloat_FromDouble(result);
-    }
-    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
-}
-#endif
-
 /* PyUnicode_Unicode */
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj) {
     if (unlikely(obj == Py_None))
@@ -6968,66 +6460,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
     if (nogil)
         PyGILState_Release(state);
 #endif
-}
-
-/* RaiseTooManyValuesToUnpack */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
-}
-
-/* RaiseNeedMoreValuesToUnpack */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
-}
-
-/* IterFinish */
-static CYTHON_INLINE int __Pyx_IterFinish(void) {
-#if CYTHON_FAST_THREAD_STATE
-    PyThreadState *tstate = __Pyx_PyThreadState_Current;
-    PyObject* exc_type = tstate->curexc_type;
-    if (unlikely(exc_type)) {
-        if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) {
-            PyObject *exc_value, *exc_tb;
-            exc_value = tstate->curexc_value;
-            exc_tb = tstate->curexc_traceback;
-            tstate->curexc_type = 0;
-            tstate->curexc_value = 0;
-            tstate->curexc_traceback = 0;
-            Py_DECREF(exc_type);
-            Py_XDECREF(exc_value);
-            Py_XDECREF(exc_tb);
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    return 0;
-#else
-    if (unlikely(PyErr_Occurred())) {
-        if (likely(PyErr_ExceptionMatches(PyExc_StopIteration))) {
-            PyErr_Clear();
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    return 0;
-#endif
-}
-
-/* UnpackItemEndCheck */
-static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
-    if (unlikely(retval)) {
-        Py_DECREF(retval);
-        __Pyx_RaiseTooManyValuesError(expected);
-        return -1;
-    } else {
-        return __Pyx_IterFinish();
-    }
-    return 0;
 }
 
 /* PyObjectCallNoArg */
@@ -7563,25 +6995,47 @@ bad:
     Py_XDECREF(py_frame);
 }
 
+/* CIntFromPyVerify */
+#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
+    }
+
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_int(unsigned int value) {
+    const unsigned int neg_one = (unsigned int) ((unsigned int) 0 - (unsigned int) 1), const_zero = (unsigned int) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
+        if (sizeof(unsigned int) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
+        } else if (sizeof(unsigned int) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(unsigned int) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(int) <= sizeof(long)) {
+        if (sizeof(unsigned int) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(unsigned int) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -7589,7 +7043,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
+        return _PyLong_FromByteArray(bytes, sizeof(unsigned int),
                                      little, !is_unsigned);
     }
 }
@@ -7625,27 +7079,225 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     }
 }
 
-/* CIntFromPyVerify */
-#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
     }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE unsigned int __Pyx_PyInt_As_unsigned_int(PyObject *x) {
+    const unsigned int neg_one = (unsigned int) ((unsigned int) 0 - (unsigned int) 1), const_zero = (unsigned int) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(unsigned int) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(unsigned int, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (unsigned int) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (unsigned int) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(unsigned int, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(unsigned int) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) >= 2 * PyLong_SHIFT) {
+                            return (unsigned int) (((((unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(unsigned int) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) >= 3 * PyLong_SHIFT) {
+                            return (unsigned int) (((((((unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(unsigned int) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) >= 4 * PyLong_SHIFT) {
+                            return (unsigned int) (((((((((unsigned int)digits[3]) << PyLong_SHIFT) | (unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (unsigned int) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(unsigned int) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(unsigned int) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (unsigned int) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(unsigned int, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(unsigned int,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(unsigned int) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) - 1 > 2 * PyLong_SHIFT) {
+                            return (unsigned int) (((unsigned int)-1)*(((((unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(unsigned int) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) - 1 > 2 * PyLong_SHIFT) {
+                            return (unsigned int) ((((((unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(unsigned int) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) - 1 > 3 * PyLong_SHIFT) {
+                            return (unsigned int) (((unsigned int)-1)*(((((((unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(unsigned int) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) - 1 > 3 * PyLong_SHIFT) {
+                            return (unsigned int) ((((((((unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(unsigned int) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) - 1 > 4 * PyLong_SHIFT) {
+                            return (unsigned int) (((unsigned int)-1)*(((((((((unsigned int)digits[3]) << PyLong_SHIFT) | (unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(unsigned int) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned int) - 1 > 4 * PyLong_SHIFT) {
+                            return (unsigned int) ((((((((((unsigned int)digits[3]) << PyLong_SHIFT) | (unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(unsigned int) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(unsigned int) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            unsigned int val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (unsigned int) -1;
+        }
+    } else {
+        unsigned int val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (unsigned int) -1;
+        val = __Pyx_PyInt_As_unsigned_int(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to unsigned int");
+    return (unsigned int) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to unsigned int");
+    return (unsigned int) -1;
+}
 
 /* CIntFromPy */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
