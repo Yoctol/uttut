@@ -37,7 +37,7 @@ class Pad(Operator):
         same_maxlen = self.maxlen == other.maxlen
         return same_pad_token and same_maxlen and super().__eq__(other)
 
-    def transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
+    def _transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
 
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)

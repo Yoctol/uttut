@@ -23,7 +23,7 @@ class MockStr2StrOp(Operator):
         same_kwargs = self.kwargs == other.kwargs
         return same_kwargs and super().__eq__(other)
 
-    def transform(self, input_sequence: str):  # type: ignore
+    def _transform(self, input_sequence: str):  # type: ignore
         return input_sequence, MockLabelAligner(
             edit={},
             input_sequence=input_sequence,
@@ -41,7 +41,7 @@ class MockLst2LstOp(Operator):
         same_kwargs = self.kwargs == other.kwargs
         return same_kwargs and super().__eq__(other)
 
-    def transform(self, input_sequence: List[str]):  # type: ignore
+    def _transform(self, input_sequence: List[str]):  # type: ignore
         return input_sequence, MockLabelAligner(
             edit={},
             input_sequence=input_sequence,
@@ -59,7 +59,7 @@ class MockStr2LstOp(Operator):
         same_kwargs = self.kwargs == other.kwargs
         return same_kwargs and super().__eq__(other)
 
-    def transform(self, input_sequence: str):  # type: ignore
+    def _transform(self, input_sequence: str):  # type: ignore
         output_sequence = list(input_sequence)
         return output_sequence, MockLabelAligner(
             edit={},

@@ -31,9 +31,9 @@ class Operator(ABC):
     def output_type(self):
         return self._output_type
 
-    @abstractmethod
     def transform(self, input_sequence) -> Tuple[Any, 'LabelAligner']:
-        """Transform input_sequence and label
+
+        """Transform input_sequence
 
         Transform input_sequence to certain form which meets the output_type
         and updates labels if necessary.
@@ -46,6 +46,22 @@ class Operator(ABC):
             label_aligner (obj): an instance of LabelAligner
 
         """
+
+        self._validate_input(input_sequence)
+        output_sequence, label_aligner = self._transform(input_sequence)
+        self._validate_output(output_sequence)
+        return output_sequence, label_aligner
+
+    def _validate_input(self, input_sequence):
+        if not isinstance(input_sequence, self.input_type):
+            raise TypeError('Invalid input type')
+
+    def _validate_output(self, output_sequence):
+        if not isinstance(output_sequence, self.output_type):
+            raise TypeError('Invalid output type')
+
+    @abstractmethod
+    def _transform(self, input_sequence) -> Tuple[Any, 'LabelAligner']:
         pass
 
 

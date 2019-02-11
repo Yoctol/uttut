@@ -23,7 +23,7 @@ class Tokenizer(Operator):
         same_label_aligner_class = self._label_aligner_class == other._label_aligner_class
         return same_label_aligner_class and super().__eq__(other)
 
-    def transform(self, input_sequence: str) -> Tuple[List[str], 'LabelAligner']:
+    def _transform(self, input_sequence: str) -> Tuple[List[str], 'LabelAligner']:
 
         tokens = self._tokenize(input_sequence)
 

@@ -52,7 +52,7 @@ class Token2Index(Operator):
         if unk_token not in token2index:
             raise KeyError(f"token2index should have token {unk_token}")
 
-    def transform(self, input_sequence: List[str]) -> Tuple[List[int], 'LabelAligner']:
+    def _transform(self, input_sequence: List[str]) -> Tuple[List[int], 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
 

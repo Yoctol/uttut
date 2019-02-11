@@ -16,7 +16,7 @@ class MockedOperator(Operator):
         same_state = self.state == other.state
         return same_state and super().__eq__(other)
 
-    def transform(self, input_sequence):
+    def _transform(self, input_sequence):
         pass
 
 

@@ -29,7 +29,7 @@ class Lowercase(Operator):
     def __init__(self):
         super().__init__(input_type=str, output_type=str)
 
-    def transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
+    def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
 
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)

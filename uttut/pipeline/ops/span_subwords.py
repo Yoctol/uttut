@@ -52,7 +52,7 @@ class SpanSubwords(Operator):
         same_maxlen_per_token = self.maxlen_per_token == other.maxlen_per_token
         return same_vocab and same_unk_token and same_maxlen_per_token and super().__eq__(other)
 
-    def transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
+    def _transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
         """
         # Requirement: All elements in input_sequence should not contain
                         whitespaces and accent tokens.

@@ -32,8 +32,7 @@ class AddSosEos(Operator):
             start_token: str = START_TOKEN,
             end_token: str = END_TOKEN,
         ):
-        super().__init__(input_type='list', output_type='list')
-        print('ohoh')
+        super().__init__(input_type=list, output_type=list)
         self.start_token = start_token
         self.end_token = end_token
 
@@ -42,7 +41,7 @@ class AddSosEos(Operator):
         same_end_token = self.end_token == other.end_token
         return same_start_token and same_end_token and super().__eq__(other)
 
-    def transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
+    def _transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
 
