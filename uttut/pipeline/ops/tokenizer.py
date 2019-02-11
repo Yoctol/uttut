@@ -48,7 +48,7 @@ class Tokenizer(Operator):
 
 class TokenizerAligner(LabelAligner):
 
-    def _transform(self, labels: List[int]):
+    def _transform(self, labels: List[int]) -> List[int]:
         output_labels = propagate_by_replacement_group(
             labels=labels,
             replacement_group=self._forward_edit['replacement_group'],
@@ -60,7 +60,7 @@ class TokenizerAligner(LabelAligner):
     def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
 
-    def _inverse_transform(self, labels):
+    def _inverse_transform(self, labels: List[int]) -> List[int]:
         inverse_replacement_group = str2str.inverse(
             self._input_sequence, self._forward_edit['replacement_group'])
         output_labels = expand_by_span_group(
