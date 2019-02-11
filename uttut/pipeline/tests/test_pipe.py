@@ -65,38 +65,36 @@ def test_pipe_can_have_duplicated_ops():
 
 
 def test_transform(fake_pipe, dummy_datum):
-    output_seq, intent_labels, entity_labels, realigner, intermediate = fake_pipe.transform(
+    output_seq, intent_labels, entity_labels, label_aligner, intermediate = fake_pipe.transform(
         dummy_datum)
 
     assert output_seq == ['1', '2', '3']
     assert intent_labels == [1]
     assert entity_labels == [1, 2, 3]
-    assert [('123', [1, 2, 3]), ('123', [1, 2, 3]),
-            (['1', '2', '3'], [1, 2, 3]), (['1', '2', '3'], [1, 2, 3])] == intermediate[:]
+    assert ['123', '123', ['1', '2', '3'], ['1', '2', '3']] == intermediate[:]
 
-    output = realigner(entity_labels)
+    output = label_aligner.inverse_transform(entity_labels)
     assert output == [1, 2, 3]
 
 
 def test_transform_with_checkpoints(fake_pipe_with_checkpoints, dummy_datum):
     output = fake_pipe_with_checkpoints.transform(dummy_datum)
-    output_seq, intent_labels, entity_labels, realigner, intermediate = output
+    output_seq, intent_labels, entity_labels, label_aligner, intermediate = output
 
     assert output_seq == ['1', '2', '3']
     assert intent_labels == [1]
     assert entity_labels == [1, 2, 3]
 
     # intermediate
-    assert ('123', [1, 2, 3]) == intermediate.get_from_checkpoint('1')
-    assert (['1', '2', '3'], [1, 2, 3]) == intermediate.get_from_checkpoint('2')
-    assert [('123', [1, 2, 3]), ('123', [1, 2, 3]),
-            (['1', '2', '3'], [1, 2, 3]), (['1', '2', '3'], [1, 2, 3])] == intermediate[:]
+    assert '123' == intermediate.get_from_checkpoint('1')
+    assert ['1', '2', '3'] == intermediate.get_from_checkpoint('2')
+    assert ['123', '123', ['1', '2', '3'], ['1', '2', '3']] == intermediate[:]
 
     with pytest.raises(KeyError):
         intermediate.get_from_checkpoint('薄餡亂入')
 
     # realign labels
-    output = realigner(entity_labels)
+    output = label_aligner.inverse_transform(entity_labels)
     assert output == [1, 2, 3]
 
 

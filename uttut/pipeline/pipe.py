@@ -4,7 +4,7 @@ import json
 
 from uttut.elements import Datum
 
-from .ops.base import Realigner
+from .ops.base import LabelAligner
 from .step import Step
 from .intermediate import Intermediate
 from .ops import op_factory as default_factory
@@ -98,17 +98,24 @@ class Pipe:
             intermediate: an instance of Intermediate
 
         """
-        intermediate = Intermediate(self._checkpoints)
-        realigners = RealignerSequence()
-
         input_sequence, intent_labels, entity_labels = unpack_datum(datum)
-        intermediate.add((input_sequence, entity_labels))
-        for step in self._steps:
-            input_sequence, entity_labels, realigner = step.transform(input_sequence, entity_labels)
-            realigners.add(realigner)
-            intermediate.add((input_sequence, entity_labels))
+        output_sequence, label_aligners, intermediate = self.transform_sequence(input_sequence)
+        updated_entity_labels = label_aligners.transform(entity_labels)
 
-        return input_sequence, intent_labels, entity_labels, realigners, intermediate
+        return output_sequence, intent_labels, updated_entity_labels, label_aligners, intermediate
+
+    def transform_sequence(self, input_sequence):
+        intermediate = Intermediate(self._checkpoints)
+
+        intermediate.add(input_sequence)
+        label_aligners = LabelAlignerSequence()
+
+        for step in self._steps:
+            input_sequence, label_aligner = step.transform(input_sequence)
+            intermediate.add(input_sequence)
+            label_aligners.add(label_aligner)
+
+        return input_sequence, label_aligners, intermediate
 
     def serialize(self) -> str:
         to_serialize = {
@@ -133,20 +140,20 @@ class Pipe:
         return pipe
 
 
-class RealignerSequence:
+class LabelAlignerSequence:
 
     def __init__(self):
         self.collections = []
 
-    def add(self, realigner: Realigner):
+    def add(self, label_aligner: LabelAligner):
         """Append realigner into collections
 
         Arg:
             realigner: an instance of Realigner
         """
-        self.collections.append(realigner)
+        self.collections.append(label_aligner)
 
-    def __call__(self, labels: List[int]) -> List[int]:
+    def transform(self, labels: List[int]) -> List[int]:
         """Realign model prediction to its original input
 
         Arg:
@@ -157,6 +164,11 @@ class RealignerSequence:
                   original input (utterance)
 
         """
-        for realigner in self.collections[::-1]:
-            labels = realigner(labels)
+        for label_aligner in self.collections:
+            labels = label_aligner.transform(labels)
+        return labels
+
+    def inverse_transform(self, labels: List[int]) -> List[int]:
+        for label_aligner in self.collections[::-1]:
+            labels = label_aligner.inverse_transform(labels)
         return labels

@@ -1,11 +1,11 @@
 from typing import List, Tuple
 
-from .base import Operator, Realigner
+from .base import Operator, LabelAligner
 from .tokens import START_TOKEN, END_TOKEN
+from .label_transducer import get_not_entity
 from ..edit import lst2lst
 from ..edit.replacement import ReplacementGroup
 from ..edit.label_propagation import propagate_by_replacement_group
-from uttut import ENTITY_LABEL
 
 
 class AddSosEos(Operator):
@@ -32,7 +32,8 @@ class AddSosEos(Operator):
             start_token: str = START_TOKEN,
             end_token: str = END_TOKEN,
         ):
-        super().__init__(input_type=list, output_type=list)
+        super().__init__(input_type='list', output_type='list')
+        print('ohoh')
         self.start_token = start_token
         self.end_token = end_token
 
@@ -41,27 +42,16 @@ class AddSosEos(Operator):
         same_end_token = self.end_token == other.end_token
         return same_start_token and same_end_token and super().__eq__(other)
 
-    def transform(  # type: ignore
-            self,
-            input_sequence: List[str],
-            labels: List[int],
-            state: dict = None,
-        ) -> Tuple[List[str], List[int], 'Realigner']:
-
+    def transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
-        inverse_replacement_group = lst2lst.inverse(input_sequence, forward_replacement_group)
 
-        updated_labels = propagate_by_replacement_group(
-            labels, forward_replacement_group, self._forward_reduce_func)
-
-        realigner = AddSosEosRealigner(
-            edit=inverse_replacement_group,
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
+        label_aligner = AddSosEosAligner(
+            input_sequence=input_sequence,
+            edit=forward_replacement_group,
+            output_length=len(output_sequence),
         )
-
-        return output_sequence, updated_labels, realigner
+        return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(
             self,
@@ -78,14 +68,22 @@ class AddSosEos(Operator):
         )
         return replacement_group
 
+
+class AddSosEosAligner(LabelAligner):
+
+    def _transform(self, labels):
+        return propagate_by_replacement_group(labels, self._forward_edit, self._forward_reduce_func)
+
     def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [ENTITY_LABEL['NOT_ENTITY']] * output_size
+        return get_not_entity(labels=labels, output_size=output_size)
 
-
-class AddSosEosRealigner(Realigner):
+    def _inverse_transform(self, labels):
+        inverse_replacement_group = lst2lst.inverse(self._input_sequence, self._forward_edit)
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=inverse_replacement_group,
+            transduce_func=self._backward_reduce_func,
+        )
 
     def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [ENTITY_LABEL['NOT_ENTITY']] * output_size
-
-    def _realign_labels(self, labels: List[int]) -> List[int]:
-        return propagate_by_replacement_group(labels, self._edit, self._backward_reduce_func)
+        return get_not_entity(labels=labels, output_size=output_size)

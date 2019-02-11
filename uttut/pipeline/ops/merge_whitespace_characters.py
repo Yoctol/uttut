@@ -2,7 +2,7 @@ from typing import List
 
 import re
 
-from .pattern_to_token import PatternRecognizer, PatternRecognizerRealigner
+from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
 from .label_transducer import get_most_common
 
 
@@ -29,13 +29,13 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
     TOKEN = " "
 
     def __init__(self):
-        super().__init__(realigner_class=MergeWhiteSpaceCharactersRealigner)
+        super().__init__(label_aligner_class=MergeWhiteSpaceCharactersAligner)
+
+
+class MergeWhiteSpaceCharactersAligner(PatternRecognizerAligner):
 
     def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return get_most_common(labels=labels, output_size=output_size)
-
-
-class MergeWhiteSpaceCharactersRealigner(PatternRecognizerRealigner):
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return get_most_common(labels=labels, output_size=output_size)

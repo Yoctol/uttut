@@ -54,14 +54,13 @@ update_locals(locals(), funcs)
 
 def test_all_whitespaces(op):
     # labels are not invertible
-    output_seq, output_labels, realigner = op.transform(
-        "  \n\n\t\t",
-        [1, 2, 3, 4, 5, 6],
-    )
+    output_seq, label_aligner = op.transform("  \n\n\t\t")
     assert "" == output_seq
+
+    output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6])
     assert [] == output_labels
 
-    output = realigner([])
+    output = label_aligner.inverse_transform([])
     assert output == [0, 0, 0, 0, 0, 0]
 
 

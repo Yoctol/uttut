@@ -1,9 +1,7 @@
-from typing import List
 import re
 
 from .tokens import FLOAT_TOKEN
-from .int_token import IntTokenRealigner
-from .label_transducer import get_most_common
+from .int_token import IntTokenAligner
 from .pattern_to_token import PatternRecognizer
 
 
@@ -29,10 +27,7 @@ class FloatToken(PatternRecognizer):
     TOKEN = FLOAT_TOKEN
 
     def __init__(self):
-        super().__init__(realigner_class=IntTokenRealigner)
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common(labels=labels, output_size=output_size)
+        super().__init__(label_aligner_class=IntTokenAligner)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(

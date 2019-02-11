@@ -10,6 +10,7 @@ def propagate_by_replacement_group(
         replacement_group: ReplacementGroup,
         transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
+
     '''Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
 
     Note that the length of replacement_group should be the same as

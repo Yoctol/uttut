@@ -34,15 +34,16 @@ update_locals(locals(), funcs)
 
 def test_longer_case(op):
     # labels are not invertible
-    output_seq, output_labels, realigner = op.transform(
+    output_seq, label_aligner = op.transform(
         ['alvin', '喜歡', '吃', '榴槤', '和', '蟲', '!'],
-        [1, 2, 3, 4, 5, 6, 7],
     )
     assert ['alvin', '喜歡', '吃', '榴槤', '和'] == output_seq
+
+    output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6, 7])
     assert [1, 2, 3, 4, 5] == output_labels
 
-    output = realigner([1, 2, 3, 4, 5])
-    assert output == [1, 2, 3, 4, 5, 0, 0]
+    output = label_aligner.inverse_transform(output_labels)
+    assert [1, 2, 3, 4, 5, 0, 0] == output
 
 
 def test_equal(op):

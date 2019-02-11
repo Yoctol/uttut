@@ -1,12 +1,15 @@
 from typing import List
 
-from ..ops.base import Operator, Realigner
+from ..ops.base import Operator, LabelAligner
 from ..ops.factory import OperatorFactory
 
 
-class MockRealigner(Realigner):
+class MockLabelAligner(LabelAligner):
 
-    def _realign_labels(self, labels: List[int]):
+    def _transform(self, labels):
+        return labels
+
+    def _inverse_transform(self, labels):
         return labels
 
 
@@ -20,10 +23,10 @@ class MockStr2StrOp(Operator):
         same_kwargs = self.kwargs == other.kwargs
         return same_kwargs and super().__eq__(other)
 
-    def transform(self, input_sequence: str, labels: List[int]):  # type: ignore
-        return input_sequence, labels, MockRealigner(
+    def transform(self, input_sequence: str):  # type: ignore
+        return input_sequence, MockLabelAligner(
             edit={},
-            input_length=len(input_sequence),
+            input_sequence=input_sequence,
             output_length=len(input_sequence),
         )
 
@@ -38,10 +41,10 @@ class MockLst2LstOp(Operator):
         same_kwargs = self.kwargs == other.kwargs
         return same_kwargs and super().__eq__(other)
 
-    def transform(self, input_sequence: List[str], labels: List[int]):  # type: ignore
-        return input_sequence, labels, MockRealigner(
+    def transform(self, input_sequence: List[str]):  # type: ignore
+        return input_sequence, MockLabelAligner(
             edit={},
-            input_length=len(input_sequence),
+            input_sequence=input_sequence,
             output_length=len(input_sequence),
         )
 
@@ -56,12 +59,12 @@ class MockStr2LstOp(Operator):
         same_kwargs = self.kwargs == other.kwargs
         return same_kwargs and super().__eq__(other)
 
-    def transform(self, input_sequence: str, labels: List[int]):  # type: ignore
+    def transform(self, input_sequence: str):  # type: ignore
         output_sequence = list(input_sequence)
-        return output_sequence, labels, MockRealigner(
+        return output_sequence, MockLabelAligner(
             edit={},
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
+            input_sequence=input_sequence,
+            output_length=len(output_sequence),
         )
 
 

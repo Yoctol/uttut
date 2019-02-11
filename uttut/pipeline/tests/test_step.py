@@ -16,7 +16,7 @@ class MockedOperator(Operator):
         same_state = self.state == other.state
         return same_state and super().__eq__(other)
 
-    def transform(self, input_sequence, labels):
+    def transform(self, input_sequence):
         pass
 
 
@@ -32,8 +32,8 @@ def test_not_equal(step):
 
 def test_transform(step, mocker):
     mock_method = mocker.patch.object(step.op, 'transform')
-    step.transform('abc', [1, 2, 3])
-    mock_method.assert_called_once_with(input_sequence='abc', labels=[1, 2, 3])
+    step.transform('abc')
+    mock_method.assert_called_once_with(input_sequence='abc')
 
 
 def test_attributes(step):

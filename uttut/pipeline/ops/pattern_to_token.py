@@ -1,6 +1,6 @@
 from typing import List, Tuple, Pattern
 
-from .base import Operator, Realigner
+from .base import Operator, LabelAligner
 from ..edit.replacement import ReplacementGroup
 from ..edit import str2str
 from ..edit.label_propagation import propagate_by_replacement_group
@@ -15,13 +15,25 @@ class PatternRecognizer(Operator):
     REGEX_PATTERN: Pattern
     TOKEN: str
 
-    def __init__(self, realigner_class):
+    def __init__(self, label_aligner_class):
         super().__init__(input_type=str, output_type=str)
-        self._realigner_class = realigner_class
+        self._label_aligner_class = label_aligner_class
 
     def __eq__(self, other):
-        same_realigner_class = self._realigner_class == other._realigner_class
-        return same_realigner_class and super().__eq__(other)
+        same_label_aligner_class = self._label_aligner_class == other._label_aligner_class
+        return same_label_aligner_class and super().__eq__(other)
+
+    def transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
+
+        forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
+        output_sequence = str2str.apply(input_sequence, forward_replacement_group)
+
+        label_aligner = self._label_aligner_class(
+            input_sequence=input_sequence,
+            edit=forward_replacement_group,
+            output_length=len(output_sequence),
+        )
+        return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(
             self,
@@ -46,43 +58,26 @@ class PatternRecognizer(Operator):
         replacement_group.done()
         return replacement_group
 
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        raise NotImplementedError
 
-    def transform(  # type: ignore
-            self,
-            input_sequence: str,
-            labels: List[int],
-            state: dict = None,
-        ) -> Tuple[str, List[int], 'Realigner']:
+class PatternRecognizerAligner(LabelAligner):
 
-        forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
-        output_sequence = str2str.apply(input_sequence, forward_replacement_group)
-        inverse_replacement_group = str2str.inverse(input_sequence, forward_replacement_group)
-
-        updated_labels = propagate_by_replacement_group(
+    def _transform(self, labels: List[int]):
+        return propagate_by_replacement_group(
             labels=labels,
-            replacement_group=forward_replacement_group,
+            replacement_group=self._forward_edit,
             transduce_func=self._forward_transduce_func,
         )
 
-        realigner = self._realigner_class(
-            edit=inverse_replacement_group,
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        raise NotImplementedError
+
+    def _inverse_transform(self, labels):
+        inverse_replacement_group = str2str.inverse(self._input_sequence, self._forward_edit)
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=inverse_replacement_group,
+            transduce_func=self._backward_transduce_func,
         )
-
-        return output_sequence, updated_labels, realigner
-
-
-class PatternRecognizerRealigner(Realigner):
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
-
-    def _realign_labels(self, labels: List[int]) -> List[int]:
-        return propagate_by_replacement_group(
-            labels=labels,
-            replacement_group=self._edit,
-            transduce_func=self._backward_transduce_func,
-        )
