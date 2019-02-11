@@ -24,7 +24,6 @@ class PatternRecognizer(Operator):
         return same_label_aligner_class and super().__eq__(other)
 
     def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
-
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)
 
@@ -40,7 +39,6 @@ class PatternRecognizer(Operator):
             input_str: str,
             annotation: str = None,
         ) -> ReplacementGroup:
-
         shift = 0
         replacement_group = ReplacementGroup()
 

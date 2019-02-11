@@ -17,12 +17,13 @@ class Pad(Operator):
     E.g.
     >>> from uttut.pipeline.ops.pad import Pad
     >>> op = Pad(5)
-    >>> output_seq, output_labels, realigner = op.transform(['apple'], [1])
+    >>> output_seq, label_aligner = op.transform(['apple'])
+    >>> output_labels = label_aligner.transform([1])
     >>> output_seq
     ['apple', '<pad>', '<pad>', '<pad>', '<pad>']
     >>> output_labels
     [1, 0, 0, 0, 0]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1]
 
     """

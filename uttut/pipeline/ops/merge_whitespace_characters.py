@@ -15,12 +15,13 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
     E.g.
     >>> from uttut.pipeline.ops.merge_whitespace_characters import MergeWhiteSpaceCharacters
     >>> op = MergeWhiteSpaceCharacters()
-    >>> output_seq, output_labels, realigner = op.transform("\n\n  \t\t", [1, 1, 1, 1, 1, 1])
+    >>> output_seq, label_aligner = op.transform("\n\n  \t\t")
+    >>> output_labels = label_aligner.transform([1, 1, 1, 1, 1, 1])
     >>> output_seq
     " "
     >>> output_labels
     [0]
-    >>> realigner(output_labels)
+    >>> label_aligner(output_labels)
     [0, 0, 0, 0, 0, 0]
 
     """

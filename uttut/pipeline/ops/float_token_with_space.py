@@ -18,12 +18,13 @@ class FloatTokenWithSpace(PatternRecognizer):
     E.g.
     >>> from uttut.pipeline.ops.float_token_with_space import FloatTokenWithSpace
     >>> op = FloatTokenWithSpace()
-    >>> output_seq, output_labels, realigner = op.transform("10.7", [1, 1, 1, 1])
+    >>> output_seq, label_aligner = op.transform("10.7")
+    >>> output_labels = label_aligner.transform([1, 1, 1, 1])
     >>> output_seq
     " _float_ "
     >>> output_labels
     [0, 1, 1, 1, 1, 1, 1, 1, 0]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 1, 1, 1]
 
     """

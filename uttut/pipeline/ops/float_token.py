@@ -6,6 +6,7 @@ from .pattern_to_token import PatternRecognizer
 
 
 class FloatToken(PatternRecognizer):
+
     """
     Recognize float (ex: 12.3, 1.7) in the input string
     and replace them with FLOAT_TOKEN (_float_)
@@ -13,12 +14,13 @@ class FloatToken(PatternRecognizer):
     E.g.
     >>> from uttut.pipeline.ops.float_token import FloatToken
     >>> op = FloatToken()
-    >>> output_seq, output_labels, realigner = op.transform("10.7", [1, 1, 1, 1])
+    >>> output_seq, label_aligner = op.transform("10.7")
+    >>> output_labels = label_aligner.transform([1, 1, 1, 1])
     >>> output_seq
     "_float_"
     >>> output_labels
     [1, 1, 1, 1, 1, 1, 1]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 1, 1, 1]
 
     """

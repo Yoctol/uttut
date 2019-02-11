@@ -14,12 +14,13 @@ class WhiteSpaceTokenizer(Tokenizer):
     E.g.
     >>> from uttut.pipeline.ops.whitespace_tokenizer import WhiteSpaceTokenizer
     >>> op = WhiteSpaceTokenizer()
-    >>> output_seq, output_labels, realigner = op.transform("a b", [1, 2, 3])
+    >>> output_seq, label_aligner = op.transform("a b")
+    >>> output_labels = label_aligner.transform([1, 2, 3])
     >>> output_seq
     ["a", "b"]
     >>> output_labels
     [1, 3]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 0, 3]
 
     """

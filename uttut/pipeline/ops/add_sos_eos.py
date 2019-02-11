@@ -16,13 +16,14 @@ class AddSosEos(Operator):
     E.g.
     >>> from uttut.pipeline.ops.add_sos_eos import AddSosEos
     >>> op = AddSosEos()
-    >>> output_seq, output_labels, realigner = op.transform(
-        ['I', 'have', '10.7', 'dollars', '.'], [1, 2, 3, 4, 5])
+    >>> output_seq, label_aligner = op.transform(
+        ['I', 'have', '10.7', 'dollars', '.'])
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5])
     >>> output_seq
     ['<sos>', 'I', 'have', '10.7', 'dollars', '.', '<eos>']
     >>> output_labels
     [0, 1, 2, 3, 4, 5, 0]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 2, 3, 4, 5]
 
     """

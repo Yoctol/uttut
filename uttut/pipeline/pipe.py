@@ -92,9 +92,9 @@ class Pipe:
 
         Returns:
             output_sequence: transfromed sequence
-            intent_labels (ints):
-            entity_labels (ints):
-            realigners: an instance of RealignerSequence
+            intent_labels (ints)
+            entity_labels (ints)W
+            label_alingers: an instance of LabelAlignerSequence
             intermediate: an instance of Intermediate
 
         """
@@ -105,6 +105,19 @@ class Pipe:
         return output_sequence, intent_labels, updated_entity_labels, label_aligners, intermediate
 
     def transform_sequence(self, input_sequence):
+        """Process input_sequence based on Steps(Ops).
+
+        This method processes input_sequence according to the Pipe's steps.
+
+        Arg:
+            input_sequence
+
+        Returns:
+            output_sequence: transfromed sequence
+            label_alingers: an instance of LabelAlignerSequence
+            intermediate: an instance of Intermediate
+
+        """
         intermediate = Intermediate(self._checkpoints)
 
         intermediate.add(input_sequence)
@@ -146,14 +159,30 @@ class LabelAlignerSequence:
         self.collections = []
 
     def add(self, label_aligner: LabelAligner):
-        """Append realigner into collections
+        """Append label_aligner into collections
 
         Arg:
-            realigner: an instance of Realigner
+            label_aligner: an instance of LabelAligner
+
         """
         self.collections.append(label_aligner)
 
     def transform(self, labels: List[int]) -> List[int]:
+        """Update labels based on given label_aligners
+
+        Arg:
+            labels (ints): raw labels (entity)
+
+        Return:
+            ints: updated labels which has the same length as
+                  transformed sequence
+
+        """
+        for label_aligner in self.collections:
+            labels = label_aligner.transform(labels)
+        return labels
+
+    def inverse_transform(self, labels: List[int]) -> List[int]:
         """Realign model prediction to its original input
 
         Arg:
@@ -164,11 +193,6 @@ class LabelAlignerSequence:
                   original input (utterance)
 
         """
-        for label_aligner in self.collections:
-            labels = label_aligner.transform(labels)
-        return labels
-
-    def inverse_transform(self, labels: List[int]) -> List[int]:
         for label_aligner in self.collections[::-1]:
             labels = label_aligner.inverse_transform(labels)
         return labels

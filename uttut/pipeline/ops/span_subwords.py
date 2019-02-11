@@ -31,12 +31,13 @@ class SpanSubwords(Operator):
         E.g.
         >>> from uttut.pipeline.ops.span_subwords import SpanSubwords
         >>> op = SpanSubwords(vocab={"I": 0, "apple": 1, "##s": 2}, unk='<unk>', maxlen_per_token=5)
-        >>> output_seq, output_labels, realigner = op.transform(["I", "like", "apples"], [1, 2, 3])
+        >>> output_seq, output_labels, realigner = op.transform(["I", "like", "apples"])
+        >>> output_labels = label_aligner.transform([1, 2, 3])
         >>> output_seq
         ["I", "<unk>", "apple", "##s"]
         >>> output_labels
         [1, 2, 3, 3]
-        >>> realigner(output_labels)
+        >>> label_aligner.inverse_transform(output_labels)
         [1, 2, 3]
 
         """
@@ -57,7 +58,6 @@ class SpanSubwords(Operator):
         # Requirement: All elements in input_sequence should not contain
                         whitespaces and accent tokens.
         """
-
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
 
@@ -69,7 +69,6 @@ class SpanSubwords(Operator):
         return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(self, input_lst: List[str]) -> ReplacementGroup:
-
         replacement_group = ReplacementGroup()
         for i, token in enumerate(input_lst):
             subtokens = span_subwords(

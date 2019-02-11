@@ -8,18 +8,20 @@ from ..edit import str2str
 
 
 class Lowercase(Operator):
+
     """
     Recognize uppercase characters and convert them into lowercase characters
 
     E.g.
     >>> from uttut.pipeline.ops.lowercase import Lowercase
     >>> op = Lowercase()
-    >>> output_seq, output_labels, realigner = op.transform("ABc", [1, 2, 3])
+    >>> output_seq, label_aligner = op.transform("ABc")
+    >>> output_labels = label_aligner.transform([1, 2, 3])
     >>> output_seq
     "abc"
     >>> output_labels
     [1, 2, 3]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 2, 3]
 
     """
@@ -30,7 +32,6 @@ class Lowercase(Operator):
         super().__init__(input_type=str, output_type=str)
 
     def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
-
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)
         assert len(input_sequence) == len(output_sequence)
@@ -43,7 +44,6 @@ class Lowercase(Operator):
         return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(self, input_str: str) -> ReplacementGroup:
-
         shift = 0
         replacement_group = ReplacementGroup()
 

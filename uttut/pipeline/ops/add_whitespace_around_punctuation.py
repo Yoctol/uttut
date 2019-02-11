@@ -12,19 +12,18 @@ class AddWhitespaceAroundPunctuation(AddWhitespaceAroundCharacter):
     >>> from uttut.pipeline.ops.add_whitespace_around_punctuation import (
         AddWhitespaceAroundPunctuation)
     >>> op = AddWhitespaceAroundPunctuation()
-    >>> output_seq, output_labels, realigner = op.transform(
-        "GB,薄餡亂入", [1, 1, 2, 3, 3, 4, 5])
+    >>> output_seq, label_aligner = op.transform("GB,薄餡亂入")
+    >>> output_labels = label_aligner.transform([1, 1, 2, 3, 3, 4, 5])
     >>> output_seq
     "GB , 薄餡亂入"
     >>> output_labels
     [1, 1, 0, 2, 0, 3, 3, 4, 5]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 1, 2, 3, 3, 4, 5]
 
     """
 
     def _is_valid_char(self, char: str) -> bool:
-
         """Check whether char is a punctuation character.
 
         This code is copied from Bert `tokenization.py`.

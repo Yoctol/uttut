@@ -15,12 +15,13 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
     E.g.
     >>> from uttut.pipeline.ops.strip_whitespace_characters import StripWhiteSpaceCharacters
     >>> op = StripWhiteSpaceCharacters()
-    >>> output_seq, output_labels, realigner = op.transform(" a\n", [1, 2, 3])
+    >>> output_seq, label_aligner = op.transform(" a\n")
+    >>> output_labels = label_aligner.transform([1, 2, 3])
     >>> output_seq
     "a"
     >>> output_labels
     [2]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [0, 2, 0]
 
     """

@@ -18,12 +18,13 @@ class IntTokenWithSpace(PatternRecognizer):
     E.g.
     >>> from uttut.pipeline.ops.int_token_with_space import IntTokenWithSpace
     >>> op = IntTokenWithSpace()
-    >>> output_seq, output_labels, realigner = op.transform("10", [1, 1])
+    >>> output_seq, label_aligner = op.transform("10")
+    >>> output_labels = label_aligner.transform([1, 1])
     >>> output_seq
     " _int_ "
     >>> output_labels
     [0, 1, 1, 1, 1, 1, 0]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 1]
 
     """

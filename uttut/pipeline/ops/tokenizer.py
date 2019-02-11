@@ -24,7 +24,6 @@ class Tokenizer(Operator):
         return same_label_aligner_class and super().__eq__(other)
 
     def _transform(self, input_sequence: str) -> Tuple[List[str], 'LabelAligner']:
-
         tokens = self._tokenize(input_sequence)
 
         # transform sequence

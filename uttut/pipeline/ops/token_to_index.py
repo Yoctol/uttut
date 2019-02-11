@@ -17,13 +17,13 @@ class Token2Index(Operator):
     E.g.
     >>> from uttut.pipeline.ops.token_to_index import Token2Index
     >>> op = Token2Index({'I': 1, 'like': 2, 'apples': 3})
-    >>> output_seq, output_labels, realigner = op.transform(
-        ['I', 'like', 'apples'], [3, 4, 5])
+    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples'])
+    >>> output_labels = label_aligner.transform([3, 4, 5])
     >>> output_seq
     [1, 2, 3]
     >>> output_labels
     [3, 4, 5]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [3, 4, 5]
 
     """
