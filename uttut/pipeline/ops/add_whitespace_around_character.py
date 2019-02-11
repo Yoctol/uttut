@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from .base import Operator, Realigner
+from .base import Operator, LabelAligner
 from .label_transducer import get_most_common_except_not_entity
 from ..edit.replacement import ReplacementGroup
 from ..edit import str2str
@@ -17,36 +17,17 @@ class AddWhitespaceAroundCharacter(Operator):
 
     def __init__(self):
         super().__init__(input_type=str, output_type=str)
-        self._realigner_class = AddWhitespaceAroundCharRealigner
 
-    def __eq__(self, other):
-        same_realigner_class = self._realigner_class == other._realigner_class
-        return same_realigner_class and super().__eq__(other)
-
-    def transform(  # type: ignore
-            self,
-            input_sequence: str,
-            labels: List[int],
-            state: dict = None,
-        ) -> Tuple[str, List[int], 'Realigner']:
-
+    def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)
-        inverse_replacement_group = str2str.inverse(input_sequence, forward_replacement_group)
 
-        updated_labels = propagate_by_replacement_group(
-            labels=labels,
-            replacement_group=forward_replacement_group,
-            transduce_func=self._forward_transduce_func,
+        label_aligner = AddWhitespaceAroundCharAligner(
+            input_sequence=input_sequence,
+            edit=forward_replacement_group,
+            output_length=len(output_sequence),
         )
-
-        realigner = self._realigner_class(
-            edit=inverse_replacement_group,
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
-        )
-
-        return output_sequence, updated_labels, realigner
+        return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(self, input_str: str) -> ReplacementGroup:
         replacement_group = ReplacementGroup()
@@ -63,20 +44,28 @@ class AddWhitespaceAroundCharacter(Operator):
         replacement_group.done()
         return replacement_group
 
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        assert len(labels) == 1
-        return [ENTITY_LABEL['NOT_ENTITY'], labels[0], ENTITY_LABEL['NOT_ENTITY']]
-
     def _is_valid_char(self, char: str) -> bool:
         raise NotImplementedError
 
 
-class AddWhitespaceAroundCharRealigner(Realigner):
+class AddWhitespaceAroundCharAligner(LabelAligner):
 
-    def _realign_labels(self, labels: List[int]) -> List[int]:
+    def _transform(self, labels: List[int]) -> ReplacementGroup:
         return propagate_by_replacement_group(
             labels=labels,
-            replacement_group=self._edit,
+            replacement_group=self._forward_edit,
+            transduce_func=self._forward_transduce_func,
+        )
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        assert len(labels) == 1
+        return [ENTITY_LABEL['NOT_ENTITY'], labels[0], ENTITY_LABEL['NOT_ENTITY']]
+
+    def _inverse_transform(self, labels):
+        inverse_replacement_group = str2str.inverse(self._input_sequence, self._forward_edit)
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=inverse_replacement_group,
             transduce_func=self._backward_transduce_func,
         )
 

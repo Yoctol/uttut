@@ -1,4 +1,3 @@
-from typing import List
 from .ops.base import Operator
 
 
@@ -21,8 +20,5 @@ class Step:
     def output_type(self):
         return self.op.output_type
 
-    def transform(self, input_sequence, labels: List[int]):
-        return self.op.transform(
-            input_sequence=input_sequence,
-            labels=labels,
-        )
+    def transform(self, input_sequence):
+        return self.op.transform(input_sequence=input_sequence)

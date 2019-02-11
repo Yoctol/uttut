@@ -14,12 +14,13 @@ class ZhCharTokenizer(EngTokenizer):
     E.g.
     >>> from uttut.pipeline.ops.zh_char_tokenizer import ZhCharTokenizer
     >>> op = ZhCharTokenizer()
-    >>> output_seq, output_labels, realigner = op.transform("這是a b", [1, 2, 3, 4, 5])
+    >>> output_seq, label_aligner = op.transform("這是a b")
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5])
     >>> output_seq
     ["這", "是", "a", "b"]
     >>> output_labels
     [1, 2, 3, 5]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 2, 3, 0, 5]
 
     """

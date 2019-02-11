@@ -1,7 +1,7 @@
 from typing import List, Tuple
 import unicodedata
 
-from .base import Operator, Realigner
+from .base import Operator, LabelAligner
 from .label_transducer import get_most_common_except_not_entity
 from ..edit.replacement import ReplacementGroup
 from ..edit import str2str
@@ -16,53 +16,33 @@ class StripAccentToken(Operator):
     E.g.
     >>> from uttut.pipeline.ops.strip_accent_token import StripAccentToken
     >>> op = StripAccentToken()
-    >>> output_seq, output_labels, realigner = op.transform(
-        u"H\u00E9llo", [1, 2, 3, 4, 5])
+    >>> output_seq, label_aligner = op.transform(u"H\u00E9llo")
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5])
     >>> output_seq
     "Hello"
     >>> output_labels
     [1, 2, 3, 4, 5]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 2, 3, 4, 5]
 
     """
 
     def __init__(self):
         super().__init__(input_type=str, output_type=str)
-        self._realigner_class = StripAccentTokenRealigner
 
-    def __eq__(self, other):
-        same_realigner_class = self._realigner_class == other._realigner_class
-        return same_realigner_class and super().__eq__(other)
-
-    def transform(  # type: ignore
-            self,
-            input_sequence: str,
-            labels: List[int],
-            state: dict = None,
-        ) -> Tuple[str, List[int], 'Realigner']:
-
+    def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)
-        inverse_replacement_group = str2str.inverse(input_sequence, forward_replacement_group)
 
-        updated_labels = propagate_by_replacement_group(
-            labels=labels,
-            replacement_group=forward_replacement_group,
-            transduce_func=self._forward_transduce_func,
+        label_aligner = StripAccentTokenAligner(
+            input_sequence=input_sequence,
+            edit=forward_replacement_group,
+            output_length=len(output_sequence),
         )
-
-        realigner = self._realigner_class(
-            edit=inverse_replacement_group,
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
-        )
-
-        return output_sequence, updated_labels, realigner
+        return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(self, input_str: str) -> ReplacementGroup:
         replacement_group = ReplacementGroup()
-
         output_str = _strip_accents(input_str)
         assert len(input_str) == len(output_str)
 
@@ -77,16 +57,24 @@ class StripAccentToken(Operator):
         replacement_group.done()
         return replacement_group
 
+
+class StripAccentTokenAligner(LabelAligner):
+
+    def _transform(self, labels: List[int]) -> List[int]:
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=self._forward_edit,
+            transduce_func=self._forward_transduce_func,
+        )
+
     def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return get_most_common_except_not_entity(labels, output_size)
 
-
-class StripAccentTokenRealigner(Realigner):
-
-    def _realign_labels(self, labels: List[int]) -> List[int]:
+    def _inverse_transform(self, labels: List[int]) -> List[int]:
+        inverse_replacement_group = str2str.inverse(self._input_sequence, self._forward_edit)
         return propagate_by_replacement_group(
             labels=labels,
-            replacement_group=self._edit,
+            replacement_group=inverse_replacement_group,
             transduce_func=self._backward_transduce_func,
         )
 

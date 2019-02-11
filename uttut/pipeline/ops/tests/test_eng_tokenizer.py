@@ -70,11 +70,13 @@ def test_invertible_cases(
         expected_realigned_labels,
         op,
     ):
-    output_seq, output_labels, realigner = op.transform(input_str, input_labels)
+    output_seq, label_aligner = op.transform(input_str)
     assert expected_output_seq == output_seq
+
+    output_labels = label_aligner.transform(input_labels)
     assert expected_output_labels == output_labels
 
-    realigned_labels = realigner(output_labels)
+    realigned_labels = label_aligner.inverse_transform(expected_output_labels)
     assert expected_realigned_labels == realigned_labels
 
 

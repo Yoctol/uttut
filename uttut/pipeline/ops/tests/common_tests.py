@@ -42,13 +42,23 @@ def common_test(test_cases):
         assert len(output_sequence) == len(output_labels)
 
     def test_transform(input_sequence, input_labels, output_sequence, output_labels, op):
-        output = op.transform(input_sequence, input_labels)
+        output = op.transform(input_sequence)
         assert output_sequence == output[0]
-        assert output_labels == output[1]
 
-    def test_realign_labels(input_sequence, input_labels, output_sequence, output_labels, op):
-        _, _, realigner = op.transform(input_sequence, input_labels)
-        output = realigner(output_labels)
+    def test_transform_labels(input_sequence, input_labels, output_sequence, output_labels, op):
+        _, label_aligner = op.transform(input_sequence)
+        output = label_aligner.transform(input_labels)
+        assert output_labels == output
+
+    def test_inverse_transform_labels(
+            input_sequence,
+            input_labels,
+            output_sequence,
+            output_labels,
+            op,
+        ):
+        _, label_aligner = op.transform(input_sequence)
+        output = label_aligner.inverse_transform(output_labels)
         assert input_labels == output
 
     argstr = "input_sequence,input_labels,output_sequence,output_labels"

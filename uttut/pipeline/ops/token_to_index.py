@@ -1,6 +1,6 @@
 from typing import List, Tuple, Dict
 
-from .base import Operator, Realigner
+from .base import Operator, LabelAligner
 from .tokens import UNK_TOKEN
 
 from ..edit import lst2lst
@@ -17,22 +17,18 @@ class Token2Index(Operator):
     E.g.
     >>> from uttut.pipeline.ops.token_to_index import Token2Index
     >>> op = Token2Index({'I': 1, 'like': 2, 'apples': 3})
-    >>> output_seq, output_labels, realigner = op.transform(
-        ['I', 'like', 'apples'], [3, 4, 5])
+    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples'])
+    >>> output_labels = label_aligner.transform([3, 4, 5])
     >>> output_seq
     [1, 2, 3]
     >>> output_labels
     [3, 4, 5]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [3, 4, 5]
 
     """
 
-    def __init__(
-            self,
-            token2index: Dict[str, int],
-            unk_token: str = UNK_TOKEN,
-        ):
+    def __init__(self, token2index: Dict[str, int], unk_token: str = UNK_TOKEN):
         super().__init__(input_type=list, output_type=list)
         self._validate_token2index(token2index, unk_token)
         self.token2index = token2index
@@ -56,32 +52,22 @@ class Token2Index(Operator):
         if unk_token not in token2index:
             raise KeyError(f"token2index should have token {unk_token}")
 
-    def transform(
-            self,
-            input_sequence: List[str],
-            labels: List[int],
-            state: dict = None,
-        ) -> Tuple[List[int], List[int], 'Realigner']:
-
+    def _transform(self, input_sequence: List[str]) -> Tuple[List[int], 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
-        inverse_replacement_group = lst2lst.inverse(input_sequence, forward_replacement_group)
 
-        realigner = Token2IndexRealigner(
-            edit=inverse_replacement_group,
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
+        label_aligner = Token2IndexAligner(
+            input_sequence=input_sequence,
+            edit=forward_replacement_group,
+            output_length=len(output_sequence),
         )
-
-        return output_sequence, labels, realigner
+        return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(
             self,
             input_lst: List[str],
-            annotation: str = None,
         ) -> ReplacementGroup:
 
-        index: int
         replacement_group = ReplacementGroup()
         for idx, token in enumerate(input_lst):
             if token in self.token2index:
@@ -98,7 +84,10 @@ class Token2Index(Operator):
         return replacement_group
 
 
-class Token2IndexRealigner(Realigner):
+class Token2IndexAligner(LabelAligner):
 
-    def _realign_labels(self, labels: List[int]) -> List[int]:
+    def _transform(self, labels: List[int]):
+        return labels
+
+    def _inverse_transform(self, labels):
         return labels

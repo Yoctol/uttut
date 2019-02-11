@@ -1,11 +1,11 @@
 from typing import List, Tuple
 
-from .base import Operator, Realigner
+from .base import Operator, LabelAligner
 from .tokens import START_TOKEN, END_TOKEN
+from .label_transducer import get_not_entity
 from ..edit import lst2lst
 from ..edit.replacement import ReplacementGroup
 from ..edit.label_propagation import propagate_by_replacement_group
-from uttut import ENTITY_LABEL
 
 
 class AddSosEos(Operator):
@@ -16,13 +16,14 @@ class AddSosEos(Operator):
     E.g.
     >>> from uttut.pipeline.ops.add_sos_eos import AddSosEos
     >>> op = AddSosEos()
-    >>> output_seq, output_labels, realigner = op.transform(
-        ['I', 'have', '10.7', 'dollars', '.'], [1, 2, 3, 4, 5])
+    >>> output_seq, label_aligner = op.transform(
+        ['I', 'have', '10.7', 'dollars', '.'])
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5])
     >>> output_seq
     ['<sos>', 'I', 'have', '10.7', 'dollars', '.', '<eos>']
     >>> output_labels
     [0, 1, 2, 3, 4, 5, 0]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 2, 3, 4, 5]
 
     """
@@ -41,27 +42,16 @@ class AddSosEos(Operator):
         same_end_token = self.end_token == other.end_token
         return same_start_token and same_end_token and super().__eq__(other)
 
-    def transform(  # type: ignore
-            self,
-            input_sequence: List[str],
-            labels: List[int],
-            state: dict = None,
-        ) -> Tuple[List[str], List[int], 'Realigner']:
-
+    def _transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
-        inverse_replacement_group = lst2lst.inverse(input_sequence, forward_replacement_group)
 
-        updated_labels = propagate_by_replacement_group(
-            labels, forward_replacement_group, self._forward_reduce_func)
-
-        realigner = AddSosEosRealigner(
-            edit=inverse_replacement_group,
-            input_length=len(output_sequence),
-            output_length=len(input_sequence),
+        label_aligner = AddSosEosAligner(
+            input_sequence=input_sequence,
+            edit=forward_replacement_group,
+            output_length=len(output_sequence),
         )
-
-        return output_sequence, updated_labels, realigner
+        return output_sequence, label_aligner
 
     def _gen_forward_replacement_group(
             self,
@@ -78,14 +68,26 @@ class AddSosEos(Operator):
         )
         return replacement_group
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [ENTITY_LABEL['NOT_ENTITY']] * output_size
 
+class AddSosEosAligner(LabelAligner):
 
-class AddSosEosRealigner(Realigner):
+    def _transform(self, labels: List[int]) -> List[int]:
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=self._forward_edit,
+            transduce_func=self._forward_transduce_func,
+        )
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return [ENTITY_LABEL['NOT_ENTITY']] * output_size
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_not_entity(labels=labels, output_size=output_size)
 
-    def _realign_labels(self, labels: List[int]) -> List[int]:
-        return propagate_by_replacement_group(labels, self._edit, self._backward_reduce_func)
+    def _inverse_transform(self, labels: List[int]) -> List[int]:
+        inverse_replacement_group = lst2lst.inverse(self._input_sequence, self._forward_edit)
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=inverse_replacement_group,
+            transduce_func=self._backward_transduce_func,
+        )
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_not_entity(labels=labels, output_size=output_size)

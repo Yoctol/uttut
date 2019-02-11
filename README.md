@@ -27,6 +27,8 @@ $ pip install uttut
 
 Let's create a Pipe to preprocess a Datum with English utterance.
 
+## Build a Pipe
+
 ```python
 >>> from uttut.pipeline.pipe import Pipe
 
@@ -51,26 +53,50 @@ Let's create a Pipe to preprocess a Datum with English utterance.
         },
     },
 )
+```
 
+## transform
+
+```python
 >>> from uttut.elements import Datum, Entity, Intent
 >>> datum = Datum(
     utterance='I like apples.',
     intents=[Intent(label=1), Intent(label=2)],
     entities=[Entity(start=7, end=13, value='apples', label=7)],
 )
->>> output_indices, intent_labels, entity_labels, realigner, intermediate = p.transform(datum)
+>>> output_indices, intent_labels, entity_labels, label_aligner, intermediate = p.transform(datum)
 >>> output_indices
 [0, 6, 2, 7, 1, 3, 3]
 >>> intent_labels
 [1, 2]
 >>> entity_labels
 [0, 0, 0, 7, 0, 0, 0]
+
+# intermediate
 >>> intermediate.get_from_checkpoint('result_of_add_sos_eos')
-(["<sos>", "I", "like", "apples", "<eos>"], [0, 0, 0, 7, 0]) 
+["<sos>", "I", "like", "apples", "<eos>"] 
 
->>> realigner(entity_labels)
-[0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 0] 
+# label_aligner
+>>> label_aligner.inverse_transform(entity_labels)
+[0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 0]
+```
 
+## transform sequence
+
+```python
+>>> output_sequence, label_aligner, intermediate = p.transform_sequence('I like apples.')
+>>> output_sequence
+[0, 6, 2, 7, 1, 3, 3]
+
+# label_aligner
+>>> label_aligner.transform([0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 0])
+[0, 0, 0, 7, 0, 0, 0]
+>>> label_aligner.inverse_transform([0, 0, 0, 7, 0, 0, 0])
+[0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 0]
+
+# intermediate
+>>> intermediate.get_from_checkpoint('result_of_add_sos_eos')
+["<sos>", "I", "like", "apples", "<eos>"]
 ```
 
 # Serialization

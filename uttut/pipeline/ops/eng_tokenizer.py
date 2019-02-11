@@ -2,7 +2,7 @@ from typing import List
 
 import unicodedata
 
-from .tokenizer import Tokenizer, TokenizerRealigner
+from .tokenizer import Tokenizer, TokenizerAligner
 from .label_transducer import get_most_common_except_not_entity
 
 
@@ -16,18 +16,19 @@ class EngTokenizer(Tokenizer):
     E.g.
     >>> from uttut.pipeline.ops.eng_tokenizer import EngTokenizer
     >>> op = EngTokenizer()
-    >>> output_seq, output_labels, realigner = op.transform("a b", [1, 2, 3])
+    >>> output_seq, label_aligner = op.transform("a b")
+    >>> output_labels = label_aligner.transform([1, 2, 3])
     >>> output_seq
     ["a", "b"]
     >>> output_labels
     [1, 3]
-    >>> realigner(output_labels)
+    >>> label_aligner.inverse_transform(output_labels)
     [1, 0, 3]
 
     """
 
     def __init__(self):
-        super().__init__(realigner_class=EngTokenizerRealigner)
+        super().__init__(label_aligner_class=EngTokenizerAligner)
 
     def _tokenize(self, input_str: str) -> List[str]:
         orig_tokens = whitespace_tokenize(input_str)
@@ -100,7 +101,10 @@ def _is_punctuation(char):
     return False
 
 
-class EngTokenizerRealigner(TokenizerRealigner):
+class EngTokenizerAligner(TokenizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
 
     def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return get_most_common_except_not_entity(labels, output_size)
