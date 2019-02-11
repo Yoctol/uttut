@@ -58,7 +58,7 @@ class TokenizerAligner(LabelAligner):
         output_labels = reduce_by_span_group(output_labels, self._forward_edit['span_group'])
         return output_labels
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError
 
     def _inverse_transform(self, labels):
@@ -75,5 +75,5 @@ class TokenizerAligner(LabelAligner):
         )
         return output_labels
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         raise NotImplementedError

@@ -70,19 +70,23 @@ class AddSosEos(Operator):
 
 class AddSosEosAligner(LabelAligner):
 
-    def _transform(self, labels):
-        return propagate_by_replacement_group(labels, self._forward_edit, self._forward_reduce_func)
+    def _transform(self, labels: List[int]) -> List[int]:
+        return propagate_by_replacement_group(
+            labels=labels,
+            replacement_group=self._forward_edit,
+            transduce_func=self._forward_transduce_func,
+        )
 
-    def _forward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return get_not_entity(labels=labels, output_size=output_size)
 
-    def _inverse_transform(self, labels):
+    def _inverse_transform(self, labels: List[int]) -> List[int]:
         inverse_replacement_group = lst2lst.inverse(self._input_sequence, self._forward_edit)
         return propagate_by_replacement_group(
             labels=labels,
             replacement_group=inverse_replacement_group,
-            transduce_func=self._backward_reduce_func,
+            transduce_func=self._backward_transduce_func,
         )
 
-    def _backward_reduce_func(self, labels: List[int], output_size: int) -> List[int]:
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
         return get_not_entity(labels=labels, output_size=output_size)
