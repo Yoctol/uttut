@@ -95,30 +95,40 @@ cdef class ReplacementGroup:   # noqa: E999
         )
         self._replacements.append(replacement)
 
-    cpdef void done(self, bint skip_sort=False) except *:
+    cpdef void done(self, bint skip_sort=True) except *:
 
-        cdef unsigned int n_replacements
+        cdef unsigned int n_replacements, n_unique
 
-        self._replacements = list(set(self._replacements))
-
+        n_unique = len(set(self._replacements))
         n_replacements = len(self._replacements)
 
-        if (n_replacements != 0) and (not skip_sort):
-            self._validate_new_values()
+        # check duplicate
+        if n_unique != n_replacements:
+            self._replacements = list(set(self._replacements))
+            n_replacements = len(self._replacements)
+            skip_sort = False
+
+        self._validate_new_values()
+
+        if not skip_sort:
             self._replacements = _sort_replacements(self._replacements)
-            _validate_disjoint_in_c(self._replacements)
+
+        _validate_disjoint_in_c(self._replacements)
 
         self._is_done = True
 
     cdef void _validate_new_values(self) except *:
-        target_type = type(self._replacements[0].new_value)
-        for i, rep in enumerate(self._replacements):
-            if not isinstance(rep.new_value, target_type):
-                raise TypeError(
-                    f"the new_value of {i}-th element is not a(an) {target_type.__name__}")
+        cdef unsigned int n_replacements
+        n_replacements = len(self._replacements)
+        if n_replacements > 0:
+            target_type = type(self._replacements[0].new_value)
+            for i, rep in enumerate(self._replacements):
+                if not isinstance(rep.new_value, target_type):
+                    raise TypeError(
+                        f"the new_value of {i}-th element is not a(an) {target_type.__name__}")
 
     @classmethod
-    def add_all(cls, list replacements):  # type: ignore
+    def add_all(cls, list replacements, bint skip_sort=True):  # type: ignore
         '''
         replacements = [
             (
@@ -136,7 +146,7 @@ cdef class ReplacementGroup:   # noqa: E999
         replacement_group = cls()
         for replacement in replacements:
             replacement_group.add(*replacement)
-        replacement_group.done()
+        replacement_group.done(skip_sort=skip_sort)
         return replacement_group
 
     cpdef bint is_empty(self):

@@ -1552,124 +1552,158 @@ static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c
 
 static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_disjoint_in_c(PyObject *__pyx_v_sorted_objs) {
   unsigned int __pyx_v_current;
+  unsigned int __pyx_v_n_objs;
   PyObject *__pyx_v_obj = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  unsigned int __pyx_t_3;
-  Py_ssize_t __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
+  Py_ssize_t __pyx_t_1;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  unsigned int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  int __pyx_t_7;
+  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("_validate_disjoint_in_c", 0);
   __Pyx_TraceCall("_validate_disjoint_in_c", __pyx_f[0], 14, 0, __PYX_ERR(0, 14, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/validation.pyx":20
- *     cdef unsigned int current
+  /* "uttut/pipeline/edit/validation.pyx":19
+ *     '''
+ *     cdef unsigned int current, n_objs
+ *     n_objs = len(sorted_objs)             # <<<<<<<<<<<<<<
  * 
- *     current = sorted_objs[0].end  # type: ignore             # <<<<<<<<<<<<<<
- *     for obj in sorted_objs[1:]:
- *         if obj.start < current:  # type: ignore
+ *     if n_objs > 0:
  */
   if (unlikely(__pyx_v_sorted_objs == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 20, __pyx_L1_error)
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 19, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_sorted_objs, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_current = __pyx_t_3;
+  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_sorted_objs); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_v_n_objs = __pyx_t_1;
 
   /* "uttut/pipeline/edit/validation.pyx":21
+ *     n_objs = len(sorted_objs)
  * 
- *     current = sorted_objs[0].end  # type: ignore
- *     for obj in sorted_objs[1:]:             # <<<<<<<<<<<<<<
- *         if obj.start < current:  # type: ignore
- *             raise ValueError(f"overlapped")
+ *     if n_objs > 0:             # <<<<<<<<<<<<<<
+ *         current = sorted_objs[0].end  # type: ignore
+ *         for obj in sorted_objs[1:]:
  */
-  if (unlikely(__pyx_v_sorted_objs == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 21, __pyx_L1_error)
-  }
-  __pyx_t_2 = __Pyx_PyList_GetSlice(__pyx_v_sorted_objs, 1, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  for (;;) {
-    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 21, __pyx_L1_error)
-    #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_obj, __pyx_t_2);
-    __pyx_t_2 = 0;
+  __pyx_t_2 = ((__pyx_v_n_objs > 0) != 0);
+  if (__pyx_t_2) {
 
     /* "uttut/pipeline/edit/validation.pyx":22
- *     current = sorted_objs[0].end  # type: ignore
- *     for obj in sorted_objs[1:]:
- *         if obj.start < current:  # type: ignore             # <<<<<<<<<<<<<<
- *             raise ValueError(f"overlapped")
- *         current = obj.end  # type: ignore
+ * 
+ *     if n_objs > 0:
+ *         current = sorted_objs[0].end  # type: ignore             # <<<<<<<<<<<<<<
+ *         for obj in sorted_objs[1:]:
+ *             if obj.start < current:  # type: ignore
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_obj, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = __Pyx_PyInt_From_unsigned_int(__pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_t_5, Py_LT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 22, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 22, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_7)) {
+    if (unlikely(__pyx_v_sorted_objs == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 22, __pyx_L1_error)
+    }
+    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_sorted_objs, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_5 = __Pyx_PyInt_As_unsigned_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 22, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_current = __pyx_t_5;
+
+    /* "uttut/pipeline/edit/validation.pyx":23
+ *     if n_objs > 0:
+ *         current = sorted_objs[0].end  # type: ignore
+ *         for obj in sorted_objs[1:]:             # <<<<<<<<<<<<<<
+ *             if obj.start < current:  # type: ignore
+ *                 raise ValueError(f"overlapped")
+ */
+    if (unlikely(__pyx_v_sorted_objs == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 23, __pyx_L1_error)
+    }
+    __pyx_t_4 = __Pyx_PyList_GetSlice(__pyx_v_sorted_objs, 1, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __pyx_t_4; __Pyx_INCREF(__pyx_t_3); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    for (;;) {
+      if (__pyx_t_1 >= PyList_GET_SIZE(__pyx_t_3)) break;
+      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+      __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 23, __pyx_L1_error)
+      #else
+      __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      #endif
+      __Pyx_XDECREF_SET(__pyx_v_obj, __pyx_t_4);
+      __pyx_t_4 = 0;
+
+      /* "uttut/pipeline/edit/validation.pyx":24
+ *         current = sorted_objs[0].end  # type: ignore
+ *         for obj in sorted_objs[1:]:
+ *             if obj.start < current:  # type: ignore             # <<<<<<<<<<<<<<
+ *                 raise ValueError(f"overlapped")
+ *             current = obj.end  # type: ignore
+ */
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_obj, __pyx_n_s_start); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 24, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_current); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 24, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_7 = PyObject_RichCompare(__pyx_t_4, __pyx_t_6, Py_LT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 24, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 24, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(__pyx_t_2)) {
+
+        /* "uttut/pipeline/edit/validation.pyx":25
+ *         for obj in sorted_objs[1:]:
+ *             if obj.start < current:  # type: ignore
+ *                 raise ValueError(f"overlapped")             # <<<<<<<<<<<<<<
+ *             current = obj.end  # type: ignore
+ */
+        __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 25, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_Raise(__pyx_t_7, 0, 0, 0);
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __PYX_ERR(0, 25, __pyx_L1_error)
+
+        /* "uttut/pipeline/edit/validation.pyx":24
+ *         current = sorted_objs[0].end  # type: ignore
+ *         for obj in sorted_objs[1:]:
+ *             if obj.start < current:  # type: ignore             # <<<<<<<<<<<<<<
+ *                 raise ValueError(f"overlapped")
+ *             current = obj.end  # type: ignore
+ */
+      }
+
+      /* "uttut/pipeline/edit/validation.pyx":26
+ *             if obj.start < current:  # type: ignore
+ *                 raise ValueError(f"overlapped")
+ *             current = obj.end  # type: ignore             # <<<<<<<<<<<<<<
+ */
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_obj, __pyx_n_s_end); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_5 = __Pyx_PyInt_As_unsigned_int(__pyx_t_7); if (unlikely((__pyx_t_5 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_v_current = __pyx_t_5;
 
       /* "uttut/pipeline/edit/validation.pyx":23
- *     for obj in sorted_objs[1:]:
- *         if obj.start < current:  # type: ignore
- *             raise ValueError(f"overlapped")             # <<<<<<<<<<<<<<
- *         current = obj.end  # type: ignore
- */
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 23, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_Raise(__pyx_t_6, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __PYX_ERR(0, 23, __pyx_L1_error)
-
-      /* "uttut/pipeline/edit/validation.pyx":22
- *     current = sorted_objs[0].end  # type: ignore
- *     for obj in sorted_objs[1:]:
- *         if obj.start < current:  # type: ignore             # <<<<<<<<<<<<<<
- *             raise ValueError(f"overlapped")
- *         current = obj.end  # type: ignore
+ *     if n_objs > 0:
+ *         current = sorted_objs[0].end  # type: ignore
+ *         for obj in sorted_objs[1:]:             # <<<<<<<<<<<<<<
+ *             if obj.start < current:  # type: ignore
+ *                 raise ValueError(f"overlapped")
  */
     }
-
-    /* "uttut/pipeline/edit/validation.pyx":24
- *         if obj.start < current:  # type: ignore
- *             raise ValueError(f"overlapped")
- *         current = obj.end  # type: ignore             # <<<<<<<<<<<<<<
- */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_obj, __pyx_n_s_end); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 24, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_t_6); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_v_current = __pyx_t_3;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "uttut/pipeline/edit/validation.pyx":21
+ *     n_objs = len(sorted_objs)
  * 
- *     current = sorted_objs[0].end  # type: ignore
- *     for obj in sorted_objs[1:]:             # <<<<<<<<<<<<<<
- *         if obj.start < current:  # type: ignore
- *             raise ValueError(f"overlapped")
+ *     if n_objs > 0:             # <<<<<<<<<<<<<<
+ *         current = sorted_objs[0].end  # type: ignore
+ *         for obj in sorted_objs[1:]:
  */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "uttut/pipeline/edit/validation.pyx":14
  * 
@@ -1682,10 +1716,10 @@ static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_disjoint_in_c(
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("uttut.pipeline.edit.validation._validate_disjoint_in_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_obj);
@@ -1777,13 +1811,13 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "uttut/pipeline/edit/validation.pyx":23
- *     for obj in sorted_objs[1:]:
- *         if obj.start < current:  # type: ignore
- *             raise ValueError(f"overlapped")             # <<<<<<<<<<<<<<
- *         current = obj.end  # type: ignore
+  /* "uttut/pipeline/edit/validation.pyx":25
+ *         for obj in sorted_objs[1:]:
+ *             if obj.start < current:  # type: ignore
+ *                 raise ValueError(f"overlapped")             # <<<<<<<<<<<<<<
+ *             current = obj.end  # type: ignore
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_n_u_overlapped); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_n_u_overlapped); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 

@@ -15,10 +15,12 @@ cdef void _validate_disjoint_in_c(list sorted_objs) except *:
     '''
     An object must have two integer properties `start` and `end`.
     '''
-    cdef unsigned int current
+    cdef unsigned int current, n_objs
+    n_objs = len(sorted_objs)
 
-    current = sorted_objs[0].end  # type: ignore
-    for obj in sorted_objs[1:]:
-        if obj.start < current:  # type: ignore
-            raise ValueError(f"overlapped")
-        current = obj.end  # type: ignore
+    if n_objs > 0:
+        current = sorted_objs[0].end  # type: ignore
+        for obj in sorted_objs[1:]:
+            if obj.start < current:  # type: ignore
+                raise ValueError(f"overlapped")
+            current = obj.end  # type: ignore

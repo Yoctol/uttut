@@ -104,7 +104,7 @@ def test_different_type():
     ],
 )
 def test_need_sorted(objs, expected_objs):
-    obj_group = ReplacementGroup.add_all(objs)
+    obj_group = ReplacementGroup.add_all(objs, False)
     assert expected_objs == obj_group[:]
 
 
