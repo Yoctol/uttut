@@ -1479,7 +1479,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_10validation_2_validate_disjoin
 /* "uttut/pipeline/edit/validation.pyx":9
  * 
  * 
- * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:             # <<<<<<<<<<<<<<
+ * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999             # <<<<<<<<<<<<<<
  *     if start > end:
  *         raise ValueError("start cannot be greater than end")
  */
@@ -1494,7 +1494,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c
 
   /* "uttut/pipeline/edit/validation.pyx":10
  * 
- * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:
+ * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999
  *     if start > end:             # <<<<<<<<<<<<<<
  *         raise ValueError("start cannot be greater than end")
  * 
@@ -1503,7 +1503,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c
   if (unlikely(__pyx_t_1)) {
 
     /* "uttut/pipeline/edit/validation.pyx":11
- * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:
+ * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999
  *     if start > end:
  *         raise ValueError("start cannot be greater than end")             # <<<<<<<<<<<<<<
  * 
@@ -1517,7 +1517,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c
 
     /* "uttut/pipeline/edit/validation.pyx":10
  * 
- * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:
+ * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999
  *     if start > end:             # <<<<<<<<<<<<<<
  *         raise ValueError("start cannot be greater than end")
  * 
@@ -1527,7 +1527,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c
   /* "uttut/pipeline/edit/validation.pyx":9
  * 
  * 
- * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:             # <<<<<<<<<<<<<<
+ * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999             # <<<<<<<<<<<<<<
  *     if start > end:
  *         raise ValueError("start cannot be greater than end")
  */
@@ -1767,7 +1767,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
   /* "uttut/pipeline/edit/validation.pyx":11
- * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:
+ * cdef void _validate_start_end_in_c(unsigned int start, unsigned int end) except *:  # noqa: E999
  *     if start > end:
  *         raise ValueError("start cannot be greater than end")             # <<<<<<<<<<<<<<
  * 

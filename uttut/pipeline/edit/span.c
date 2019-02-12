@@ -837,7 +837,7 @@ struct __pyx_obj_5uttut_8pipeline_4edit_4span_Span;
 struct __pyx_obj_5uttut_8pipeline_4edit_4span_SpanGroup;
 
 /* "uttut/pipeline/edit/span.pxd":1
- * cdef class Span:             # <<<<<<<<<<<<<<
+ * cdef class Span:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef public unsigned int start
  */
@@ -2259,7 +2259,7 @@ static Py_hash_t __pyx_pf_5uttut_8pipeline_4edit_4span_4Span_8__hash__(struct __
 }
 
 /* "uttut/pipeline/edit/span.pxd":3
- * cdef class Span:
+ * cdef class Span:  # noqa: E999
  * 
  *     cdef public unsigned int start             # <<<<<<<<<<<<<<
  *     cdef public unsigned int end
@@ -2872,12 +2872,13 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_2add(struct __
  *         self._spans.append(span)
  * 
  *     cpdef void done(self) except *:             # <<<<<<<<<<<<<<
- *         if len(self._spans) != 0:
- *             self._spans = _sorted_spans(self._spans)
+ * 
+ *         cdef unsigned int n_spans = len(self._spans)
  */
 
 static PyObject *__pyx_pw_5uttut_8pipeline_4edit_4span_9SpanGroup_5done(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_done(struct __pyx_obj_5uttut_8pipeline_4edit_4span_SpanGroup *__pyx_v_self, int __pyx_skip_dispatch) {
+  unsigned int __pyx_v_n_spans;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2934,34 +2935,43 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_done(struct __pyx_ob
     #endif
   }
 
-  /* "uttut/pipeline/edit/span.pyx":51
- * 
+  /* "uttut/pipeline/edit/span.pyx":52
  *     cpdef void done(self) except *:
- *         if len(self._spans) != 0:             # <<<<<<<<<<<<<<
- *             self._spans = _sorted_spans(self._spans)
- *             _validate_disjoint_in_c(self._spans)
+ * 
+ *         cdef unsigned int n_spans = len(self._spans)             # <<<<<<<<<<<<<<
+ * 
+ *         if n_spans != 0:
  */
   __pyx_t_1 = __pyx_v_self->_spans;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 51, __pyx_L1_error)
+    __PYX_ERR(1, 52, __pyx_L1_error)
   }
-  __pyx_t_5 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(1, 51, __pyx_L1_error)
+  __pyx_t_5 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(1, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = ((__pyx_t_5 != 0) != 0);
+  __pyx_v_n_spans = __pyx_t_5;
+
+  /* "uttut/pipeline/edit/span.pyx":54
+ *         cdef unsigned int n_spans = len(self._spans)
+ * 
+ *         if n_spans != 0:             # <<<<<<<<<<<<<<
+ *             self._spans = _sorted_spans(self._spans)
+ *             _validate_disjoint_in_c(self._spans)
+ */
+  __pyx_t_6 = ((__pyx_v_n_spans != 0) != 0);
   if (__pyx_t_6) {
 
-    /* "uttut/pipeline/edit/span.pyx":52
- *     cpdef void done(self) except *:
- *         if len(self._spans) != 0:
+    /* "uttut/pipeline/edit/span.pyx":55
+ * 
+ *         if n_spans != 0:
  *             self._spans = _sorted_spans(self._spans)             # <<<<<<<<<<<<<<
  *             _validate_disjoint_in_c(self._spans)
  *             self._validate_contiguousness(self._spans)
  */
     __pyx_t_1 = __pyx_v_self->_spans;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_2 = __pyx_f_5uttut_8pipeline_4edit_4span__sorted_spans(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 52, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_5uttut_8pipeline_4edit_4span__sorted_spans(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_2);
@@ -2970,8 +2980,8 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_done(struct __pyx_ob
     __pyx_v_self->_spans = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":53
- *         if len(self._spans) != 0:
+    /* "uttut/pipeline/edit/span.pyx":56
+ *         if n_spans != 0:
  *             self._spans = _sorted_spans(self._spans)
  *             _validate_disjoint_in_c(self._spans)             # <<<<<<<<<<<<<<
  *             self._validate_contiguousness(self._spans)
@@ -2979,10 +2989,10 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_done(struct __pyx_ob
  */
     __pyx_t_2 = __pyx_v_self->_spans;
     __Pyx_INCREF(__pyx_t_2);
-    __pyx_f_5uttut_8pipeline_4edit_10validation__validate_disjoint_in_c(((PyObject*)__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 53, __pyx_L1_error)
+    __pyx_f_5uttut_8pipeline_4edit_10validation__validate_disjoint_in_c(((PyObject*)__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 56, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":54
+    /* "uttut/pipeline/edit/span.pyx":57
  *             self._spans = _sorted_spans(self._spans)
  *             _validate_disjoint_in_c(self._spans)
  *             self._validate_contiguousness(self._spans)             # <<<<<<<<<<<<<<
@@ -2991,19 +3001,19 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_done(struct __pyx_ob
  */
     __pyx_t_2 = __pyx_v_self->_spans;
     __Pyx_INCREF(__pyx_t_2);
-    ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_4span_SpanGroup *)__pyx_v_self->__pyx_vtab)->_validate_contiguousness(__pyx_v_self, ((PyObject*)__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 54, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_4span_SpanGroup *)__pyx_v_self->__pyx_vtab)->_validate_contiguousness(__pyx_v_self, ((PyObject*)__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 57, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":51
+    /* "uttut/pipeline/edit/span.pyx":54
+ *         cdef unsigned int n_spans = len(self._spans)
  * 
- *     cpdef void done(self) except *:
- *         if len(self._spans) != 0:             # <<<<<<<<<<<<<<
+ *         if n_spans != 0:             # <<<<<<<<<<<<<<
  *             self._spans = _sorted_spans(self._spans)
  *             _validate_disjoint_in_c(self._spans)
  */
   }
 
-  /* "uttut/pipeline/edit/span.pyx":55
+  /* "uttut/pipeline/edit/span.pyx":58
  *             _validate_disjoint_in_c(self._spans)
  *             self._validate_contiguousness(self._spans)
  *         self._is_done = True             # <<<<<<<<<<<<<<
@@ -3016,8 +3026,8 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_done(struct __pyx_ob
  *         self._spans.append(span)
  * 
  *     cpdef void done(self) except *:             # <<<<<<<<<<<<<<
- *         if len(self._spans) != 0:
- *             self._spans = _sorted_spans(self._spans)
+ * 
+ *         cdef unsigned int n_spans = len(self._spans)
  */
 
   /* function exit code */
@@ -3073,7 +3083,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_4done(struct _
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":57
+/* "uttut/pipeline/edit/span.pyx":60
  *         self._is_done = True
  * 
  *     cdef void _validate_contiguousness(self, list sorted_spans) except *:             # <<<<<<<<<<<<<<
@@ -3097,9 +3107,9 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
   unsigned int __pyx_t_7;
   long __pyx_t_8;
   __Pyx_RefNannySetupContext("_validate_contiguousness", 0);
-  __Pyx_TraceCall("_validate_contiguousness", __pyx_f[1], 57, 0, __PYX_ERR(1, 57, __pyx_L1_error));
+  __Pyx_TraceCall("_validate_contiguousness", __pyx_f[1], 60, 0, __PYX_ERR(1, 60, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":62
+  /* "uttut/pipeline/edit/span.pyx":65
  *         cdef Span span_current, span_next
  * 
  *         n_spans = len(sorted_spans)             # <<<<<<<<<<<<<<
@@ -3108,12 +3118,12 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
  */
   if (unlikely(__pyx_v_sorted_spans == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 62, __pyx_L1_error)
+    __PYX_ERR(1, 65, __pyx_L1_error)
   }
-  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_sorted_spans); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(1, 62, __pyx_L1_error)
+  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_sorted_spans); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(1, 65, __pyx_L1_error)
   __pyx_v_n_spans = __pyx_t_1;
 
-  /* "uttut/pipeline/edit/span.pyx":64
+  /* "uttut/pipeline/edit/span.pyx":67
  *         n_spans = len(sorted_spans)
  * 
  *         if sorted_spans[0].start != 0:             # <<<<<<<<<<<<<<
@@ -3122,34 +3132,34 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
  */
   if (unlikely(__pyx_v_sorted_spans == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 64, __pyx_L1_error)
+    __PYX_ERR(1, 67, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_sorted_spans, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_sorted_spans, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_NeObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_NeObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (unlikely(__pyx_t_4)) {
 
-    /* "uttut/pipeline/edit/span.pyx":65
+    /* "uttut/pipeline/edit/span.pyx":68
  * 
  *         if sorted_spans[0].start != 0:
  *             raise ValueError('Spans should start from 0')             # <<<<<<<<<<<<<<
  * 
  *         for idx in range(n_spans - 1):
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 65, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 65, __pyx_L1_error)
+    __PYX_ERR(1, 68, __pyx_L1_error)
 
-    /* "uttut/pipeline/edit/span.pyx":64
+    /* "uttut/pipeline/edit/span.pyx":67
  *         n_spans = len(sorted_spans)
  * 
  *         if sorted_spans[0].start != 0:             # <<<<<<<<<<<<<<
@@ -3158,7 +3168,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
  */
   }
 
-  /* "uttut/pipeline/edit/span.pyx":67
+  /* "uttut/pipeline/edit/span.pyx":70
  *             raise ValueError('Spans should start from 0')
  * 
  *         for idx in range(n_spans - 1):             # <<<<<<<<<<<<<<
@@ -3170,7 +3180,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_idx = __pyx_t_7;
 
-    /* "uttut/pipeline/edit/span.pyx":68
+    /* "uttut/pipeline/edit/span.pyx":71
  * 
  *         for idx in range(n_spans - 1):
  *             span_current = sorted_spans[idx]             # <<<<<<<<<<<<<<
@@ -3179,15 +3189,15 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
  */
     if (unlikely(__pyx_v_sorted_spans == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 68, __pyx_L1_error)
+      __PYX_ERR(1, 71, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_sorted_spans, __pyx_v_idx, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 68, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_sorted_spans, __pyx_v_idx, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(1, 68, __pyx_L1_error)
+    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_span_current, ((struct __pyx_obj_5uttut_8pipeline_4edit_4span_Span *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":69
+    /* "uttut/pipeline/edit/span.pyx":72
  *         for idx in range(n_spans - 1):
  *             span_current = sorted_spans[idx]
  *             span_next = sorted_spans[idx + 1]             # <<<<<<<<<<<<<<
@@ -3196,16 +3206,16 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
  */
     if (unlikely(__pyx_v_sorted_spans == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(1, 69, __pyx_L1_error)
+      __PYX_ERR(1, 72, __pyx_L1_error)
     }
     __pyx_t_8 = (__pyx_v_idx + 1);
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_sorted_spans, __pyx_t_8, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_sorted_spans, __pyx_t_8, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(1, 69, __pyx_L1_error)
+    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(1, 72, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_span_next, ((struct __pyx_obj_5uttut_8pipeline_4edit_4span_Span *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":70
+    /* "uttut/pipeline/edit/span.pyx":73
  *             span_current = sorted_spans[idx]
  *             span_next = sorted_spans[idx + 1]
  *             if span_current.end != span_next.start:             # <<<<<<<<<<<<<<
@@ -3215,20 +3225,20 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
     __pyx_t_4 = ((__pyx_v_span_current->end != __pyx_v_span_next->start) != 0);
     if (unlikely(__pyx_t_4)) {
 
-      /* "uttut/pipeline/edit/span.pyx":71
+      /* "uttut/pipeline/edit/span.pyx":74
  *             span_next = sorted_spans[idx + 1]
  *             if span_current.end != span_next.start:
  *                 raise ValueError('Spans should be contiguous.')             # <<<<<<<<<<<<<<
  * 
  *     @classmethod
  */
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 71, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 74, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(1, 71, __pyx_L1_error)
+      __PYX_ERR(1, 74, __pyx_L1_error)
 
-      /* "uttut/pipeline/edit/span.pyx":70
+      /* "uttut/pipeline/edit/span.pyx":73
  *             span_current = sorted_spans[idx]
  *             span_next = sorted_spans[idx + 1]
  *             if span_current.end != span_next.start:             # <<<<<<<<<<<<<<
@@ -3238,7 +3248,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
     }
   }
 
-  /* "uttut/pipeline/edit/span.pyx":57
+  /* "uttut/pipeline/edit/span.pyx":60
  *         self._is_done = True
  * 
  *     cdef void _validate_contiguousness(self, list sorted_spans) except *:             # <<<<<<<<<<<<<<
@@ -3259,7 +3269,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup__validate_contiguous
   __Pyx_RefNannyFinishContext();
 }
 
-/* "uttut/pipeline/edit/span.pyx":74
+/* "uttut/pipeline/edit/span.pyx":77
  * 
  *     @classmethod
  *     def add_all(cls, list spans):  # type: ignore             # <<<<<<<<<<<<<<
@@ -3273,7 +3283,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_4span_9SpanGroup_7add_all(PyObj
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("add_all (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_spans), (&PyList_Type), 1, "spans", 1))) __PYX_ERR(1, 74, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_spans), (&PyList_Type), 1, "spans", 1))) __PYX_ERR(1, 77, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(((PyTypeObject*)__pyx_v_cls), ((PyObject*)__pyx_v_spans));
 
   /* function exit code */
@@ -3302,22 +3312,22 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
   unsigned int __pyx_t_7;
   unsigned int __pyx_t_8;
   __Pyx_RefNannySetupContext("add_all", 0);
-  __Pyx_TraceCall("add_all", __pyx_f[1], 74, 0, __PYX_ERR(1, 74, __pyx_L1_error));
+  __Pyx_TraceCall("add_all", __pyx_f[1], 77, 0, __PYX_ERR(1, 77, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":80
+  /* "uttut/pipeline/edit/span.pyx":83
  *         cdef unsigned int start, end
  * 
  *         span_group = cls()             # <<<<<<<<<<<<<<
  * 
  *         for span in spans:
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_v_cls)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_v_cls)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup))))) __PYX_ERR(1, 80, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup))))) __PYX_ERR(1, 83, __pyx_L1_error)
   __pyx_v_span_group = ((struct __pyx_obj_5uttut_8pipeline_4edit_4span_SpanGroup *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":82
+  /* "uttut/pipeline/edit/span.pyx":85
  *         span_group = cls()
  * 
  *         for span in spans:             # <<<<<<<<<<<<<<
@@ -3326,22 +3336,22 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
  */
   if (unlikely(__pyx_v_spans == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(1, 82, __pyx_L1_error)
+    __PYX_ERR(1, 85, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_spans; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 82, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 85, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 82, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
-    if (!(likely(PyTuple_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(1, 82, __pyx_L1_error)
+    if (!(likely(PyTuple_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(1, 85, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_span, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":83
+    /* "uttut/pipeline/edit/span.pyx":86
  * 
  *         for span in spans:
  *             if len(span) == 2:             # <<<<<<<<<<<<<<
@@ -3350,13 +3360,13 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
  */
     if (unlikely(__pyx_v_span == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(1, 83, __pyx_L1_error)
+      __PYX_ERR(1, 86, __pyx_L1_error)
     }
-    __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v_span); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 83, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v_span); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 86, __pyx_L1_error)
     __pyx_t_5 = ((__pyx_t_4 == 2) != 0);
     if (likely(__pyx_t_5)) {
 
-      /* "uttut/pipeline/edit/span.pyx":84
+      /* "uttut/pipeline/edit/span.pyx":87
  *         for span in spans:
  *             if len(span) == 2:
  *                 start, end = span             # <<<<<<<<<<<<<<
@@ -3369,7 +3379,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(1, 84, __pyx_L1_error)
+          __PYX_ERR(1, 87, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
@@ -3377,22 +3387,22 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_6);
         #else
-        __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 84, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 87, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 84, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 87, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       } else {
-        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(1, 84, __pyx_L1_error)
+        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(1, 87, __pyx_L1_error)
       }
-      __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 84, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 87, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_8 = __Pyx_PyInt_As_unsigned_int(__pyx_t_6); if (unlikely((__pyx_t_8 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 84, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_As_unsigned_int(__pyx_t_6); if (unlikely((__pyx_t_8 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 87, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_v_start = __pyx_t_7;
       __pyx_v_end = __pyx_t_8;
 
-      /* "uttut/pipeline/edit/span.pyx":85
+      /* "uttut/pipeline/edit/span.pyx":88
  *             if len(span) == 2:
  *                 start, end = span
  *                 span_group.add(start, end)             # <<<<<<<<<<<<<<
@@ -3401,7 +3411,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
  */
       ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_4span_SpanGroup *)__pyx_v_span_group->__pyx_vtab)->add(__pyx_v_span_group, __pyx_v_start, __pyx_v_end, 0);
 
-      /* "uttut/pipeline/edit/span.pyx":83
+      /* "uttut/pipeline/edit/span.pyx":86
  * 
  *         for span in spans:
  *             if len(span) == 2:             # <<<<<<<<<<<<<<
@@ -3411,7 +3421,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
       goto __pyx_L5;
     }
 
-    /* "uttut/pipeline/edit/span.pyx":87
+    /* "uttut/pipeline/edit/span.pyx":90
  *                 span_group.add(start, end)
  *             else:
  *                 raise ValueError('Number of elements should = 2.')             # <<<<<<<<<<<<<<
@@ -3419,15 +3429,15 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
  *         return span_group
  */
     /*else*/ {
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 87, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_Raise(__pyx_t_6, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __PYX_ERR(1, 87, __pyx_L1_error)
+      __PYX_ERR(1, 90, __pyx_L1_error)
     }
     __pyx_L5:;
 
-    /* "uttut/pipeline/edit/span.pyx":82
+    /* "uttut/pipeline/edit/span.pyx":85
  *         span_group = cls()
  * 
  *         for span in spans:             # <<<<<<<<<<<<<<
@@ -3437,16 +3447,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":88
+  /* "uttut/pipeline/edit/span.pyx":91
  *             else:
  *                 raise ValueError('Number of elements should = 2.')
  *         span_group.done()             # <<<<<<<<<<<<<<
  *         return span_group
  * 
  */
-  ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_4span_SpanGroup *)__pyx_v_span_group->__pyx_vtab)->done(__pyx_v_span_group, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 88, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_4span_SpanGroup *)__pyx_v_span_group->__pyx_vtab)->done(__pyx_v_span_group, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 91, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/span.pyx":89
+  /* "uttut/pipeline/edit/span.pyx":92
  *                 raise ValueError('Number of elements should = 2.')
  *         span_group.done()
  *         return span_group             # <<<<<<<<<<<<<<
@@ -3458,7 +3468,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
   __pyx_r = ((PyObject *)__pyx_v_span_group);
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":74
+  /* "uttut/pipeline/edit/span.pyx":77
  * 
  *     @classmethod
  *     def add_all(cls, list spans):  # type: ignore             # <<<<<<<<<<<<<<
@@ -3482,7 +3492,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_6add_all(PyTyp
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":91
+/* "uttut/pipeline/edit/span.pyx":94
  *         return span_group
  * 
  *     cpdef bint is_empty(self):             # <<<<<<<<<<<<<<
@@ -3502,7 +3512,7 @@ static int __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(struct __pyx
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("is_empty", 0);
-  __Pyx_TraceCall("is_empty", __pyx_f[1], 91, 0, __PYX_ERR(1, 91, __pyx_L1_error));
+  __Pyx_TraceCall("is_empty", __pyx_f[1], 94, 0, __PYX_ERR(1, 94, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -3513,7 +3523,7 @@ static int __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(struct __pyx
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_empty); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 91, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_empty); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 94, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8pipeline_4edit_4span_9SpanGroup_9is_empty)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3529,10 +3539,10 @@ static int __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(struct __pyx
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 94, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 91, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 94, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3551,7 +3561,7 @@ static int __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(struct __pyx
     #endif
   }
 
-  /* "uttut/pipeline/edit/span.pyx":92
+  /* "uttut/pipeline/edit/span.pyx":95
  * 
  *     cpdef bint is_empty(self):
  *         return len(self._spans) == 0             # <<<<<<<<<<<<<<
@@ -3562,14 +3572,14 @@ static int __pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(struct __pyx
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 92, __pyx_L1_error)
+    __PYX_ERR(1, 95, __pyx_L1_error)
   }
-  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 92, __pyx_L1_error)
+  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 95, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = (__pyx_t_6 == 0);
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":91
+  /* "uttut/pipeline/edit/span.pyx":94
  *         return span_group
  * 
  *     cpdef bint is_empty(self):             # <<<<<<<<<<<<<<
@@ -3610,9 +3620,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_8is_empty(stru
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_empty", 0);
-  __Pyx_TraceCall("is_empty (wrapper)", __pyx_f[1], 91, 0, __PYX_ERR(1, 91, __pyx_L1_error));
+  __Pyx_TraceCall("is_empty (wrapper)", __pyx_f[1], 94, 0, __PYX_ERR(1, 94, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_5uttut_8pipeline_4edit_4span_9SpanGroup_is_empty(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3630,7 +3640,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_8is_empty(stru
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":94
+/* "uttut/pipeline/edit/span.pyx":97
  *         return len(self._spans) == 0
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -3665,16 +3675,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   __Pyx_RefNannySetupContext("__eq__", 0);
-  __Pyx_TraceCall("__eq__", __pyx_f[1], 94, 0, __PYX_ERR(1, 94, __pyx_L1_error));
+  __Pyx_TraceCall("__eq__", __pyx_f[1], 97, 0, __PYX_ERR(1, 97, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":95
+  /* "uttut/pipeline/edit/span.pyx":98
  * 
  *     def __eq__(self, other):
  *         self._warn_not_done()             # <<<<<<<<<<<<<<
  *         if not isinstance(other, SpanGroup):
  *             return False
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_warn_not_done); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 95, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_warn_not_done); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3688,12 +3698,12 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 95, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":96
+  /* "uttut/pipeline/edit/span.pyx":99
  *     def __eq__(self, other):
  *         self._warn_not_done()
  *         if not isinstance(other, SpanGroup):             # <<<<<<<<<<<<<<
@@ -3704,7 +3714,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
   __pyx_t_5 = ((!(__pyx_t_4 != 0)) != 0);
   if (__pyx_t_5) {
 
-    /* "uttut/pipeline/edit/span.pyx":97
+    /* "uttut/pipeline/edit/span.pyx":100
  *         self._warn_not_done()
  *         if not isinstance(other, SpanGroup):
  *             return False             # <<<<<<<<<<<<<<
@@ -3716,7 +3726,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
     __pyx_r = Py_False;
     goto __pyx_L0;
 
-    /* "uttut/pipeline/edit/span.pyx":96
+    /* "uttut/pipeline/edit/span.pyx":99
  *     def __eq__(self, other):
  *         self._warn_not_done()
  *         if not isinstance(other, SpanGroup):             # <<<<<<<<<<<<<<
@@ -3725,45 +3735,45 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
  */
   }
 
-  /* "uttut/pipeline/edit/span.pyx":98
+  /* "uttut/pipeline/edit/span.pyx":101
  *         if not isinstance(other, SpanGroup):
  *             return False
  *         same_length = len(other) == len(self._spans)             # <<<<<<<<<<<<<<
  *         same_elements = set(other) == set(self._spans)
  *         return same_length and same_elements
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_other); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_other); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 101, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_self->_spans;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 98, __pyx_L1_error)
+    __PYX_ERR(1, 101, __pyx_L1_error)
   }
-  __pyx_t_7 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_7 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 101, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_6 == __pyx_t_7)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_6 == __pyx_t_7)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_same_length = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":99
+  /* "uttut/pipeline/edit/span.pyx":102
  *             return False
  *         same_length = len(other) == len(self._spans)
  *         same_elements = set(other) == set(self._spans)             # <<<<<<<<<<<<<<
  *         return same_length and same_elements
  * 
  */
-  __pyx_t_1 = PySet_New(__pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(__pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PySet_New(__pyx_v_self->_spans); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __pyx_t_2 = PySet_New(__pyx_v_self->_spans); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_same_elements = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":100
+  /* "uttut/pipeline/edit/span.pyx":103
  *         same_length = len(other) == len(self._spans)
  *         same_elements = set(other) == set(self._spans)
  *         return same_length and same_elements             # <<<<<<<<<<<<<<
@@ -3771,7 +3781,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
  *     def __getitem__(self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_same_length); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(1, 100, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_same_length); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(1, 103, __pyx_L1_error)
   if (__pyx_t_5) {
   } else {
     __Pyx_INCREF(__pyx_v_same_length);
@@ -3785,7 +3795,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":94
+  /* "uttut/pipeline/edit/span.pyx":97
  *         return len(self._spans) == 0
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -3809,7 +3819,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_10__eq__(struc
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":102
+/* "uttut/pipeline/edit/span.pyx":105
  *         return same_length and same_elements
  * 
  *     def __getitem__(self, value):             # <<<<<<<<<<<<<<
@@ -3837,9 +3847,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_12__getitem__(
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__getitem__", 0);
-  __Pyx_TraceCall("__getitem__", __pyx_f[1], 102, 0, __PYX_ERR(1, 102, __pyx_L1_error));
+  __Pyx_TraceCall("__getitem__", __pyx_f[1], 105, 0, __PYX_ERR(1, 105, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":103
+  /* "uttut/pipeline/edit/span.pyx":106
  * 
  *     def __getitem__(self, value):
  *         if not self._is_done:             # <<<<<<<<<<<<<<
@@ -3849,20 +3859,20 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_12__getitem__(
   __pyx_t_1 = ((!(__pyx_v_self->_is_done != 0)) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "uttut/pipeline/edit/span.pyx":104
+    /* "uttut/pipeline/edit/span.pyx":107
  *     def __getitem__(self, value):
  *         if not self._is_done:
  *             raise RuntimeError('Please call `done` first.')             # <<<<<<<<<<<<<<
  *         return self._spans[value]
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 104, __pyx_L1_error)
+    __PYX_ERR(1, 107, __pyx_L1_error)
 
-    /* "uttut/pipeline/edit/span.pyx":103
+    /* "uttut/pipeline/edit/span.pyx":106
  * 
  *     def __getitem__(self, value):
  *         if not self._is_done:             # <<<<<<<<<<<<<<
@@ -3871,7 +3881,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_12__getitem__(
  */
   }
 
-  /* "uttut/pipeline/edit/span.pyx":105
+  /* "uttut/pipeline/edit/span.pyx":108
  *         if not self._is_done:
  *             raise RuntimeError('Please call `done` first.')
  *         return self._spans[value]             # <<<<<<<<<<<<<<
@@ -3881,15 +3891,15 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_12__getitem__(
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(__pyx_v_self->_spans == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 105, __pyx_L1_error)
+    __PYX_ERR(1, 108, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_self->_spans, __pyx_v_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_self->_spans, __pyx_v_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":102
+  /* "uttut/pipeline/edit/span.pyx":105
  *         return same_length and same_elements
  * 
  *     def __getitem__(self, value):             # <<<<<<<<<<<<<<
@@ -3909,7 +3919,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_12__getitem__(
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":107
+/* "uttut/pipeline/edit/span.pyx":110
  *         return self._spans[value]
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
@@ -3939,16 +3949,16 @@ static Py_ssize_t __pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_14__len__(str
   PyObject *__pyx_t_3 = NULL;
   Py_ssize_t __pyx_t_4;
   __Pyx_RefNannySetupContext("__len__", 0);
-  __Pyx_TraceCall("__len__", __pyx_f[1], 107, 0, __PYX_ERR(1, 107, __pyx_L1_error));
+  __Pyx_TraceCall("__len__", __pyx_f[1], 110, 0, __PYX_ERR(1, 110, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":108
+  /* "uttut/pipeline/edit/span.pyx":111
  * 
  *     def __len__(self):
  *         self._warn_not_done()             # <<<<<<<<<<<<<<
  *         return len(self._spans)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_warn_not_done); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 108, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_warn_not_done); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3962,12 +3972,12 @@ static Py_ssize_t __pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_14__len__(str
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 108, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":109
+  /* "uttut/pipeline/edit/span.pyx":112
  *     def __len__(self):
  *         self._warn_not_done()
  *         return len(self._spans)             # <<<<<<<<<<<<<<
@@ -3978,14 +3988,14 @@ static Py_ssize_t __pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_14__len__(str
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 109, __pyx_L1_error)
+    __PYX_ERR(1, 112, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 109, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 112, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":107
+  /* "uttut/pipeline/edit/span.pyx":110
  *         return self._spans[value]
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
@@ -4006,7 +4016,7 @@ static Py_ssize_t __pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_14__len__(str
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":111
+/* "uttut/pipeline/edit/span.pyx":114
  *         return len(self._spans)
  * 
  *     def _warn_not_done(self):             # <<<<<<<<<<<<<<
@@ -4036,9 +4046,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_16_warn_not_do
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("_warn_not_done", 0);
-  __Pyx_TraceCall("_warn_not_done", __pyx_f[1], 111, 0, __PYX_ERR(1, 111, __pyx_L1_error));
+  __Pyx_TraceCall("_warn_not_done", __pyx_f[1], 114, 0, __PYX_ERR(1, 114, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":112
+  /* "uttut/pipeline/edit/span.pyx":115
  * 
  *     def _warn_not_done(self):
  *         if not self._is_done:             # <<<<<<<<<<<<<<
@@ -4048,16 +4058,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_16_warn_not_do
   __pyx_t_1 = ((!(__pyx_v_self->_is_done != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "uttut/pipeline/edit/span.pyx":113
+    /* "uttut/pipeline/edit/span.pyx":116
  *     def _warn_not_done(self):
  *         if not self._is_done:
  *             warnings.warn('SpanGroup needs validation, please call `done`.')             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_warnings); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 113, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_warnings); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_warn); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 113, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_warn); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -4072,12 +4082,12 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_16_warn_not_do
     }
     __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_kp_u_SpanGroup_needs_validation_pleas) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_kp_u_SpanGroup_needs_validation_pleas);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 113, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "uttut/pipeline/edit/span.pyx":112
+    /* "uttut/pipeline/edit/span.pyx":115
  * 
  *     def _warn_not_done(self):
  *         if not self._is_done:             # <<<<<<<<<<<<<<
@@ -4086,7 +4096,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_16_warn_not_do
  */
   }
 
-  /* "uttut/pipeline/edit/span.pyx":111
+  /* "uttut/pipeline/edit/span.pyx":114
  *         return len(self._spans)
  * 
  *     def _warn_not_done(self):             # <<<<<<<<<<<<<<
@@ -4110,7 +4120,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_16_warn_not_do
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":115
+/* "uttut/pipeline/edit/span.pyx":118
  *             warnings.warn('SpanGroup needs validation, please call `done`.')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -4138,9 +4148,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_18__repr__(str
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
-  __Pyx_TraceCall("__repr__", __pyx_f[1], 115, 0, __PYX_ERR(1, 115, __pyx_L1_error));
+  __Pyx_TraceCall("__repr__", __pyx_f[1], 118, 0, __PYX_ERR(1, 118, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":116
+  /* "uttut/pipeline/edit/span.pyx":119
  * 
  *     def __repr__(self):
  *         return str(self.__class__.__name__)             # <<<<<<<<<<<<<<
@@ -4148,19 +4158,19 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_18__repr__(str
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 116, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 116, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 116, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":115
+  /* "uttut/pipeline/edit/span.pyx":118
  *             warnings.warn('SpanGroup needs validation, please call `done`.')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -4479,7 +4489,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_4span_9SpanGroup_22__setstate_c
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":120
+/* "uttut/pipeline/edit/span.pyx":123
  * 
  * cdef list _sorted_spans(list spans):
  *     return sorted(spans, key=lambda e: e.end)  # set -> list             # <<<<<<<<<<<<<<
@@ -4505,9 +4515,9 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("lambda", 0);
-  __Pyx_TraceCall("lambda", __pyx_f[1], 120, 0, __PYX_ERR(1, 120, __pyx_L1_error));
+  __Pyx_TraceCall("lambda", __pyx_f[1], 123, 0, __PYX_ERR(1, 123, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4525,7 +4535,7 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/span.pyx":119
+/* "uttut/pipeline/edit/span.pyx":122
  * 
  * 
  * cdef list _sorted_spans(list spans):             # <<<<<<<<<<<<<<
@@ -4540,35 +4550,35 @@ static PyObject *__pyx_f_5uttut_8pipeline_4edit_4span__sorted_spans(PyObject *__
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("_sorted_spans", 0);
-  __Pyx_TraceCall("_sorted_spans", __pyx_f[1], 119, 0, __PYX_ERR(1, 119, __pyx_L1_error));
+  __Pyx_TraceCall("_sorted_spans", __pyx_f[1], 122, 0, __PYX_ERR(1, 122, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/span.pyx":120
+  /* "uttut/pipeline/edit/span.pyx":123
  * 
  * cdef list _sorted_spans(list spans):
  *     return sorted(spans, key=lambda e: e.end)  # set -> list             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_spans);
   __Pyx_GIVEREF(__pyx_v_spans);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_spans);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_4span_13_sorted_spans_lambda, 0, __pyx_n_s_sorted_spans_locals_lambda, NULL, __pyx_n_s_uttut_pipeline_edit_span, __pyx_d, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_4span_13_sorted_spans_lambda, 0, __pyx_n_s_sorted_spans_locals_lambda, NULL, __pyx_n_s_uttut_pipeline_edit_span, __pyx_d, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(1, 120, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(1, 123, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(1, 120, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(1, 123, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/span.pyx":119
+  /* "uttut/pipeline/edit/span.pyx":122
  * 
  * 
  * cdef list _sorted_spans(list spans):             # <<<<<<<<<<<<<<
@@ -5409,10 +5419,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 65, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 67, __pyx_L1_error)
-  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 104, __pyx_L1_error)
-  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 68, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 70, __pyx_L1_error)
+  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 107, __pyx_L1_error)
+  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(1, 123, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -5441,47 +5451,47 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "uttut/pipeline/edit/span.pyx":65
+  /* "uttut/pipeline/edit/span.pyx":68
  * 
  *         if sorted_spans[0].start != 0:
  *             raise ValueError('Spans should start from 0')             # <<<<<<<<<<<<<<
  * 
  *         for idx in range(n_spans - 1):
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Spans_should_start_from_0); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 65, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Spans_should_start_from_0); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "uttut/pipeline/edit/span.pyx":71
+  /* "uttut/pipeline/edit/span.pyx":74
  *             span_next = sorted_spans[idx + 1]
  *             if span_current.end != span_next.start:
  *                 raise ValueError('Spans should be contiguous.')             # <<<<<<<<<<<<<<
  * 
  *     @classmethod
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Spans_should_be_contiguous); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 71, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Spans_should_be_contiguous); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "uttut/pipeline/edit/span.pyx":87
+  /* "uttut/pipeline/edit/span.pyx":90
  *                 span_group.add(start, end)
  *             else:
  *                 raise ValueError('Number of elements should = 2.')             # <<<<<<<<<<<<<<
  *         span_group.done()
  *         return span_group
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Number_of_elements_should_2); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 87, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Number_of_elements_should_2); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "uttut/pipeline/edit/span.pyx":104
+  /* "uttut/pipeline/edit/span.pyx":107
  *     def __getitem__(self, value):
  *         if not self._is_done:
  *             raise RuntimeError('Please call `done` first.')             # <<<<<<<<<<<<<<
  *         return self._spans[value]
  * 
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Please_call_done_first); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 104, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Please_call_done_first); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
@@ -5839,34 +5849,34 @@ if (!__Pyx_RefNanny) {
  * from typing import List, Tuple
  * import warnings             # <<<<<<<<<<<<<<
  * 
- * from .validation cimport (
+ * from .validation cimport (  # noqa: E999, E211
  */
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_warnings, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_warnings, __pyx_t_2) < 0) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/span.pyx":74
+  /* "uttut/pipeline/edit/span.pyx":77
  * 
  *     @classmethod
  *     def add_all(cls, list spans):  # type: ignore             # <<<<<<<<<<<<<<
  * 
  *         cdef SpanGroup span_group
  */
-  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup, __pyx_n_s_add_all); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 74, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup, __pyx_n_s_add_all); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "uttut/pipeline/edit/span.pyx":73
+  /* "uttut/pipeline/edit/span.pyx":76
  *                 raise ValueError('Spans should be contiguous.')
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def add_all(cls, list spans):  # type: ignore
  * 
  */
-  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup->tp_dict, __pyx_n_s_add_all, __pyx_t_1) < 0) __PYX_ERR(1, 74, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup->tp_dict, __pyx_n_s_add_all, __pyx_t_1) < 0) __PYX_ERR(1, 77, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup);
 

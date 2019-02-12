@@ -840,19 +840,19 @@ struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_do
 /* "replacement.pxd":14
  *     cdef bint _is_done
  * 
- *     cpdef void add(self, unsigned int start, unsigned int end, object new_value, object annotation = ?)             # <<<<<<<<<<<<<<
- *     cpdef void done(self, bint skip_sort = ?) except *
- *     cpdef bint is_empty(self)
+ *     cpdef void add(             # <<<<<<<<<<<<<<
+ *         self,
+ *         unsigned int start,
  */
 struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add {
   int __pyx_n;
   PyObject *annotation;
 };
 
-/* "replacement.pxd":15
- * 
- *     cpdef void add(self, unsigned int start, unsigned int end, object new_value, object annotation = ?)
- *     cpdef void done(self, bint skip_sort = ?) except *             # <<<<<<<<<<<<<<
+/* "replacement.pxd":21
+ *         object annotation=?,
+ *     )
+ *     cpdef void done(self, bint skip_sort=?) except *             # <<<<<<<<<<<<<<
  *     cpdef bint is_empty(self)
  * 
  */
@@ -862,7 +862,7 @@ struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_do
 };
 
 /* "replacement.pxd":1
- * cdef class Replacement:             # <<<<<<<<<<<<<<
+ * cdef class Replacement:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef public unsigned int start
  */
@@ -878,7 +878,7 @@ struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement {
 /* "replacement.pxd":9
  * 
  * 
- * cdef class ReplacementGroup:             # <<<<<<<<<<<<<<
+ * cdef class ReplacementGroup:   # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef list _replacements
  */
@@ -2827,7 +2827,7 @@ if (!__Pyx_RefNanny) {
   /* "uttut/pipeline/edit/utils.pyx":1
  * from typing import List, Sequence, MutableSequence, Union             # <<<<<<<<<<<<<<
  * 
- * from .replacement cimport Replacement, ReplacementGroup
+ * from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
  */
   __pyx_t_1 = PyList_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2903,7 +2903,7 @@ if (!__Pyx_RefNanny) {
   /* "uttut/pipeline/edit/utils.pyx":1
  * from typing import List, Sequence, MutableSequence, Union             # <<<<<<<<<<<<<<
  * 
- * from .replacement cimport Replacement, ReplacementGroup
+ * from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
