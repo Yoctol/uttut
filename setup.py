@@ -29,6 +29,12 @@ if use_cython:
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.pyx']),
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.pyx']),
+        Extension('uttut.pipeline.edit.replacement', ['uttut/pipeline/edit/replacement.pyx']),
+        Extension('uttut.pipeline.edit.span', ['uttut/pipeline/edit/span.pyx']),
+        Extension('uttut.pipeline.edit.utils', ['uttut/pipeline/edit/utils.pyx']),
+        Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.pyx']),
+        # Extension('uttut.pipeline.edit.label_propagation',
+        #           ['uttut/pipeline/edit/label_propagation.pyx']),
     ]
     ext_modules = cythonize(
         ext_modules,
@@ -47,6 +53,12 @@ else:
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.c']),
         Extension('uttut.toolkits.partition_by_entities', [
                   'uttut/toolkits/partition_by_entities.c']),
+        Extension('uttut.pipeline.edit.replacement', ['uttut/pipeline/edit/replacement.c']),
+        Extension('uttut.pipeline.edit.span', ['uttut/pipeline/edit/span.c']),
+        Extension('uttut.pipeline.edit.utils', ['uttut/pipeline/edit/utils.c']),
+        Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.c']),
+        # Extension('uttut.pipeline.edit.label_propagation',
+        #           ['uttut/pipeline/edit/label_propagation.c']),
     ]
 
 

@@ -1,14 +1,13 @@
 from typing import List, Tuple
 import warnings
 
-from .base import Group
-from .validation import (
-    _validate_start_end,
-    _validate_disjoint,
+from .validation cimport (  # noqa: E999, E211
+    _validate_start_end_in_c,
+    _validate_disjoint_in_c,
 )
 
 
-class Span:
+cdef class Span:
     '''Integer offsets (start_i, end_i) of a sequence
 
     Args:
@@ -16,8 +15,8 @@ class Span:
         end (int): end index (exclusive)
     '''
 
-    def __init__(self, start: int, end: int):
-        _validate_start_end(start, end)
+    def __cinit__(self, unsigned int start, unsigned int end):
+        _validate_start_end_in_c(start, end)
         self.start, self.end = start, end
 
     def __eq__(self, other):
@@ -34,38 +33,55 @@ class Span:
         return f"Span({self.start}, {self.end})"
 
     def __hash__(self):
-        return hash(self.__str__())
+        return hash((self.start, self.end))
 
 
-class SpanGroup(Group):
+cdef class SpanGroup:
 
     def __init__(self):
-        self._spans = set()
-        super().__init__()
+        self._spans = []
+        self._is_done = False
 
-    def add(self, start: int, end: int):  # type: ignore
+    cpdef void add(self, unsigned int start, unsigned int end):  # type: ignore
+        cdef Span span
         span = Span(start=start, end=end)
-        self._spans.add(span)
+        self._spans.append(span)
 
-    def done(self):
-        if len(self._spans) == 0:
-            self._spans = list(self._spans)
-        else:
-            self._spans = sorted(self._spans, key=lambda e: e.end)  # set -> list
-            _validate_disjoint(self._spans)
+    cpdef void done(self) except *:
+
+        cdef unsigned int n_spans = len(self._spans)
+
+        if n_spans != 0:
+            self._spans = _sorted_spans(self._spans)
+            _validate_disjoint_in_c(self._spans)
             self._validate_contiguousness(self._spans)
         self._is_done = True
 
-    def _validate_contiguousness(self, sorted_spans):
+    cdef void _validate_contiguousness(self, list sorted_spans) except *:
+
+        cdef unsigned int n_spans, idx
+        cdef Span span_current, span_next
+
+        n_spans = len(sorted_spans)
+
         if sorted_spans[0].start != 0:
             raise ValueError('Spans should start from 0')
-        for idx in range(len(sorted_spans) - 1):
-            if sorted_spans[idx].end != sorted_spans[idx + 1].start:
+
+        for idx in range(n_spans - 1):
+            span_current = sorted_spans[idx]
+            span_next = sorted_spans[idx + 1]
+            if span_current.end != span_next.start:
                 raise ValueError('Spans should be contiguous.')
 
     @classmethod
-    def add_all(cls, spans: List[Tuple[int, int]]):  # type: ignore
+    def add_all(cls, list spans):  # type: ignore
+
+        cdef SpanGroup span_group
+        cdef tuple span
+        cdef unsigned int start, end
+
         span_group = cls()
+
         for span in spans:
             if len(span) == 2:
                 start, end = span
@@ -75,7 +91,7 @@ class SpanGroup(Group):
         span_group.done()
         return span_group
 
-    def is_empty(self):
+    cpdef bint is_empty(self):
         return len(self._spans) == 0
 
     def __eq__(self, other):
@@ -101,3 +117,7 @@ class SpanGroup(Group):
 
     def __repr__(self):
         return str(self.__class__.__name__)
+
+
+cdef list _sorted_spans(list spans):
+    return sorted(spans, key=lambda e: e.end)  # set -> list

@@ -1,14 +1,14 @@
 from typing import List
 import warnings
 
-from .base import Group
-from .validation import (
-    _validate_start_end,
-    _validate_disjoint,
+from .validation cimport (  # noqa: E211, E999
+    _validate_start_end_in_c,
+    _validate_disjoint_in_c,
 )
 
 
-class Replacement:
+cdef class Replacement:
+
     '''Represents an edit to a Sequence such as a string or a list
 
     A sequence is a collection of objects that can be indexed in a linear fashion. E.g. a string
@@ -36,15 +36,16 @@ class Replacement:
         annotation (str, optional): an annotation for this replacement
     '''
 
-    def __init__(
+    def __cinit__(
             self,
-            start: int,
-            end: int,
-            new_value,
-            annotation: str = None,
+            unsigned int start,
+            unsigned int end,
+            object new_value,
+            object annotation=None,
         ):
-        _validate_start_end(start, end)
-        self.start, self.end = start, end
+        _validate_start_end_in_c(start, end)
+        self.start = start
+        self.end = end
         self.new_value = new_value
         self.annotation = annotation
 
@@ -55,56 +56,69 @@ class Replacement:
         return same_start and same_end and same_new_values
 
     def __str__(self):
-        return f"({self.start}, {self.end}) => '{self.new_value}'"
+        cdef str output_str
+        output_str = f"({self.start}, {self.end}) => '{self.new_value}'"
+        return output_str
 
     def __repr__(self):
-        return f"Replacement({self.start}, {self.end}, " \
+        cdef str representation
+        representation = f"Replacement({self.start}, {self.end}, " \
             f"{self.new_value}, annotation={self.annotation})"
+        return representation
 
     def __hash__(self):
-        return hash(self.__repr__())
+        cdef int hash_num
+        hash_num = hash((self.start, self.end))
+        return hash_num
 
 
-class ReplacementGroup(Group):
+cdef class ReplacementGroup:   # noqa: E999
 
-    def __init__(self):
-        self._replacements = set()
-        super().__init__()
+    def __cinit__(self):
+        self._replacements = []
+        self._is_done = False
 
-    def add(  # type: ignore
+    cpdef void add(  # type: ignore
             self,
-            start: int,
-            end: int,
-            new_value,
-            annotation=None,
+            unsigned int start,
+            unsigned int end,
+            object new_value,
+            object annotation=None,
         ):
+        cdef Replacement replacement
+
         replacement = Replacement(
             start=start,
             end=end,
             new_value=new_value,
             annotation=annotation,
         )
-        self._replacements.add(replacement)
+        self._replacements.append(replacement)
 
-    def done(self):
-        if len(self._replacements) == 0:
-            self._replacements = list(self._replacements)
-        else:
+    cpdef void done(self, bint skip_sort=False) except *:
+
+        cdef unsigned int n_replacements
+
+        self._replacements = list(set(self._replacements))
+
+        n_replacements = len(self._replacements)
+
+        if (n_replacements != 0) and (not skip_sort):
             self._validate_new_values()
-            self._replacements = sorted(self._replacements, key=lambda e: e.end)  # set -> list
-            self._replacements = sorted(self._replacements, key=lambda e: e.start)
-            _validate_disjoint(self._replacements)
+            self._replacements = _sort_replacements(self._replacements)
+            _validate_disjoint_in_c(self._replacements)
+
         self._is_done = True
 
-    def _validate_new_values(self):
-        target_type = type(list(self._replacements)[0].new_value)
+    cdef void _validate_new_values(self) except *:
+        target_type = type(self._replacements[0].new_value)
         for i, rep in enumerate(self._replacements):
             if not isinstance(rep.new_value, target_type):
                 raise TypeError(
                     f"the new_value of {i}-th element is not a(an) {target_type.__name__}")
 
     @classmethod
-    def add_all(cls, replacements: List[tuple]) -> 'ReplacementGroup':  # type: ignore
+    def add_all(cls, list replacements):  # type: ignore
         '''
         replacements = [
             (
@@ -116,13 +130,16 @@ class ReplacementGroup(Group):
             ...
         ]
         '''
+        cdef ReplacementGroup replacement_group
+        cdef tuple replacement
+
         replacement_group = cls()
         for replacement in replacements:
             replacement_group.add(*replacement)
         replacement_group.done()
         return replacement_group
 
-    def is_empty(self):
+    cpdef bint is_empty(self):
         return len(self._replacements) == 0
 
     def __eq__(self, other):
@@ -147,5 +164,15 @@ class ReplacementGroup(Group):
             warnings.warn('ReplacementGroup needs validation, please call `done`.')
 
     def __repr__(self):
+        cdef int n_elements
         n_elements = len(self._replacements)
         return f"ReplacementGroup has {n_elements} elements"
+
+
+cdef list _sort_replacements(list replacements):
+
+    cdef Replacement e
+
+    replacements = sorted(replacements, key=lambda e: e.end)
+    replacements = sorted(replacements, key=lambda e: e.start)
+    return replacements

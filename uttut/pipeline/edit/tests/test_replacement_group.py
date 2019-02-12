@@ -6,7 +6,6 @@ from ..replacement import ReplacementGroup, Replacement
 @pytest.mark.filterwarnings("ignore")
 def test_correctly_init():
     replacement_group = ReplacementGroup()
-    assert replacement_group._is_done is False
     assert replacement_group.is_empty() is True
     assert len(replacement_group) == 0
 
@@ -24,7 +23,6 @@ def test_correctly_init():
 )
 def test_add_all(objs):
     replacement_group = ReplacementGroup.add_all(objs)
-    assert replacement_group._is_done is True
     assert len(replacement_group) == len(objs)
     assert [Replacement(*obj) for obj in objs] == replacement_group[:]
 
