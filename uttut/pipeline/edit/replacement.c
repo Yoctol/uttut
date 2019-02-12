@@ -841,19 +841,19 @@ struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_do
 /* "uttut/pipeline/edit/replacement.pxd":14
  *     cdef bint _is_done
  * 
- *     cpdef void add(self, unsigned int start, unsigned int end, object new_value, object annotation = ?)             # <<<<<<<<<<<<<<
- *     cpdef void done(self, bint skip_sort = ?) except *
- *     cpdef bint is_empty(self)
+ *     cpdef void add(             # <<<<<<<<<<<<<<
+ *         self,
+ *         unsigned int start,
  */
 struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add {
   int __pyx_n;
   PyObject *annotation;
 };
 
-/* "uttut/pipeline/edit/replacement.pxd":15
- * 
- *     cpdef void add(self, unsigned int start, unsigned int end, object new_value, object annotation = ?)
- *     cpdef void done(self, bint skip_sort = ?) except *             # <<<<<<<<<<<<<<
+/* "uttut/pipeline/edit/replacement.pxd":21
+ *         object annotation=?,
+ *     )
+ *     cpdef void done(self, bint skip_sort=?) except *             # <<<<<<<<<<<<<<
  *     cpdef bint is_empty(self)
  * 
  */
@@ -863,7 +863,7 @@ struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_do
 };
 
 /* "uttut/pipeline/edit/replacement.pxd":1
- * cdef class Replacement:             # <<<<<<<<<<<<<<
+ * cdef class Replacement:  # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef public unsigned int start
  */
@@ -879,7 +879,7 @@ struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement {
 /* "uttut/pipeline/edit/replacement.pxd":9
  * 
  * 
- * cdef class ReplacementGroup:             # <<<<<<<<<<<<<<
+ * cdef class ReplacementGroup:   # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     cdef list _replacements
  */
@@ -892,10 +892,10 @@ struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_ReplacementGroup {
 
 
 
-/* "uttut/pipeline/edit/replacement.pyx":74
+/* "uttut/pipeline/edit/replacement.pyx":75
  * 
  * 
- * cdef class ReplacementGroup:             # <<<<<<<<<<<<<<
+ * cdef class ReplacementGroup:   # noqa: E999             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(self):
  */
@@ -1745,7 +1745,7 @@ static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_tuple__10;
 /* Late includes */
 
-/* "uttut/pipeline/edit/replacement.pyx":38
+/* "uttut/pipeline/edit/replacement.pyx":39
  *     '''
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
@@ -1767,10 +1767,10 @@ static int __pyx_pw_5uttut_8pipeline_4edit_11replacement_11Replacement_1__cinit_
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_start,&__pyx_n_s_end,&__pyx_n_s_new_value,&__pyx_n_s_annotation,0};
     PyObject* values[4] = {0,0,0,0};
 
-    /* "uttut/pipeline/edit/replacement.pyx":43
+    /* "uttut/pipeline/edit/replacement.pyx":44
  *             unsigned int end,
  *             object new_value,
- *             object annotation = None,             # <<<<<<<<<<<<<<
+ *             object annotation=None,             # <<<<<<<<<<<<<<
  *         ):
  *         _validate_start_end_in_c(start, end)
  */
@@ -1799,13 +1799,13 @@ static int __pyx_pw_5uttut_8pipeline_4edit_11replacement_11Replacement_1__cinit_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 1); __PYX_ERR(1, 38, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 1); __PYX_ERR(1, 39, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_new_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 2); __PYX_ERR(1, 38, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 2); __PYX_ERR(1, 39, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -1815,7 +1815,7 @@ static int __pyx_pw_5uttut_8pipeline_4edit_11replacement_11Replacement_1__cinit_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 38, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 39, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1828,14 +1828,14 @@ static int __pyx_pw_5uttut_8pipeline_4edit_11replacement_11Replacement_1__cinit_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_start = __Pyx_PyInt_As_unsigned_int(values[0]); if (unlikely((__pyx_v_start == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L3_error)
-    __pyx_v_end = __Pyx_PyInt_As_unsigned_int(values[1]); if (unlikely((__pyx_v_end == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 41, __pyx_L3_error)
+    __pyx_v_start = __Pyx_PyInt_As_unsigned_int(values[0]); if (unlikely((__pyx_v_start == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 41, __pyx_L3_error)
+    __pyx_v_end = __Pyx_PyInt_As_unsigned_int(values[1]); if (unlikely((__pyx_v_end == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L3_error)
     __pyx_v_new_value = values[2];
     __pyx_v_annotation = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 38, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 39, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.replacement.Replacement.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1843,7 +1843,7 @@ static int __pyx_pw_5uttut_8pipeline_4edit_11replacement_11Replacement_1__cinit_
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__(((struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_new_value, __pyx_v_annotation);
 
-  /* "uttut/pipeline/edit/replacement.pyx":38
+  /* "uttut/pipeline/edit/replacement.pyx":39
  *     '''
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
@@ -1861,18 +1861,18 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
-  __Pyx_TraceCall("__cinit__", __pyx_f[1], 38, 0, __PYX_ERR(1, 38, __pyx_L1_error));
+  __Pyx_TraceCall("__cinit__", __pyx_f[1], 39, 0, __PYX_ERR(1, 39, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/replacement.pyx":45
- *             object annotation = None,
+  /* "uttut/pipeline/edit/replacement.pyx":46
+ *             object annotation=None,
  *         ):
  *         _validate_start_end_in_c(start, end)             # <<<<<<<<<<<<<<
  *         self.start = start
  *         self.end = end
  */
-  __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c(__pyx_v_start, __pyx_v_end); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 45, __pyx_L1_error)
+  __pyx_f_5uttut_8pipeline_4edit_10validation__validate_start_end_in_c(__pyx_v_start, __pyx_v_end); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 46, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/replacement.pyx":46
+  /* "uttut/pipeline/edit/replacement.pyx":47
  *         ):
  *         _validate_start_end_in_c(start, end)
  *         self.start = start             # <<<<<<<<<<<<<<
@@ -1881,7 +1881,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__
  */
   __pyx_v_self->start = __pyx_v_start;
 
-  /* "uttut/pipeline/edit/replacement.pyx":47
+  /* "uttut/pipeline/edit/replacement.pyx":48
  *         _validate_start_end_in_c(start, end)
  *         self.start = start
  *         self.end = end             # <<<<<<<<<<<<<<
@@ -1890,7 +1890,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__
  */
   __pyx_v_self->end = __pyx_v_end;
 
-  /* "uttut/pipeline/edit/replacement.pyx":48
+  /* "uttut/pipeline/edit/replacement.pyx":49
  *         self.start = start
  *         self.end = end
  *         self.new_value = new_value             # <<<<<<<<<<<<<<
@@ -1903,7 +1903,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__
   __Pyx_DECREF(__pyx_v_self->new_value);
   __pyx_v_self->new_value = __pyx_v_new_value;
 
-  /* "uttut/pipeline/edit/replacement.pyx":49
+  /* "uttut/pipeline/edit/replacement.pyx":50
  *         self.end = end
  *         self.new_value = new_value
  *         self.annotation = annotation             # <<<<<<<<<<<<<<
@@ -1916,7 +1916,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__
   __Pyx_DECREF(__pyx_v_self->annotation);
   __pyx_v_self->annotation = __pyx_v_annotation;
 
-  /* "uttut/pipeline/edit/replacement.pyx":38
+  /* "uttut/pipeline/edit/replacement.pyx":39
  *     '''
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
@@ -1936,7 +1936,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement___cinit__
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":51
+/* "uttut/pipeline/edit/replacement.pyx":52
  *         self.annotation = annotation
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -1969,57 +1969,57 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_2__
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("__eq__", 0);
-  __Pyx_TraceCall("__eq__", __pyx_f[1], 51, 0, __PYX_ERR(1, 51, __pyx_L1_error));
+  __Pyx_TraceCall("__eq__", __pyx_f[1], 52, 0, __PYX_ERR(1, 52, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/replacement.pyx":52
+  /* "uttut/pipeline/edit/replacement.pyx":53
  * 
  *     def __eq__(self, other):
  *         same_start = other.start == self.start             # <<<<<<<<<<<<<<
  *         same_end = other.end == self.end
  *         same_new_values = other.new_value == self.new_value
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 52, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->start); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 52, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->start); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 52, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_same_start = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":53
+  /* "uttut/pipeline/edit/replacement.pyx":54
  *     def __eq__(self, other):
  *         same_start = other.start == self.start
  *         same_end = other.end == self.end             # <<<<<<<<<<<<<<
  *         same_new_values = other.new_value == self.new_value
  *         return same_start and same_end and same_new_values
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_end); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 53, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_end); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 53, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 53, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 54, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_same_end = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":54
+  /* "uttut/pipeline/edit/replacement.pyx":55
  *         same_start = other.start == self.start
  *         same_end = other.end == self.end
  *         same_new_values = other.new_value == self.new_value             # <<<<<<<<<<<<<<
  *         return same_start and same_end and same_new_values
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_new_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 54, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_new_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_v_self->new_value, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 54, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_v_self->new_value, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_same_new_values = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":55
+  /* "uttut/pipeline/edit/replacement.pyx":56
  *         same_end = other.end == self.end
  *         same_new_values = other.new_value == self.new_value
  *         return same_start and same_end and same_new_values             # <<<<<<<<<<<<<<
@@ -2027,14 +2027,14 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_2__
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_same_start); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 55, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_same_start); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 56, __pyx_L1_error)
   if (__pyx_t_4) {
   } else {
     __Pyx_INCREF(__pyx_v_same_start);
     __pyx_t_2 = __pyx_v_same_start;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_same_end); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 55, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_same_end); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 56, __pyx_L1_error)
   if (__pyx_t_4) {
   } else {
     __Pyx_INCREF(__pyx_v_same_end);
@@ -2048,7 +2048,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_2__
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":51
+  /* "uttut/pipeline/edit/replacement.pyx":52
  *         self.annotation = annotation
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -2073,7 +2073,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_2__
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":57
+/* "uttut/pipeline/edit/replacement.pyx":58
  *         return same_start and same_end and same_new_values
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -2104,16 +2104,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   Py_UCS4 __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
-  __Pyx_TraceCall("__str__", __pyx_f[1], 57, 0, __PYX_ERR(1, 57, __pyx_L1_error));
+  __Pyx_TraceCall("__str__", __pyx_f[1], 58, 0, __PYX_ERR(1, 58, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/replacement.pyx":59
+  /* "uttut/pipeline/edit/replacement.pyx":60
  *     def __str__(self):
  *         cdef str output_str
  *         output_str = f"({self.start}, {self.end}) => '{self.new_value}'"             # <<<<<<<<<<<<<<
  *         return output_str
  * 
  */
-  __pyx_t_1 = PyTuple_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
@@ -2121,7 +2121,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   __pyx_t_2 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_);
-  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->start, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 59, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->start, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
@@ -2131,7 +2131,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   __pyx_t_2 += 2;
   __Pyx_GIVEREF(__pyx_kp_u__2);
   PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u__2);
-  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->end, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 59, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->end, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
@@ -2141,7 +2141,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   __pyx_t_2 += 6;
   __Pyx_GIVEREF(__pyx_kp_u__3);
   PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__3);
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_self->new_value, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 59, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_self->new_value, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -2152,13 +2152,13 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   __pyx_t_2 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__4);
   PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u__4);
-  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 7, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 59, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 7, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_output_str = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":60
+  /* "uttut/pipeline/edit/replacement.pyx":61
  *         cdef str output_str
  *         output_str = f"({self.start}, {self.end}) => '{self.new_value}'"
  *         return output_str             # <<<<<<<<<<<<<<
@@ -2170,7 +2170,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   __pyx_r = __pyx_v_output_str;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":57
+  /* "uttut/pipeline/edit/replacement.pyx":58
  *         return same_start and same_end and same_new_values
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -2192,7 +2192,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_4__
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":62
+/* "uttut/pipeline/edit/replacement.pyx":63
  *         return output_str
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -2223,16 +2223,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   Py_UCS4 __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
-  __Pyx_TraceCall("__repr__", __pyx_f[1], 62, 0, __PYX_ERR(1, 62, __pyx_L1_error));
+  __Pyx_TraceCall("__repr__", __pyx_f[1], 63, 0, __PYX_ERR(1, 63, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/replacement.pyx":64
+  /* "uttut/pipeline/edit/replacement.pyx":65
  *     def __repr__(self):
  *         cdef str representation
  *         representation = f"Replacement({self.start}, {self.end}, " \             # <<<<<<<<<<<<<<
  *             f"{self.new_value}, annotation={self.annotation})"
  *         return representation
  */
-  __pyx_t_1 = PyTuple_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
@@ -2240,7 +2240,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   __pyx_t_2 += 12;
   __Pyx_GIVEREF(__pyx_kp_u_Replacement);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_Replacement);
-  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->start, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->start, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
@@ -2250,7 +2250,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   __pyx_t_2 += 2;
   __Pyx_GIVEREF(__pyx_kp_u__2);
   PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u__2);
-  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->end, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_From_unsigned_int(__pyx_v_self->end, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
@@ -2261,14 +2261,14 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   __Pyx_GIVEREF(__pyx_kp_u__2);
   PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__2);
 
-  /* "uttut/pipeline/edit/replacement.pyx":65
+  /* "uttut/pipeline/edit/replacement.pyx":66
  *         cdef str representation
  *         representation = f"Replacement({self.start}, {self.end}, " \
  *             f"{self.new_value}, annotation={self.annotation})"             # <<<<<<<<<<<<<<
  *         return representation
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_self->new_value, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 65, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_self->new_value, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -2279,7 +2279,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   __pyx_t_2 += 13;
   __Pyx_GIVEREF(__pyx_kp_u_annotation_2);
   PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u_annotation_2);
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_self->annotation, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 65, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_self->annotation, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -2291,20 +2291,20 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   __Pyx_GIVEREF(__pyx_kp_u__5);
   PyTuple_SET_ITEM(__pyx_t_1, 8, __pyx_kp_u__5);
 
-  /* "uttut/pipeline/edit/replacement.pyx":64
+  /* "uttut/pipeline/edit/replacement.pyx":65
  *     def __repr__(self):
  *         cdef str representation
  *         representation = f"Replacement({self.start}, {self.end}, " \             # <<<<<<<<<<<<<<
  *             f"{self.new_value}, annotation={self.annotation})"
  *         return representation
  */
-  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 9, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 9, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_representation = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":66
+  /* "uttut/pipeline/edit/replacement.pyx":67
  *         representation = f"Replacement({self.start}, {self.end}, " \
  *             f"{self.new_value}, annotation={self.annotation})"
  *         return representation             # <<<<<<<<<<<<<<
@@ -2316,7 +2316,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   __pyx_r = __pyx_v_representation;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":62
+  /* "uttut/pipeline/edit/replacement.pyx":63
  *         return output_str
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -2338,7 +2338,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_6__
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":68
+/* "uttut/pipeline/edit/replacement.pyx":69
  *         return representation
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -2369,20 +2369,20 @@ static Py_hash_t __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_8__
   PyObject *__pyx_t_3 = NULL;
   Py_hash_t __pyx_t_4;
   __Pyx_RefNannySetupContext("__hash__", 0);
-  __Pyx_TraceCall("__hash__", __pyx_f[1], 68, 0, __PYX_ERR(1, 68, __pyx_L1_error));
+  __Pyx_TraceCall("__hash__", __pyx_f[1], 69, 0, __PYX_ERR(1, 69, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/replacement.pyx":70
+  /* "uttut/pipeline/edit/replacement.pyx":71
  *     def __hash__(self):
  *         cdef int hash_num
  *         hash_num = hash((self.start, self.end))             # <<<<<<<<<<<<<<
  *         return hash_num
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->start); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->start); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 70, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -2390,11 +2390,11 @@ static Py_hash_t __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_8__
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
   __pyx_t_1 = 0;
   __pyx_t_2 = 0;
-  __pyx_t_4 = PyObject_Hash(__pyx_t_3); if (unlikely(__pyx_t_4 == ((Py_hash_t)-1))) __PYX_ERR(1, 70, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Hash(__pyx_t_3); if (unlikely(__pyx_t_4 == ((Py_hash_t)-1))) __PYX_ERR(1, 71, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_hash_num = __pyx_t_4;
 
-  /* "uttut/pipeline/edit/replacement.pyx":71
+  /* "uttut/pipeline/edit/replacement.pyx":72
  *         cdef int hash_num
  *         hash_num = hash((self.start, self.end))
  *         return hash_num             # <<<<<<<<<<<<<<
@@ -2404,7 +2404,7 @@ static Py_hash_t __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_8__
   __pyx_r = __pyx_v_hash_num;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":68
+  /* "uttut/pipeline/edit/replacement.pyx":69
  *         return representation
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -2427,7 +2427,7 @@ static Py_hash_t __pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_8__
 }
 
 /* "uttut/pipeline/edit/replacement.pxd":3
- * cdef class Replacement:
+ * cdef class Replacement:  # noqa: E999
  * 
  *     cdef public unsigned int start             # <<<<<<<<<<<<<<
  *     cdef public unsigned int end
@@ -2937,8 +2937,8 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_11Replacement_12_
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":76
- * cdef class ReplacementGroup:
+/* "uttut/pipeline/edit/replacement.pyx":77
+ * cdef class ReplacementGroup:   # noqa: E999
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
  *         self._replacements = []
@@ -2967,16 +2967,16 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup___ci
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__cinit__", 0);
-  __Pyx_TraceCall("__cinit__", __pyx_f[1], 76, 0, __PYX_ERR(1, 76, __pyx_L1_error));
+  __Pyx_TraceCall("__cinit__", __pyx_f[1], 77, 0, __PYX_ERR(1, 77, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/replacement.pyx":77
+  /* "uttut/pipeline/edit/replacement.pyx":78
  * 
  *     def __cinit__(self):
  *         self._replacements = []             # <<<<<<<<<<<<<<
  *         self._is_done = False
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 77, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_replacements);
@@ -2984,7 +2984,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup___ci
   __pyx_v_self->_replacements = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":78
+  /* "uttut/pipeline/edit/replacement.pyx":79
  *     def __cinit__(self):
  *         self._replacements = []
  *         self._is_done = False             # <<<<<<<<<<<<<<
@@ -2993,8 +2993,8 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup___ci
  */
   __pyx_v_self->_is_done = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":76
- * cdef class ReplacementGroup:
+  /* "uttut/pipeline/edit/replacement.pyx":77
+ * cdef class ReplacementGroup:   # noqa: E999
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
  *         self._replacements = []
@@ -3014,7 +3014,7 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup___ci
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":80
+/* "uttut/pipeline/edit/replacement.pyx":81
  *         self._is_done = False
  * 
  *     cpdef void add(  # type: ignore             # <<<<<<<<<<<<<<
@@ -3025,10 +3025,10 @@ static int __pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup___ci
 static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_3add(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *__pyx_v_self, unsigned int __pyx_v_start, unsigned int __pyx_v_end, PyObject *__pyx_v_new_value, int __pyx_skip_dispatch, struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add *__pyx_optional_args) {
 
-  /* "uttut/pipeline/edit/replacement.pyx":85
+  /* "uttut/pipeline/edit/replacement.pyx":86
  *             unsigned int end,
  *             object new_value,
- *             object annotation = None,             # <<<<<<<<<<<<<<
+ *             object annotation=None,             # <<<<<<<<<<<<<<
  *         ):
  *         cdef Replacement replacement
  */
@@ -3046,14 +3046,14 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
   PyObject *__pyx_t_8 = NULL;
   int __pyx_t_9;
   __Pyx_RefNannySetupContext("add", 0);
-  __Pyx_TraceCall("add", __pyx_f[1], 80, 0, __PYX_ERR(1, 80, __pyx_L1_error));
+  __Pyx_TraceCall("add", __pyx_f[1], 81, 0, __PYX_ERR(1, 81, __pyx_L1_error));
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
       __pyx_v_annotation = __pyx_optional_args->annotation;
     }
   }
 
-  /* "uttut/pipeline/edit/replacement.pyx":80
+  /* "uttut/pipeline/edit/replacement.pyx":81
  *         self._is_done = False
  * 
  *     cpdef void add(  # type: ignore             # <<<<<<<<<<<<<<
@@ -3070,12 +3070,12 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 80, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 81, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_3add)) {
-        __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 80, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 81, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 80, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 81, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -3093,7 +3093,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[5] = {__pyx_t_6, __pyx_t_3, __pyx_t_4, __pyx_v_new_value, __pyx_v_annotation};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 4+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 80, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 4+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3103,7 +3103,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[5] = {__pyx_t_6, __pyx_t_3, __pyx_t_4, __pyx_v_new_value, __pyx_v_annotation};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 4+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 80, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 4+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3111,7 +3111,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
         } else
         #endif
         {
-          __pyx_t_8 = PyTuple_New(4+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 80, __pyx_L1_error)
+          __pyx_t_8 = PyTuple_New(4+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 81, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           if (__pyx_t_6) {
             __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -3128,7 +3128,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
           PyTuple_SET_ITEM(__pyx_t_8, 3+__pyx_t_7, __pyx_v_annotation);
           __pyx_t_3 = 0;
           __pyx_t_4 = 0;
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 80, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         }
@@ -3150,77 +3150,77 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add(
     #endif
   }
 
-  /* "uttut/pipeline/edit/replacement.pyx":90
+  /* "uttut/pipeline/edit/replacement.pyx":91
  * 
  *         replacement = Replacement(
  *             start=start,             # <<<<<<<<<<<<<<
  *             end=end,
  *             new_value=new_value,
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 90, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 90, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(1, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_start, __pyx_t_2) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":91
+  /* "uttut/pipeline/edit/replacement.pyx":92
  *         replacement = Replacement(
  *             start=start,
  *             end=end,             # <<<<<<<<<<<<<<
  *             new_value=new_value,
  *             annotation=annotation,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_end, __pyx_t_2) < 0) __PYX_ERR(1, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_end, __pyx_t_2) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":92
+  /* "uttut/pipeline/edit/replacement.pyx":93
  *             start=start,
  *             end=end,
  *             new_value=new_value,             # <<<<<<<<<<<<<<
  *             annotation=annotation,
  *         )
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_value, __pyx_v_new_value) < 0) __PYX_ERR(1, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_value, __pyx_v_new_value) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/replacement.pyx":93
+  /* "uttut/pipeline/edit/replacement.pyx":94
  *             end=end,
  *             new_value=new_value,
  *             annotation=annotation,             # <<<<<<<<<<<<<<
  *         )
  *         self._replacements.append(replacement)
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_annotation, __pyx_v_annotation) < 0) __PYX_ERR(1, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_annotation, __pyx_v_annotation) < 0) __PYX_ERR(1, 91, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/replacement.pyx":89
+  /* "uttut/pipeline/edit/replacement.pyx":90
  *         cdef Replacement replacement
  * 
  *         replacement = Replacement(             # <<<<<<<<<<<<<<
  *             start=start,
  *             end=end,
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5uttut_8pipeline_4edit_11replacement_Replacement), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 89, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5uttut_8pipeline_4edit_11replacement_Replacement), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_replacement = ((struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":95
+  /* "uttut/pipeline/edit/replacement.pyx":96
  *             annotation=annotation,
  *         )
  *         self._replacements.append(replacement)             # <<<<<<<<<<<<<<
  * 
- *     cpdef void done(self, bint skip_sort = False) except *:
+ *     cpdef void done(self, bint skip_sort=False) except *:
  */
   if (unlikely(__pyx_v_self->_replacements == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
-    __PYX_ERR(1, 95, __pyx_L1_error)
+    __PYX_ERR(1, 96, __pyx_L1_error)
   }
-  __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_self->_replacements, ((PyObject *)__pyx_v_replacement)); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 95, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_self->_replacements, ((PyObject *)__pyx_v_replacement)); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 96, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/replacement.pyx":80
+  /* "uttut/pipeline/edit/replacement.pyx":81
  *         self._is_done = False
  * 
  *     cpdef void add(  # type: ignore             # <<<<<<<<<<<<<<
@@ -3259,10 +3259,10 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_start,&__pyx_n_s_end,&__pyx_n_s_new_value,&__pyx_n_s_annotation,0};
     PyObject* values[4] = {0,0,0,0};
 
-    /* "uttut/pipeline/edit/replacement.pyx":85
+    /* "uttut/pipeline/edit/replacement.pyx":86
  *             unsigned int end,
  *             object new_value,
- *             object annotation = None,             # <<<<<<<<<<<<<<
+ *             object annotation=None,             # <<<<<<<<<<<<<<
  *         ):
  *         cdef Replacement replacement
  */
@@ -3291,13 +3291,13 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add", 0, 3, 4, 1); __PYX_ERR(1, 80, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add", 0, 3, 4, 1); __PYX_ERR(1, 81, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_new_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add", 0, 3, 4, 2); __PYX_ERR(1, 80, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add", 0, 3, 4, 2); __PYX_ERR(1, 81, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -3307,7 +3307,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add") < 0)) __PYX_ERR(1, 80, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add") < 0)) __PYX_ERR(1, 81, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3320,14 +3320,14 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_start = __Pyx_PyInt_As_unsigned_int(values[0]); if (unlikely((__pyx_v_start == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 82, __pyx_L3_error)
-    __pyx_v_end = __Pyx_PyInt_As_unsigned_int(values[1]); if (unlikely((__pyx_v_end == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 83, __pyx_L3_error)
+    __pyx_v_start = __Pyx_PyInt_As_unsigned_int(values[0]); if (unlikely((__pyx_v_start == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 83, __pyx_L3_error)
+    __pyx_v_end = __Pyx_PyInt_As_unsigned_int(values[1]); if (unlikely((__pyx_v_end == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 84, __pyx_L3_error)
     __pyx_v_new_value = values[2];
     __pyx_v_annotation = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 80, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 81, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.replacement.ReplacementGroup.add", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3335,7 +3335,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_2add(((struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_new_value, __pyx_v_annotation);
 
-  /* "uttut/pipeline/edit/replacement.pyx":80
+  /* "uttut/pipeline/edit/replacement.pyx":81
  *         self._is_done = False
  * 
  *     cpdef void add(  # type: ignore             # <<<<<<<<<<<<<<
@@ -3355,12 +3355,12 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
   struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_add __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("add", 0);
-  __Pyx_TraceCall("add (wrapper)", __pyx_f[1], 80, 0, __PYX_ERR(1, 80, __pyx_L1_error));
+  __Pyx_TraceCall("add (wrapper)", __pyx_f[1], 81, 0, __PYX_ERR(1, 81, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1.__pyx_n = 1;
   __pyx_t_1.annotation = __pyx_v_annotation;
   __pyx_vtabptr_5uttut_8pipeline_4edit_11replacement_ReplacementGroup->add(__pyx_v_self, __pyx_v_start, __pyx_v_end, __pyx_v_new_value, 1, &__pyx_t_1); 
-  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 80, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -3378,10 +3378,10 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":97
+/* "uttut/pipeline/edit/replacement.pyx":98
  *         self._replacements.append(replacement)
  * 
- *     cpdef void done(self, bint skip_sort = False) except *:             # <<<<<<<<<<<<<<
+ *     cpdef void done(self, bint skip_sort=False) except *:             # <<<<<<<<<<<<<<
  * 
  *         cdef unsigned int n_replacements
  */
@@ -3401,7 +3401,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
   int __pyx_t_7;
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("done", 0);
-  __Pyx_TraceCall("done", __pyx_f[1], 97, 0, __PYX_ERR(1, 97, __pyx_L1_error));
+  __Pyx_TraceCall("done", __pyx_f[1], 98, 0, __PYX_ERR(1, 98, __pyx_L1_error));
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
       __pyx_v_skip_sort = __pyx_optional_args->skip_sort;
@@ -3417,10 +3417,10 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
     else {
       PY_UINT64_T type_dict_guard = (likely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict)) ? __PYX_GET_DICT_VERSION(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dict) : 0;
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_done); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 97, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_done); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_5done)) {
-        __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_skip_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 97, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_skip_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 98, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -3436,7 +3436,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 97, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 98, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3456,16 +3456,16 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
     #endif
   }
 
-  /* "uttut/pipeline/edit/replacement.pyx":101
+  /* "uttut/pipeline/edit/replacement.pyx":102
  *         cdef unsigned int n_replacements
  * 
  *         self._replacements = list(set(self._replacements))             # <<<<<<<<<<<<<<
  * 
  *         n_replacements = len(self._replacements)
  */
-  __pyx_t_1 = PySet_New(__pyx_v_self->_replacements); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 101, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(__pyx_v_self->_replacements); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 101, __pyx_L1_error)
+  __pyx_t_2 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
@@ -3474,7 +3474,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
   __pyx_v_self->_replacements = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":103
+  /* "uttut/pipeline/edit/replacement.pyx":104
  *         self._replacements = list(set(self._replacements))
  * 
  *         n_replacements = len(self._replacements)             # <<<<<<<<<<<<<<
@@ -3485,13 +3485,13 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
   __Pyx_INCREF(__pyx_t_2);
   if (unlikely(__pyx_t_2 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 103, __pyx_L1_error)
+    __PYX_ERR(1, 104, __pyx_L1_error)
   }
-  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 103, __pyx_L1_error)
+  __pyx_t_6 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_n_replacements = __pyx_t_6;
 
-  /* "uttut/pipeline/edit/replacement.pyx":105
+  /* "uttut/pipeline/edit/replacement.pyx":106
  *         n_replacements = len(self._replacements)
  * 
  *         if (n_replacements != 0) and (not skip_sort):             # <<<<<<<<<<<<<<
@@ -3509,16 +3509,16 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_7) {
 
-    /* "uttut/pipeline/edit/replacement.pyx":106
+    /* "uttut/pipeline/edit/replacement.pyx":107
  * 
  *         if (n_replacements != 0) and (not skip_sort):
  *             self._validate_new_values()             # <<<<<<<<<<<<<<
  *             self._replacements = _sort_replacements(self._replacements)
  *             _validate_disjoint_in_c(self._replacements)
  */
-    ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *)__pyx_v_self->__pyx_vtab)->_validate_new_values(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 106, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *)__pyx_v_self->__pyx_vtab)->_validate_new_values(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 107, __pyx_L1_error)
 
-    /* "uttut/pipeline/edit/replacement.pyx":107
+    /* "uttut/pipeline/edit/replacement.pyx":108
  *         if (n_replacements != 0) and (not skip_sort):
  *             self._validate_new_values()
  *             self._replacements = _sort_replacements(self._replacements)             # <<<<<<<<<<<<<<
@@ -3527,7 +3527,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
  */
     __pyx_t_2 = __pyx_v_self->_replacements;
     __Pyx_INCREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_f_5uttut_8pipeline_4edit_11replacement__sort_replacements(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 107, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_5uttut_8pipeline_4edit_11replacement__sort_replacements(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GIVEREF(__pyx_t_1);
@@ -3536,7 +3536,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
     __pyx_v_self->_replacements = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "uttut/pipeline/edit/replacement.pyx":108
+    /* "uttut/pipeline/edit/replacement.pyx":109
  *             self._validate_new_values()
  *             self._replacements = _sort_replacements(self._replacements)
  *             _validate_disjoint_in_c(self._replacements)             # <<<<<<<<<<<<<<
@@ -3545,10 +3545,10 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
  */
     __pyx_t_1 = __pyx_v_self->_replacements;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_f_5uttut_8pipeline_4edit_10validation__validate_disjoint_in_c(((PyObject*)__pyx_t_1)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 108, __pyx_L1_error)
+    __pyx_f_5uttut_8pipeline_4edit_10validation__validate_disjoint_in_c(((PyObject*)__pyx_t_1)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 109, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "uttut/pipeline/edit/replacement.pyx":105
+    /* "uttut/pipeline/edit/replacement.pyx":106
  *         n_replacements = len(self._replacements)
  * 
  *         if (n_replacements != 0) and (not skip_sort):             # <<<<<<<<<<<<<<
@@ -3557,19 +3557,19 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done
  */
   }
 
-  /* "uttut/pipeline/edit/replacement.pyx":110
+  /* "uttut/pipeline/edit/replacement.pyx":111
  *             _validate_disjoint_in_c(self._replacements)
  * 
  *         self._is_done = True             # <<<<<<<<<<<<<<
  * 
- * 
+ *     cdef void _validate_new_values(self) except *:
  */
   __pyx_v_self->_is_done = 1;
 
-  /* "uttut/pipeline/edit/replacement.pyx":97
+  /* "uttut/pipeline/edit/replacement.pyx":98
  *         self._replacements.append(replacement)
  * 
- *     cpdef void done(self, bint skip_sort = False) except *:             # <<<<<<<<<<<<<<
+ *     cpdef void done(self, bint skip_sort=False) except *:             # <<<<<<<<<<<<<<
  * 
  *         cdef unsigned int n_replacements
  */
@@ -3616,7 +3616,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "done") < 0)) __PYX_ERR(1, 97, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "done") < 0)) __PYX_ERR(1, 98, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3627,14 +3627,14 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
       }
     }
     if (values[0]) {
-      __pyx_v_skip_sort = __Pyx_PyObject_IsTrue(values[0]); if (unlikely((__pyx_v_skip_sort == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 97, __pyx_L3_error)
+      __pyx_v_skip_sort = __Pyx_PyObject_IsTrue(values[0]); if (unlikely((__pyx_v_skip_sort == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 98, __pyx_L3_error)
     } else {
       __pyx_v_skip_sort = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("done", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 97, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("done", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 98, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.replacement.ReplacementGroup.done", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3654,12 +3654,12 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
   struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("done", 0);
-  __Pyx_TraceCall("done (wrapper)", __pyx_f[1], 97, 0, __PYX_ERR(1, 97, __pyx_L1_error));
+  __Pyx_TraceCall("done (wrapper)", __pyx_f[1], 98, 0, __PYX_ERR(1, 98, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1.__pyx_n = 1;
   __pyx_t_1.skip_sort = __pyx_v_skip_sort;
-  __pyx_vtabptr_5uttut_8pipeline_4edit_11replacement_ReplacementGroup->done(__pyx_v_self, 1, &__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 97, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 97, __pyx_L1_error)
+  __pyx_vtabptr_5uttut_8pipeline_4edit_11replacement_ReplacementGroup->done(__pyx_v_self, 1, &__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -3678,7 +3678,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
 }
 
 /* "uttut/pipeline/edit/replacement.pyx":113
- * 
+ *         self._is_done = True
  * 
  *     cdef void _validate_new_values(self) except *:             # <<<<<<<<<<<<<<
  *         target_type = type(self._replacements[0].new_value)
@@ -3841,7 +3841,7 @@ static void __pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup__val
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "uttut/pipeline/edit/replacement.pyx":113
- * 
+ *         self._is_done = True
  * 
  *     cdef void _validate_new_values(self) except *:             # <<<<<<<<<<<<<<
  *         target_type = type(self._replacements[0].new_value)
@@ -4860,12 +4860,12 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_11replacement_16ReplacementGrou
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":177
+/* "uttut/pipeline/edit/replacement.pyx":176
  *     cdef Replacement e
  * 
  *     replacements = sorted(replacements, key=lambda e: e.end)             # <<<<<<<<<<<<<<
  *     replacements = sorted(replacements, key=lambda e: e.start)
- * 
+ *     return replacements
  */
 
 /* Python wrapper */
@@ -4888,9 +4888,9 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("lambda", 0);
-  __Pyx_TraceCall("lambda", __pyx_f[1], 177, 0, __PYX_ERR(1, 177, __pyx_L1_error));
+  __Pyx_TraceCall("lambda", __pyx_f[1], 176, 0, __PYX_ERR(1, 176, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4908,11 +4908,10 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":178
+/* "uttut/pipeline/edit/replacement.pyx":177
  * 
  *     replacements = sorted(replacements, key=lambda e: e.end)
  *     replacements = sorted(replacements, key=lambda e: e.start)             # <<<<<<<<<<<<<<
- * 
  *     return replacements
  */
 
@@ -4936,9 +4935,9 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("lambda1", 0);
-  __Pyx_TraceCall("lambda1", __pyx_f[1], 178, 0, __PYX_ERR(1, 178, __pyx_L1_error));
+  __Pyx_TraceCall("lambda1", __pyx_f[1], 177, 0, __PYX_ERR(1, 177, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_e, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4956,7 +4955,7 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/replacement.pyx":173
+/* "uttut/pipeline/edit/replacement.pyx":172
  * 
  * 
  * cdef list _sort_replacements(list replacements):             # <<<<<<<<<<<<<<
@@ -4972,64 +4971,63 @@ static PyObject *__pyx_f_5uttut_8pipeline_4edit_11replacement__sort_replacements
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("_sort_replacements", 0);
-  __Pyx_TraceCall("_sort_replacements", __pyx_f[1], 173, 0, __PYX_ERR(1, 173, __pyx_L1_error));
+  __Pyx_TraceCall("_sort_replacements", __pyx_f[1], 172, 0, __PYX_ERR(1, 172, __pyx_L1_error));
   __Pyx_INCREF(__pyx_v_replacements);
 
-  /* "uttut/pipeline/edit/replacement.pyx":177
+  /* "uttut/pipeline/edit/replacement.pyx":176
  *     cdef Replacement e
  * 
  *     replacements = sorted(replacements, key=lambda e: e.end)             # <<<<<<<<<<<<<<
  *     replacements = sorted(replacements, key=lambda e: e.start)
- * 
+ *     return replacements
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_replacements);
   __Pyx_GIVEREF(__pyx_v_replacements);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_replacements);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_11replacement_18_sort_replacements_lambda, 0, __pyx_n_s_sort_replacements_locals_lambda, NULL, __pyx_n_s_uttut_pipeline_edit_replacement, __pyx_d, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_11replacement_18_sort_replacements_lambda, 0, __pyx_n_s_sort_replacements_locals_lambda, NULL, __pyx_n_s_uttut_pipeline_edit_replacement, __pyx_d, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(1, 177, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(1, 177, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_DECREF_SET(__pyx_v_replacements, ((PyObject*)__pyx_t_3));
   __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":178
+  /* "uttut/pipeline/edit/replacement.pyx":177
  * 
  *     replacements = sorted(replacements, key=lambda e: e.end)
  *     replacements = sorted(replacements, key=lambda e: e.start)             # <<<<<<<<<<<<<<
- * 
  *     return replacements
  */
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_replacements);
   __Pyx_GIVEREF(__pyx_v_replacements);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_replacements);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_11replacement_18_sort_replacements_1lambda1, 0, __pyx_n_s_sort_replacements_locals_lambda, NULL, __pyx_n_s_uttut_pipeline_edit_replacement, __pyx_d, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_11replacement_18_sort_replacements_1lambda1, 0, __pyx_n_s_sort_replacements_locals_lambda, NULL, __pyx_n_s_uttut_pipeline_edit_replacement, __pyx_d, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_1) < 0) __PYX_ERR(1, 178, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_1) < 0) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 178, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_DECREF_SET(__pyx_v_replacements, ((PyObject*)__pyx_t_1));
   __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":180
+  /* "uttut/pipeline/edit/replacement.pyx":178
+ *     replacements = sorted(replacements, key=lambda e: e.end)
  *     replacements = sorted(replacements, key=lambda e: e.start)
- * 
  *     return replacements             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
@@ -5037,7 +5035,7 @@ static PyObject *__pyx_f_5uttut_8pipeline_4edit_11replacement__sort_replacements
   __pyx_r = __pyx_v_replacements;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/replacement.pyx":173
+  /* "uttut/pipeline/edit/replacement.pyx":172
  * 
  * 
  * cdef list _sort_replacements(list replacements):             # <<<<<<<<<<<<<<
@@ -5532,7 +5530,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 115, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 155, __pyx_L1_error)
-  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(1, 176, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -5655,14 +5653,14 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.done = (void (*)(struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *, int __pyx_skip_dispatch, struct __pyx_opt_args_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done *__pyx_optional_args))__pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_done;
   __pyx_vtable_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.is_empty = (int (*)(struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *, int __pyx_skip_dispatch))__pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup_is_empty;
   __pyx_vtable_5uttut_8pipeline_4edit_11replacement_ReplacementGroup._validate_new_values = (void (*)(struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_ReplacementGroup *))__pyx_f_5uttut_8pipeline_4edit_11replacement_16ReplacementGroup__validate_new_values;
-  if (PyType_Ready(&__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 74, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 75, __pyx_L1_error)
   __pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.tp_dictoffset && __pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.tp_dict, __pyx_vtabptr_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 74, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ReplacementGroup, (PyObject *)&__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 74, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 74, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup.tp_dict, __pyx_vtabptr_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 75, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ReplacementGroup, (PyObject *)&__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 75, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup) < 0) __PYX_ERR(1, 75, __pyx_L1_error)
   __pyx_ptype_5uttut_8pipeline_4edit_11replacement_ReplacementGroup = &__pyx_type_5uttut_8pipeline_4edit_11replacement_ReplacementGroup;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -5928,7 +5926,7 @@ if (!__Pyx_RefNanny) {
  * from typing import List
  * import warnings             # <<<<<<<<<<<<<<
  * 
- * from .validation cimport (
+ * from .validation cimport (  # noqa: E211, E999
  */
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_warnings, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
