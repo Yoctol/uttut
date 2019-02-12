@@ -1,6 +1,6 @@
 # Transformer
 
-Transformation between human-readable dictionary and List of Datum.
+Transformation between human-readable dictionary and List of `Datum`.
 
 ## Usage
 
@@ -95,7 +95,7 @@ assert tx.humanize(datum) == raw_datum
 
 For future usage, you may save it through its serialization mechanism:
 ```python
-savable = tx.serialize()
+savable = tx.serialize()  # JSON string
 
 # You may save to FS, blob, DB, etc.
 with open('transformer.json', 'w') as fw:
