@@ -61,7 +61,6 @@ class OrdinalLabel(BaseTransformer):
             for entity in datum.entities:
                 raw_entity = {
                     'name': self.index2entity(entity.label),
-                    'value': datum.utterance[entity.start: entity.end],
                     'start': entity.start,
                     'end': entity.end,
                 }
