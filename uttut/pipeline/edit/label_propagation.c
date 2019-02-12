@@ -1305,6 +1305,17 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
+/* DictGetItem.proto */
+#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
+static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
+#define __Pyx_PyObject_Dict_GetItem(obj, name)\
+    (likely(PyDict_CheckExact(obj)) ?\
+     __Pyx_PyDict_GetItem(obj, name) : PyObject_GetItem(obj, name))
+#else
+#define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
+#define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
+#endif
+
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
@@ -1374,17 +1385,6 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, 
 #else
 #define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
     (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
-
-/* DictGetItem.proto */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
-#define __Pyx_PyObject_Dict_GetItem(obj, name)\
-    (likely(PyDict_CheckExact(obj)) ?\
-     __Pyx_PyDict_GetItem(obj, name) : PyObject_GetItem(obj, name))
-#else
-#define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
-#define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
 #endif
 
 /* IterFinish.proto */
@@ -1595,6 +1595,7 @@ static const char __pyx_k_span[] = "span";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_label[] = "label";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_uttut[] = "uttut";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_labels[] = "labels";
 static const char __pyx_k_typing[] = "typing";
@@ -1605,6 +1606,7 @@ static const char __pyx_k_Sequence[] = "Sequence";
 static const char __pyx_k_n_labels[] = "n_labels";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_fixed_len[] = "fixed_len";
+static const char __pyx_k_NOT_ENTITY[] = "NOT_ENTITY";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_output_len[] = "output_len";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
@@ -1612,6 +1614,7 @@ static const char __pyx_k_span_group[] = "span_group";
 static const char __pyx_k_expand_size[] = "expand_size";
 static const char __pyx_k_output_size[] = "output_size";
 static const char __pyx_k_replacement[] = "replacement";
+static const char __pyx_k_ENTITY_LABEL[] = "ENTITY_LABEL";
 static const char __pyx_k_output_labels[] = "output_labels";
 static const char __pyx_k_transduce_func[] = "transduce_func";
 static const char __pyx_k_most_common_label[] = "most_common_label";
@@ -1625,7 +1628,9 @@ static const char __pyx_k_labels_and_span_group_are_not_co[] = "labels and span_
 static const char __pyx_k_uttut_pipeline_edit_label_propag[] = "uttut/pipeline/edit/label_propagation.pyx";
 static const char __pyx_k_uttut_pipeline_edit_label_propag_2[] = "uttut.pipeline.edit.label_propagation";
 static PyObject *__pyx_n_s_Callable;
+static PyObject *__pyx_n_s_ENTITY_LABEL;
 static PyObject *__pyx_n_s_List;
+static PyObject *__pyx_n_u_NOT_ENTITY;
 static PyObject *__pyx_n_s_Sequence;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1660,6 +1665,7 @@ static PyObject *__pyx_n_s_span_group;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_transduce_func;
 static PyObject *__pyx_n_s_typing;
+static PyObject *__pyx_n_s_uttut;
 static PyObject *__pyx_kp_s_uttut_pipeline_edit_label_propag;
 static PyObject *__pyx_n_s_uttut_pipeline_edit_label_propag_2;
 static PyObject *__pyx_n_s_zip;
@@ -1667,7 +1673,6 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
 static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_common_label(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labels, unsigned int __pyx_v_output_size); /* proto */
 static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_span_group(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labels, struct __pyx_obj_5uttut_8pipeline_4edit_4span_SpanGroup *__pyx_v_span_group, PyObject *__pyx_v_transduce_func); /* proto */
 static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_span_group(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labels, struct __pyx_obj_5uttut_8pipeline_4edit_4span_SpanGroup *__pyx_v_span_group); /* proto */
-static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_codeobj_;
 static PyObject *__pyx_tuple__4;
@@ -1680,7 +1685,7 @@ static PyObject *__pyx_codeobj__3;
 static PyObject *__pyx_codeobj__5;
 /* Late includes */
 
-/* "uttut/pipeline/edit/label_propagation.pyx":7
+/* "uttut/pipeline/edit/label_propagation.pyx":8
  * 
  * 
  * def propagate_by_replacement_group(             # <<<<<<<<<<<<<<
@@ -1703,7 +1708,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_1propagate_
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_labels,&__pyx_n_s_replacement_group,&__pyx_n_s_transduce_func,0};
     PyObject* values[3] = {0,0,0};
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":10
+    /* "uttut/pipeline/edit/label_propagation.pyx":11
  *         list labels,
  *         ReplacementGroup replacement_group,
  *         transduce_func: Callable[[List[int], int], List[int]] = None,             # <<<<<<<<<<<<<<
@@ -1733,7 +1738,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_1propagate_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_replacement_group)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("propagate_by_replacement_group", 0, 2, 3, 1); __PYX_ERR(0, 7, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("propagate_by_replacement_group", 0, 2, 3, 1); __PYX_ERR(0, 8, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -1743,7 +1748,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_1propagate_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "propagate_by_replacement_group") < 0)) __PYX_ERR(0, 7, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "propagate_by_replacement_group") < 0)) __PYX_ERR(0, 8, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1761,17 +1766,17 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_1propagate_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("propagate_by_replacement_group", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 7, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("propagate_by_replacement_group", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 8, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.label_propagation.propagate_by_replacement_group", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 8, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_replacement_group), __pyx_ptype_5uttut_8pipeline_4edit_11replacement_ReplacementGroup, 1, "replacement_group", 0))) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_replacement_group), __pyx_ptype_5uttut_8pipeline_4edit_11replacement_ReplacementGroup, 1, "replacement_group", 0))) __PYX_ERR(0, 10, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_by_replacement_group(__pyx_self, __pyx_v_labels, __pyx_v_replacement_group, __pyx_v_transduce_func);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":7
+  /* "uttut/pipeline/edit/label_propagation.pyx":8
  * 
  * 
  * def propagate_by_replacement_group(             # <<<<<<<<<<<<<<
@@ -1802,9 +1807,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   int __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  PyObject *(*__pyx_t_5)(PyObject *);
-  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  Py_ssize_t __pyx_t_5;
+  PyObject *(*__pyx_t_6)(PyObject *);
   Py_ssize_t __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
@@ -1815,10 +1820,10 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   unsigned int __pyx_t_14;
   __Pyx_TraceFrameInit(__pyx_codeobj_)
   __Pyx_RefNannySetupContext("propagate_by_replacement_group", 0);
-  __Pyx_TraceCall("propagate_by_replacement_group", __pyx_f[0], 7, 0, __PYX_ERR(0, 7, __pyx_L1_error));
+  __Pyx_TraceCall("propagate_by_replacement_group", __pyx_f[0], 8, 0, __PYX_ERR(0, 8, __pyx_L1_error));
   __Pyx_INCREF(__pyx_v_transduce_func);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":31
+  /* "uttut/pipeline/edit/label_propagation.pyx":32
  *     cdef Replacement replacement
  * 
  *     if transduce_func is None:             # <<<<<<<<<<<<<<
@@ -1829,19 +1834,19 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":32
+    /* "uttut/pipeline/edit/label_propagation.pyx":33
  * 
  *     if transduce_func is None:
  *         transduce_func = _get_most_common_label             # <<<<<<<<<<<<<<
  * 
  *     output_len = _compute_output_length(labels, replacement_group)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_most_common_label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_most_common_label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_transduce_func, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":31
+    /* "uttut/pipeline/edit/label_propagation.pyx":32
  *     cdef Replacement replacement
  * 
  *     if transduce_func is None:             # <<<<<<<<<<<<<<
@@ -1850,36 +1855,42 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":34
+  /* "uttut/pipeline/edit/label_propagation.pyx":35
  *         transduce_func = _get_most_common_label
  * 
  *     output_len = _compute_output_length(labels, replacement_group)             # <<<<<<<<<<<<<<
- *     output_labels = [0] * output_len
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  */
   __pyx_v_output_len = __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_output_length(__pyx_v_labels, __pyx_v_replacement_group);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":35
+  /* "uttut/pipeline/edit/label_propagation.pyx":36
  * 
  *     output_len = _compute_output_length(labels, replacement_group)
- *     output_labels = [0] * output_len             # <<<<<<<<<<<<<<
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len             # <<<<<<<<<<<<<<
  * 
  *     i_start = 0
  */
-  __pyx_t_3 = PyList_New(1 * (__pyx_v_output_len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_Dict_GetItem(__pyx_t_3, __pyx_n_u_NOT_ENTITY); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyList_New(1 * (__pyx_v_output_len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   { Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < __pyx_v_output_len; __pyx_temp++) {
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_int_0);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_t_4);
     }
   }
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_output_labels = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":37
- *     output_labels = [0] * output_len
+  /* "uttut/pipeline/edit/label_propagation.pyx":38
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  *     i_start = 0             # <<<<<<<<<<<<<<
  *     o_start = 0
@@ -1887,7 +1898,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
   __pyx_v_i_start = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":38
+  /* "uttut/pipeline/edit/label_propagation.pyx":39
  * 
  *     i_start = 0
  *     o_start = 0             # <<<<<<<<<<<<<<
@@ -1896,7 +1907,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
   __pyx_v_o_start = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":40
+  /* "uttut/pipeline/edit/label_propagation.pyx":41
  *     o_start = 0
  * 
  *     for replacement in replacement_group:             # <<<<<<<<<<<<<<
@@ -1904,49 +1915,49 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  *         fixed_len = replacement.start - i_start
  */
   if (likely(PyList_CheckExact(((PyObject *)__pyx_v_replacement_group))) || PyTuple_CheckExact(((PyObject *)__pyx_v_replacement_group))) {
-    __pyx_t_3 = ((PyObject *)__pyx_v_replacement_group); __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
-    __pyx_t_5 = NULL;
+    __pyx_t_3 = ((PyObject *)__pyx_v_replacement_group); __Pyx_INCREF(__pyx_t_3); __pyx_t_5 = 0;
+    __pyx_t_6 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(((PyObject *)__pyx_v_replacement_group)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(((PyObject *)__pyx_v_replacement_group)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 41, __pyx_L1_error)
   }
   for (;;) {
-    if (likely(!__pyx_t_5)) {
+    if (likely(!__pyx_t_6)) {
       if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
+        if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 40, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 41, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
-        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+        if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 40, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 41, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
     } else {
-      __pyx_t_6 = __pyx_t_5(__pyx_t_3);
-      if (unlikely(!__pyx_t_6)) {
+      __pyx_t_4 = __pyx_t_6(__pyx_t_3);
+      if (unlikely(!__pyx_t_4)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 40, __pyx_L1_error)
+          else __PYX_ERR(0, 41, __pyx_L1_error)
         }
         break;
       }
-      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GOTREF(__pyx_t_4);
     }
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5uttut_8pipeline_4edit_11replacement_Replacement))))) __PYX_ERR(0, 40, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_replacement, ((struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement *)__pyx_t_6));
-    __pyx_t_6 = 0;
+    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5uttut_8pipeline_4edit_11replacement_Replacement))))) __PYX_ERR(0, 41, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_replacement, ((struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement *)__pyx_t_4));
+    __pyx_t_4 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":42
+    /* "uttut/pipeline/edit/label_propagation.pyx":43
  *     for replacement in replacement_group:
  *         # before replacement
  *         fixed_len = replacement.start - i_start             # <<<<<<<<<<<<<<
@@ -1955,7 +1966,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
     __pyx_v_fixed_len = (__pyx_v_replacement->start - __pyx_v_i_start);
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":43
+    /* "uttut/pipeline/edit/label_propagation.pyx":44
  *         # before replacement
  *         fixed_len = replacement.start - i_start
  *         output_labels[o_start: o_start + fixed_len] = labels[i_start: replacement.start]             # <<<<<<<<<<<<<<
@@ -1964,14 +1975,14 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
     if (unlikely(__pyx_v_labels == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 43, __pyx_L1_error)
+      __PYX_ERR(0, 44, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_i_start, __pyx_v_replacement->start); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_6, __pyx_v_o_start, (__pyx_v_o_start + __pyx_v_fixed_len), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_4 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_i_start, __pyx_v_replacement->start); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_4, __pyx_v_o_start, (__pyx_v_o_start + __pyx_v_fixed_len), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":44
+    /* "uttut/pipeline/edit/label_propagation.pyx":45
  *         fixed_len = replacement.start - i_start
  *         output_labels[o_start: o_start + fixed_len] = labels[i_start: replacement.start]
  *         o_start += fixed_len             # <<<<<<<<<<<<<<
@@ -1980,20 +1991,20 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
     __pyx_v_o_start = (__pyx_v_o_start + __pyx_v_fixed_len);
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":47
+    /* "uttut/pipeline/edit/label_propagation.pyx":48
  * 
  *         # replacement
  *         expand_size = len(replacement.new_value)             # <<<<<<<<<<<<<<
  *         output_labels[o_start: o_start + expand_size] = transduce_func(
  *             labels[replacement.start: replacement.end],
  */
-    __pyx_t_6 = __pyx_v_replacement->new_value;
-    __Pyx_INCREF(__pyx_t_6);
-    __pyx_t_7 = PyObject_Length(__pyx_t_6); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_4 = __pyx_v_replacement->new_value;
+    __Pyx_INCREF(__pyx_t_4);
+    __pyx_t_7 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 48, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_expand_size = __pyx_t_7;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":49
+    /* "uttut/pipeline/edit/label_propagation.pyx":50
  *         expand_size = len(replacement.new_value)
  *         output_labels[o_start: o_start + expand_size] = transduce_func(
  *             labels[replacement.start: replacement.end],             # <<<<<<<<<<<<<<
@@ -2002,19 +2013,19 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
     if (unlikely(__pyx_v_labels == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 49, __pyx_L1_error)
+      __PYX_ERR(0, 50, __pyx_L1_error)
     }
-    __pyx_t_8 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_replacement->start, __pyx_v_replacement->end); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_replacement->start, __pyx_v_replacement->end); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":50
+    /* "uttut/pipeline/edit/label_propagation.pyx":51
  *         output_labels[o_start: o_start + expand_size] = transduce_func(
  *             labels[replacement.start: replacement.end],
  *             expand_size,             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-    __pyx_t_9 = __Pyx_PyInt_From_unsigned_int(__pyx_v_expand_size); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_From_unsigned_int(__pyx_v_expand_size); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_INCREF(__pyx_v_transduce_func);
     __pyx_t_10 = __pyx_v_transduce_func; __pyx_t_11 = NULL;
@@ -2032,9 +2043,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_10)) {
       PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_8, __pyx_t_9};
-      __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
@@ -2042,15 +2053,15 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
       PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_8, __pyx_t_9};
-      __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
     #endif
     {
-      __pyx_t_13 = PyTuple_New(2+__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_13 = PyTuple_New(2+__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       if (__pyx_t_11) {
         __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_11); __pyx_t_11 = NULL;
@@ -2061,23 +2072,23 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
       PyTuple_SET_ITEM(__pyx_t_13, 1+__pyx_t_12, __pyx_t_9);
       __pyx_t_8 = 0;
       __pyx_t_9 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_13, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 48, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     }
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":48
+    /* "uttut/pipeline/edit/label_propagation.pyx":49
  *         # replacement
  *         expand_size = len(replacement.new_value)
  *         output_labels[o_start: o_start + expand_size] = transduce_func(             # <<<<<<<<<<<<<<
  *             labels[replacement.start: replacement.end],
  *             expand_size,
  */
-    if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_6, __pyx_v_o_start, (__pyx_v_o_start + __pyx_v_expand_size), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_4, __pyx_v_o_start, (__pyx_v_o_start + __pyx_v_expand_size), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":53
+    /* "uttut/pipeline/edit/label_propagation.pyx":54
  *         )
  * 
  *         i_start = replacement.end             # <<<<<<<<<<<<<<
@@ -2087,7 +2098,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
     __pyx_t_14 = __pyx_v_replacement->end;
     __pyx_v_i_start = __pyx_t_14;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":54
+    /* "uttut/pipeline/edit/label_propagation.pyx":55
  * 
  *         i_start = replacement.end
  *         o_start += expand_size             # <<<<<<<<<<<<<<
@@ -2096,7 +2107,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
     __pyx_v_o_start = (__pyx_v_o_start + __pyx_v_expand_size);
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":40
+    /* "uttut/pipeline/edit/label_propagation.pyx":41
  *     o_start = 0
  * 
  *     for replacement in replacement_group:             # <<<<<<<<<<<<<<
@@ -2106,7 +2117,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":57
+  /* "uttut/pipeline/edit/label_propagation.pyx":58
  * 
  *     # final
  *     output_labels[o_start:] = labels[i_start:]             # <<<<<<<<<<<<<<
@@ -2115,14 +2126,14 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
  */
   if (unlikely(__pyx_v_labels == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 57, __pyx_L1_error)
+    __PYX_ERR(0, 58, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_i_start, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_i_start, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_3, __pyx_v_o_start, 0, NULL, NULL, NULL, 1, 0, 1) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
+  if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_3, __pyx_v_o_start, 0, NULL, NULL, NULL, 1, 0, 1) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":58
+  /* "uttut/pipeline/edit/label_propagation.pyx":59
  *     # final
  *     output_labels[o_start:] = labels[i_start:]
  *     return output_labels             # <<<<<<<<<<<<<<
@@ -2134,7 +2145,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   __pyx_r = __pyx_v_output_labels;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":7
+  /* "uttut/pipeline/edit/label_propagation.pyx":8
  * 
  * 
  * def propagate_by_replacement_group(             # <<<<<<<<<<<<<<
@@ -2145,7 +2156,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
@@ -2163,7 +2174,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_propagate_b
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/label_propagation.pyx":61
+/* "uttut/pipeline/edit/label_propagation.pyx":62
  * 
  * 
  * def _get_most_common_label(list labels, unsigned int output_size=1):             # <<<<<<<<<<<<<<
@@ -2207,7 +2218,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_3_get_most_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_get_most_common_label") < 0)) __PYX_ERR(0, 61, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_get_most_common_label") < 0)) __PYX_ERR(0, 62, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2220,20 +2231,20 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_3_get_most_
     }
     __pyx_v_labels = ((PyObject*)values[0]);
     if (values[1]) {
-      __pyx_v_output_size = __Pyx_PyInt_As_unsigned_int(values[1]); if (unlikely((__pyx_v_output_size == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L3_error)
+      __pyx_v_output_size = __Pyx_PyInt_As_unsigned_int(values[1]); if (unlikely((__pyx_v_output_size == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L3_error)
     } else {
       __pyx_v_output_size = ((unsigned int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_get_most_common_label", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 61, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_get_most_common_label", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 62, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.label_propagation._get_most_common_label", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 61, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 62, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_common_label(__pyx_self, __pyx_v_labels, __pyx_v_output_size);
 
   /* function exit code */
@@ -2256,11 +2267,12 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
+  unsigned int __pyx_t_5;
   __Pyx_TraceFrameInit(__pyx_codeobj__2)
   __Pyx_RefNannySetupContext("_get_most_common_label", 0);
-  __Pyx_TraceCall("_get_most_common_label", __pyx_f[0], 61, 0, __PYX_ERR(0, 61, __pyx_L1_error));
+  __Pyx_TraceCall("_get_most_common_label", __pyx_f[0], 62, 0, __PYX_ERR(0, 62, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":65
+  /* "uttut/pipeline/edit/label_propagation.pyx":66
  *     cdef list output_labels
  * 
  *     n_labels = len(labels)             # <<<<<<<<<<<<<<
@@ -2269,42 +2281,49 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_
  */
   if (unlikely(__pyx_v_labels == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 65, __pyx_L1_error)
+    __PYX_ERR(0, 66, __pyx_L1_error)
   }
-  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 66, __pyx_L1_error)
   __pyx_v_n_labels = __pyx_t_1;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":67
+  /* "uttut/pipeline/edit/label_propagation.pyx":68
  *     n_labels = len(labels)
  * 
  *     if n_labels == 0:             # <<<<<<<<<<<<<<
- *         most_common_label = 0
+ *         most_common_label = ENTITY_LABEL['NOT_ENTITY']
  *     else:
  */
   __pyx_t_2 = ((__pyx_v_n_labels == 0) != 0);
   if (__pyx_t_2) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":68
+    /* "uttut/pipeline/edit/label_propagation.pyx":69
  * 
  *     if n_labels == 0:
- *         most_common_label = 0             # <<<<<<<<<<<<<<
+ *         most_common_label = ENTITY_LABEL['NOT_ENTITY']             # <<<<<<<<<<<<<<
  *     else:
  *         most_common_label = _count_and_get_most_common(labels)
  */
-    __pyx_v_most_common_label = 0;
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyObject_Dict_GetItem(__pyx_t_3, __pyx_n_u_NOT_ENTITY); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_5 = __Pyx_PyInt_As_unsigned_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_most_common_label = __pyx_t_5;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":67
+    /* "uttut/pipeline/edit/label_propagation.pyx":68
  *     n_labels = len(labels)
  * 
  *     if n_labels == 0:             # <<<<<<<<<<<<<<
- *         most_common_label = 0
+ *         most_common_label = ENTITY_LABEL['NOT_ENTITY']
  *     else:
  */
     goto __pyx_L3;
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":70
- *         most_common_label = 0
+  /* "uttut/pipeline/edit/label_propagation.pyx":71
+ *         most_common_label = ENTITY_LABEL['NOT_ENTITY']
  *     else:
  *         most_common_label = _count_and_get_most_common(labels)             # <<<<<<<<<<<<<<
  * 
@@ -2315,29 +2334,29 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_
   }
   __pyx_L3:;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":72
+  /* "uttut/pipeline/edit/label_propagation.pyx":73
  *         most_common_label = _count_and_get_most_common(labels)
  * 
  *     output_labels = [most_common_label] * output_size             # <<<<<<<<<<<<<<
  * 
  *     return output_labels
  */
-  __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_most_common_label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyList_New(1 * (__pyx_v_output_size)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_most_common_label); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_3 = PyList_New(1 * (__pyx_v_output_size)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   { Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < __pyx_v_output_size; __pyx_temp++) {
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_GIVEREF(__pyx_t_3);
-      PyList_SET_ITEM(__pyx_t_4, __pyx_temp, __pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_t_4);
     }
   }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_output_labels = ((PyObject*)__pyx_t_4);
-  __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_output_labels = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":74
+  /* "uttut/pipeline/edit/label_propagation.pyx":75
  *     output_labels = [most_common_label] * output_size
  * 
  *     return output_labels             # <<<<<<<<<<<<<<
@@ -2349,7 +2368,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_
   __pyx_r = __pyx_v_output_labels;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":61
+  /* "uttut/pipeline/edit/label_propagation.pyx":62
  * 
  * 
  * def _get_most_common_label(list labels, unsigned int output_size=1):             # <<<<<<<<<<<<<<
@@ -2371,7 +2390,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_2_get_most_
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/label_propagation.pyx":77
+/* "uttut/pipeline/edit/label_propagation.pyx":78
  * 
  * 
  * cdef unsigned int _count_and_get_most_common(list ints):             # <<<<<<<<<<<<<<
@@ -2400,21 +2419,21 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
   int __pyx_t_10;
   int __pyx_t_11;
   __Pyx_RefNannySetupContext("_count_and_get_most_common", 0);
-  __Pyx_TraceCall("_count_and_get_most_common", __pyx_f[0], 77, 0, __PYX_ERR(0, 77, __pyx_L1_error));
+  __Pyx_TraceCall("_count_and_get_most_common", __pyx_f[0], 78, 0, __PYX_ERR(0, 78, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":83
+  /* "uttut/pipeline/edit/label_propagation.pyx":84
  *     return counter.most_common()[0][0]
  *     """
  *     cdef dict counter = {}             # <<<<<<<<<<<<<<
  *     cdef unsigned int i, max_key, max_value, key
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_counter = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":86
+  /* "uttut/pipeline/edit/label_propagation.pyx":87
  *     cdef unsigned int i, max_key, max_value, key
  * 
  *     for i in ints:             # <<<<<<<<<<<<<<
@@ -2423,54 +2442,54 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
  */
   if (unlikely(__pyx_v_ints == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 86, __pyx_L1_error)
+    __PYX_ERR(0, 87, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_ints; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
-    __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_i = __pyx_t_4;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":87
+    /* "uttut/pipeline/edit/label_propagation.pyx":88
  * 
  *     for i in ints:
  *         if i in counter:             # <<<<<<<<<<<<<<
  *             counter[i] += 1
  *         else:
  */
-    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = (__Pyx_PyDict_ContainsTF(__pyx_t_3, __pyx_v_counter, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_5 = (__Pyx_PyDict_ContainsTF(__pyx_t_3, __pyx_v_counter, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_6 = (__pyx_t_5 != 0);
     if (__pyx_t_6) {
 
-      /* "uttut/pipeline/edit/label_propagation.pyx":88
+      /* "uttut/pipeline/edit/label_propagation.pyx":89
  *     for i in ints:
  *         if i in counter:
  *             counter[i] += 1             # <<<<<<<<<<<<<<
  *         else:
  *             counter[i] = 1
  */
-      __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_counter, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_counter, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 89, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_8 = __Pyx_PyInt_AddObjC(__pyx_t_7, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_AddObjC(__pyx_t_7, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 89, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(PyDict_SetItem(__pyx_v_counter, __pyx_t_3, __pyx_t_8) < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
+      if (unlikely(PyDict_SetItem(__pyx_v_counter, __pyx_t_3, __pyx_t_8) < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "uttut/pipeline/edit/label_propagation.pyx":87
+      /* "uttut/pipeline/edit/label_propagation.pyx":88
  * 
  *     for i in ints:
  *         if i in counter:             # <<<<<<<<<<<<<<
@@ -2480,7 +2499,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
       goto __pyx_L5;
     }
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":90
+    /* "uttut/pipeline/edit/label_propagation.pyx":91
  *             counter[i] += 1
  *         else:
  *             counter[i] = 1             # <<<<<<<<<<<<<<
@@ -2488,14 +2507,14 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
  *     max_key = 0
  */
     /*else*/ {
-      __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      if (unlikely(PyDict_SetItem(__pyx_v_counter, __pyx_t_3, __pyx_int_1) < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
+      if (unlikely(PyDict_SetItem(__pyx_v_counter, __pyx_t_3, __pyx_int_1) < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __pyx_L5:;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":86
+    /* "uttut/pipeline/edit/label_propagation.pyx":87
  *     cdef unsigned int i, max_key, max_value, key
  * 
  *     for i in ints:             # <<<<<<<<<<<<<<
@@ -2505,7 +2524,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":92
+  /* "uttut/pipeline/edit/label_propagation.pyx":93
  *             counter[i] = 1
  * 
  *     max_key = 0             # <<<<<<<<<<<<<<
@@ -2514,7 +2533,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
  */
   __pyx_v_max_key = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":93
+  /* "uttut/pipeline/edit/label_propagation.pyx":94
  * 
  *     max_key = 0
  *     max_value = 0             # <<<<<<<<<<<<<<
@@ -2523,7 +2542,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
  */
   __pyx_v_max_value = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":94
+  /* "uttut/pipeline/edit/label_propagation.pyx":95
  *     max_key = 0
  *     max_value = 0
  *     for key in counter:             # <<<<<<<<<<<<<<
@@ -2531,7 +2550,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
  *             max_key = key
  */
   __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_dict_iterator(__pyx_v_counter, 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_dict_iterator(__pyx_v_counter, 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_1);
   __pyx_t_1 = __pyx_t_3;
@@ -2539,34 +2558,34 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
   while (1) {
     __pyx_t_11 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_9, &__pyx_t_2, &__pyx_t_3, NULL, NULL, __pyx_t_10);
     if (unlikely(__pyx_t_11 == 0)) break;
-    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_key = __pyx_t_4;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":95
+    /* "uttut/pipeline/edit/label_propagation.pyx":96
  *     max_value = 0
  *     for key in counter:
  *         if counter[key] > max_value:             # <<<<<<<<<<<<<<
  *             max_key = key
  *             max_value = counter[key]
  */
-    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_key); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_key); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_counter, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_counter, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_max_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_max_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = PyObject_RichCompare(__pyx_t_8, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_7 = PyObject_RichCompare(__pyx_t_8, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_6) {
 
-      /* "uttut/pipeline/edit/label_propagation.pyx":96
+      /* "uttut/pipeline/edit/label_propagation.pyx":97
  *     for key in counter:
  *         if counter[key] > max_value:
  *             max_key = key             # <<<<<<<<<<<<<<
@@ -2575,23 +2594,23 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
  */
       __pyx_v_max_key = __pyx_v_key;
 
-      /* "uttut/pipeline/edit/label_propagation.pyx":97
+      /* "uttut/pipeline/edit/label_propagation.pyx":98
  *         if counter[key] > max_value:
  *             max_key = key
  *             max_value = counter[key]             # <<<<<<<<<<<<<<
  * 
  *     return max_key
  */
-      __pyx_t_7 = __Pyx_PyInt_From_unsigned_int(__pyx_v_key); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyInt_From_unsigned_int(__pyx_v_key); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_counter, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_counter, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_max_value = __pyx_t_4;
 
-      /* "uttut/pipeline/edit/label_propagation.pyx":95
+      /* "uttut/pipeline/edit/label_propagation.pyx":96
  *     max_value = 0
  *     for key in counter:
  *         if counter[key] > max_value:             # <<<<<<<<<<<<<<
@@ -2602,7 +2621,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":99
+  /* "uttut/pipeline/edit/label_propagation.pyx":100
  *             max_value = counter[key]
  * 
  *     return max_key             # <<<<<<<<<<<<<<
@@ -2612,7 +2631,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
   __pyx_r = __pyx_v_max_key;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":77
+  /* "uttut/pipeline/edit/label_propagation.pyx":78
  * 
  * 
  * cdef unsigned int _count_and_get_most_common(list ints):             # <<<<<<<<<<<<<<
@@ -2635,7 +2654,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__count_an
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/label_propagation.pyx":102
+/* "uttut/pipeline/edit/label_propagation.pyx":103
  * 
  * 
  * cdef unsigned int _compute_output_length(input_seq, ReplacementGroup replacement_group):             # <<<<<<<<<<<<<<
@@ -2658,19 +2677,19 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
   PyObject *__pyx_t_4 = NULL;
   Py_ssize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("_compute_output_length", 0);
-  __Pyx_TraceCall("_compute_output_length", __pyx_f[0], 102, 0, __PYX_ERR(0, 102, __pyx_L1_error));
+  __Pyx_TraceCall("_compute_output_length", __pyx_f[0], 103, 0, __PYX_ERR(0, 103, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":107
+  /* "uttut/pipeline/edit/label_propagation.pyx":108
  *     cdef Replacement replacement
  * 
  *     len_iters = len(input_seq)             # <<<<<<<<<<<<<<
  *     offset = 0
  *     for replacement in replacement_group:
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_input_seq); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_input_seq); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 108, __pyx_L1_error)
   __pyx_v_len_iters = __pyx_t_1;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":108
+  /* "uttut/pipeline/edit/label_propagation.pyx":109
  * 
  *     len_iters = len(input_seq)
  *     offset = 0             # <<<<<<<<<<<<<<
@@ -2679,7 +2698,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
  */
   __pyx_v_offset = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":109
+  /* "uttut/pipeline/edit/label_propagation.pyx":110
  *     len_iters = len(input_seq)
  *     offset = 0
  *     for replacement in replacement_group:             # <<<<<<<<<<<<<<
@@ -2690,26 +2709,26 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
     __pyx_t_2 = ((PyObject *)__pyx_v_replacement_group); __Pyx_INCREF(__pyx_t_2); __pyx_t_1 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_1 = -1; __pyx_t_2 = PyObject_GetIter(((PyObject *)__pyx_v_replacement_group)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_1 = -1; __pyx_t_2 = PyObject_GetIter(((PyObject *)__pyx_v_replacement_group)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_1 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_1 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -2719,17 +2738,17 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 109, __pyx_L1_error)
+          else __PYX_ERR(0, 110, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_4);
     }
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5uttut_8pipeline_4edit_11replacement_Replacement))))) __PYX_ERR(0, 109, __pyx_L1_error)
+    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5uttut_8pipeline_4edit_11replacement_Replacement))))) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_replacement, ((struct __pyx_obj_5uttut_8pipeline_4edit_11replacement_Replacement *)__pyx_t_4));
     __pyx_t_4 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":110
+    /* "uttut/pipeline/edit/label_propagation.pyx":111
  *     offset = 0
  *     for replacement in replacement_group:
  *         after = len(replacement.new_value)             # <<<<<<<<<<<<<<
@@ -2738,11 +2757,11 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
  */
     __pyx_t_4 = __pyx_v_replacement->new_value;
     __Pyx_INCREF(__pyx_t_4);
-    __pyx_t_5 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_5 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_after = __pyx_t_5;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":111
+    /* "uttut/pipeline/edit/label_propagation.pyx":112
  *     for replacement in replacement_group:
  *         after = len(replacement.new_value)
  *         before = replacement.end - replacement.start             # <<<<<<<<<<<<<<
@@ -2751,7 +2770,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
  */
     __pyx_v_before = (__pyx_v_replacement->end - __pyx_v_replacement->start);
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":112
+    /* "uttut/pipeline/edit/label_propagation.pyx":113
  *         after = len(replacement.new_value)
  *         before = replacement.end - replacement.start
  *         offset += after - before             # <<<<<<<<<<<<<<
@@ -2760,7 +2779,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
  */
     __pyx_v_offset = (__pyx_v_offset + (__pyx_v_after - __pyx_v_before));
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":109
+    /* "uttut/pipeline/edit/label_propagation.pyx":110
  *     len_iters = len(input_seq)
  *     offset = 0
  *     for replacement in replacement_group:             # <<<<<<<<<<<<<<
@@ -2770,7 +2789,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":114
+  /* "uttut/pipeline/edit/label_propagation.pyx":115
  *         offset += after - before
  * 
  *     return len_iters + offset             # <<<<<<<<<<<<<<
@@ -2780,7 +2799,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
   __pyx_r = (__pyx_v_len_iters + __pyx_v_offset);
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":102
+  /* "uttut/pipeline/edit/label_propagation.pyx":103
  * 
  * 
  * cdef unsigned int _compute_output_length(input_seq, ReplacementGroup replacement_group):             # <<<<<<<<<<<<<<
@@ -2801,7 +2820,7 @@ static unsigned int __pyx_f_5uttut_8pipeline_4edit_17label_propagation__compute_
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/label_propagation.pyx":117
+/* "uttut/pipeline/edit/label_propagation.pyx":118
  * 
  * 
  * def reduce_by_span_group(             # <<<<<<<<<<<<<<
@@ -2823,7 +2842,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_5reduce_by_
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_labels,&__pyx_n_s_span_group,&__pyx_n_s_transduce_func,0};
     PyObject* values[3] = {0,0,0};
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":120
+    /* "uttut/pipeline/edit/label_propagation.pyx":121
  *         list labels,
  *         SpanGroup span_group,
  *         transduce_func: Callable[[List[int], int], List[int]] = None,             # <<<<<<<<<<<<<<
@@ -2853,7 +2872,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_5reduce_by_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_span_group)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("reduce_by_span_group", 0, 2, 3, 1); __PYX_ERR(0, 117, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("reduce_by_span_group", 0, 2, 3, 1); __PYX_ERR(0, 118, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -2863,7 +2882,7 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_5reduce_by_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "reduce_by_span_group") < 0)) __PYX_ERR(0, 117, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "reduce_by_span_group") < 0)) __PYX_ERR(0, 118, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2881,17 +2900,17 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_5reduce_by_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("reduce_by_span_group", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 117, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("reduce_by_span_group", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 118, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.label_propagation.reduce_by_span_group", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 118, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_span_group), __pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup, 1, "span_group", 0))) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_span_group), __pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup, 1, "span_group", 0))) __PYX_ERR(0, 120, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_span_group(__pyx_self, __pyx_v_labels, __pyx_v_span_group, __pyx_v_transduce_func);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":117
+  /* "uttut/pipeline/edit/label_propagation.pyx":118
  * 
  * 
  * def reduce_by_span_group(             # <<<<<<<<<<<<<<
@@ -2930,10 +2949,10 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
   PyObject *__pyx_t_12 = NULL;
   __Pyx_TraceFrameInit(__pyx_codeobj__3)
   __Pyx_RefNannySetupContext("reduce_by_span_group", 0);
-  __Pyx_TraceCall("reduce_by_span_group", __pyx_f[0], 117, 0, __PYX_ERR(0, 117, __pyx_L1_error));
+  __Pyx_TraceCall("reduce_by_span_group", __pyx_f[0], 118, 0, __PYX_ERR(0, 118, __pyx_L1_error));
   __Pyx_INCREF(__pyx_v_transduce_func);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":128
+  /* "uttut/pipeline/edit/label_propagation.pyx":129
  *     cdef Span span
  * 
  *     if transduce_func is None:             # <<<<<<<<<<<<<<
@@ -2944,19 +2963,19 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":129
+    /* "uttut/pipeline/edit/label_propagation.pyx":130
  * 
  *     if transduce_func is None:
  *         transduce_func = _get_most_common_label             # <<<<<<<<<<<<<<
  * 
  *     # empty span group and empty labels pair
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_most_common_label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 129, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_get_most_common_label); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 130, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_transduce_func, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":128
+    /* "uttut/pipeline/edit/label_propagation.pyx":129
  *     cdef Span span
  * 
  *     if transduce_func is None:             # <<<<<<<<<<<<<<
@@ -2965,14 +2984,14 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
  */
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":132
+  /* "uttut/pipeline/edit/label_propagation.pyx":133
  * 
  *     # empty span group and empty labels pair
  *     if (len(span_group) == 0) and (len(labels) == 0):             # <<<<<<<<<<<<<<
  *         return labels
  * 
  */
-  __pyx_t_4 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 133, __pyx_L1_error)
   __pyx_t_1 = ((__pyx_t_4 == 0) != 0);
   if (__pyx_t_1) {
   } else {
@@ -2981,15 +3000,15 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
   }
   if (unlikely(__pyx_v_labels == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 132, __pyx_L1_error)
+    __PYX_ERR(0, 133, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 133, __pyx_L1_error)
   __pyx_t_1 = ((__pyx_t_4 == 0) != 0);
   __pyx_t_2 = __pyx_t_1;
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_2) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":133
+    /* "uttut/pipeline/edit/label_propagation.pyx":134
  *     # empty span group and empty labels pair
  *     if (len(span_group) == 0) and (len(labels) == 0):
  *         return labels             # <<<<<<<<<<<<<<
@@ -3001,7 +3020,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
     __pyx_r = __pyx_v_labels;
     goto __pyx_L0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":132
+    /* "uttut/pipeline/edit/label_propagation.pyx":133
  * 
  *     # empty span group and empty labels pair
  *     if (len(span_group) == 0) and (len(labels) == 0):             # <<<<<<<<<<<<<<
@@ -3010,7 +3029,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
  */
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":135
+  /* "uttut/pipeline/edit/label_propagation.pyx":136
  *         return labels
  * 
  *     if len(labels) != span_group[-1].end:             # <<<<<<<<<<<<<<
@@ -3019,37 +3038,37 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
  */
   if (unlikely(__pyx_v_labels == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 135, __pyx_L1_error)
+    __PYX_ERR(0, 136, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 135, __pyx_L1_error)
-  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_span_group), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_span_group), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_end); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_end); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_6, Py_NE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_6, Py_NE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (unlikely(__pyx_t_2)) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":136
+    /* "uttut/pipeline/edit/label_propagation.pyx":137
  * 
  *     if len(labels) != span_group[-1].end:
  *         raise ValueError('labels and span_group are not compatible.')             # <<<<<<<<<<<<<<
  * 
  *     output_len = len(span_group)
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 137, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_Raise(__pyx_t_5, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __PYX_ERR(0, 136, __pyx_L1_error)
+    __PYX_ERR(0, 137, __pyx_L1_error)
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":135
+    /* "uttut/pipeline/edit/label_propagation.pyx":136
  *         return labels
  * 
  *     if len(labels) != span_group[-1].end:             # <<<<<<<<<<<<<<
@@ -3058,37 +3077,43 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
  */
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":138
+  /* "uttut/pipeline/edit/label_propagation.pyx":139
  *         raise ValueError('labels and span_group are not compatible.')
  * 
  *     output_len = len(span_group)             # <<<<<<<<<<<<<<
- *     output_labels = [0] * output_len
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  */
-  __pyx_t_4 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 139, __pyx_L1_error)
   __pyx_v_output_len = __pyx_t_4;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":139
+  /* "uttut/pipeline/edit/label_propagation.pyx":140
  * 
  *     output_len = len(span_group)
- *     output_labels = [0] * output_len             # <<<<<<<<<<<<<<
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len             # <<<<<<<<<<<<<<
  * 
  *     for i, span in enumerate(span_group):
  */
-  __pyx_t_5 = PyList_New(1 * (__pyx_v_output_len)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_5, __pyx_n_u_NOT_ENTITY); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyList_New(1 * (__pyx_v_output_len)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   { Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < __pyx_v_output_len; __pyx_temp++) {
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyList_SET_ITEM(__pyx_t_5, __pyx_temp, __pyx_int_0);
+      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_GIVEREF(__pyx_t_6);
+      PyList_SET_ITEM(__pyx_t_5, __pyx_temp, __pyx_t_6);
     }
   }
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_output_labels = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":141
- *     output_labels = [0] * output_len
+  /* "uttut/pipeline/edit/label_propagation.pyx":142
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  *     for i, span in enumerate(span_group):             # <<<<<<<<<<<<<<
  *         output_labels[i: i + 1] = transduce_func(labels[span.start: span.end], 1)
@@ -3099,26 +3124,26 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
     __pyx_t_5 = ((PyObject *)__pyx_v_span_group); __Pyx_INCREF(__pyx_t_5); __pyx_t_4 = 0;
     __pyx_t_8 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_5 = PyObject_GetIter(((PyObject *)__pyx_v_span_group)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_5 = PyObject_GetIter(((PyObject *)__pyx_v_span_group)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_8 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 142, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_8)) {
       if (likely(PyList_CheckExact(__pyx_t_5))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 141, __pyx_L1_error)
+        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 142, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 141, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 142, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       }
@@ -3128,19 +3153,19 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 141, __pyx_L1_error)
+          else __PYX_ERR(0, 142, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_6);
     }
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(0, 141, __pyx_L1_error)
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_span, ((struct __pyx_obj_5uttut_8pipeline_4edit_4span_Span *)__pyx_t_6));
     __pyx_t_6 = 0;
     __pyx_v_i = __pyx_t_7;
     __pyx_t_7 = (__pyx_t_7 + 1);
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":142
+    /* "uttut/pipeline/edit/label_propagation.pyx":143
  * 
  *     for i, span in enumerate(span_group):
  *         output_labels[i: i + 1] = transduce_func(labels[span.start: span.end], 1)             # <<<<<<<<<<<<<<
@@ -3149,9 +3174,9 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
  */
     if (unlikely(__pyx_v_labels == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 142, __pyx_L1_error)
+      __PYX_ERR(0, 143, __pyx_L1_error)
     }
-    __pyx_t_3 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_span->start, __pyx_v_span->end); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyList_GetSlice(__pyx_v_labels, __pyx_v_span->start, __pyx_v_span->end); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_transduce_func);
     __pyx_t_9 = __pyx_v_transduce_func; __pyx_t_10 = NULL;
@@ -3169,7 +3194,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_9)) {
       PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_t_3, __pyx_int_1};
-      __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3178,14 +3203,14 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_9)) {
       PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_t_3, __pyx_int_1};
-      __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       if (__pyx_t_10) {
         __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_10); __pyx_t_10 = NULL;
@@ -3196,16 +3221,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
       __Pyx_GIVEREF(__pyx_int_1);
       PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_11, __pyx_int_1);
       __pyx_t_3 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_6, __pyx_v_i, (__pyx_v_i + 1), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_output_labels, __pyx_t_6, __pyx_v_i, (__pyx_v_i + 1), NULL, NULL, NULL, 1, 1, 1) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":141
- *     output_labels = [0] * output_len
+    /* "uttut/pipeline/edit/label_propagation.pyx":142
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  *     for i, span in enumerate(span_group):             # <<<<<<<<<<<<<<
  *         output_labels[i: i + 1] = transduce_func(labels[span.start: span.end], 1)
@@ -3214,7 +3239,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":144
+  /* "uttut/pipeline/edit/label_propagation.pyx":145
  *         output_labels[i: i + 1] = transduce_func(labels[span.start: span.end], 1)
  * 
  *     return output_labels             # <<<<<<<<<<<<<<
@@ -3226,7 +3251,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
   __pyx_r = __pyx_v_output_labels;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":117
+  /* "uttut/pipeline/edit/label_propagation.pyx":118
  * 
  * 
  * def reduce_by_span_group(             # <<<<<<<<<<<<<<
@@ -3254,7 +3279,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_4reduce_by_
   return __pyx_r;
 }
 
-/* "uttut/pipeline/edit/label_propagation.pyx":147
+/* "uttut/pipeline/edit/label_propagation.pyx":148
  * 
  * 
  * def expand_by_span_group(list labels, SpanGroup span_group) -> List[int]:             # <<<<<<<<<<<<<<
@@ -3294,11 +3319,11 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_7expand_by_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_span_group)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("expand_by_span_group", 1, 2, 2, 1); __PYX_ERR(0, 147, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("expand_by_span_group", 1, 2, 2, 1); __PYX_ERR(0, 148, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "expand_by_span_group") < 0)) __PYX_ERR(0, 147, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "expand_by_span_group") < 0)) __PYX_ERR(0, 148, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3311,14 +3336,14 @@ static PyObject *__pyx_pw_5uttut_8pipeline_4edit_17label_propagation_7expand_by_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("expand_by_span_group", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 147, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("expand_by_span_group", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 148, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("uttut.pipeline.edit.label_propagation.expand_by_span_group", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 147, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_span_group), __pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup, 1, "span_group", 0))) __PYX_ERR(0, 147, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_labels), (&PyList_Type), 1, "labels", 1))) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_span_group), __pyx_ptype_5uttut_8pipeline_4edit_4span_SpanGroup, 1, "span_group", 0))) __PYX_ERR(0, 148, __pyx_L1_error)
   __pyx_r = __pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_span_group(__pyx_self, __pyx_v_labels, __pyx_v_span_group);
 
   /* function exit code */
@@ -3354,38 +3379,38 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
   unsigned int __pyx_t_13;
   __Pyx_TraceFrameInit(__pyx_codeobj__5)
   __Pyx_RefNannySetupContext("expand_by_span_group", 0);
-  __Pyx_TraceCall("expand_by_span_group", __pyx_f[0], 147, 0, __PYX_ERR(0, 147, __pyx_L1_error));
+  __Pyx_TraceCall("expand_by_span_group", __pyx_f[0], 148, 0, __PYX_ERR(0, 148, __pyx_L1_error));
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":154
+  /* "uttut/pipeline/edit/label_propagation.pyx":155
  *     cdef Span span
  * 
  *     if len(span_group) != len(labels):             # <<<<<<<<<<<<<<
  *         raise ValueError('labels and span_group are not compatible.')
  * 
  */
-  __pyx_t_1 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
   if (unlikely(__pyx_v_labels == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 154, __pyx_L1_error)
+    __PYX_ERR(0, 155, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_labels); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_1 != __pyx_t_2) != 0);
   if (unlikely(__pyx_t_3)) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":155
+    /* "uttut/pipeline/edit/label_propagation.pyx":156
  * 
  *     if len(span_group) != len(labels):
  *         raise ValueError('labels and span_group are not compatible.')             # <<<<<<<<<<<<<<
  * 
  *     # empty span group and empty labels pair
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 155, __pyx_L1_error)
+    __PYX_ERR(0, 156, __pyx_L1_error)
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":154
+    /* "uttut/pipeline/edit/label_propagation.pyx":155
  *     cdef Span span
  * 
  *     if len(span_group) != len(labels):             # <<<<<<<<<<<<<<
@@ -3394,18 +3419,18 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
  */
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":158
+  /* "uttut/pipeline/edit/label_propagation.pyx":159
  * 
  *     # empty span group and empty labels pair
  *     if len(span_group) == 0:             # <<<<<<<<<<<<<<
  *         return labels
  * 
  */
-  __pyx_t_2 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(((PyObject *)__pyx_v_span_group)); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 159, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":159
+    /* "uttut/pipeline/edit/label_propagation.pyx":160
  *     # empty span group and empty labels pair
  *     if len(span_group) == 0:
  *         return labels             # <<<<<<<<<<<<<<
@@ -3417,7 +3442,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
     __pyx_r = __pyx_v_labels;
     goto __pyx_L0;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":158
+    /* "uttut/pipeline/edit/label_propagation.pyx":159
  * 
  *     # empty span group and empty labels pair
  *     if len(span_group) == 0:             # <<<<<<<<<<<<<<
@@ -3426,49 +3451,55 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
  */
   }
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":161
+  /* "uttut/pipeline/edit/label_propagation.pyx":162
  *         return labels
  * 
  *     output_len = span_group[-1].end             # <<<<<<<<<<<<<<
- *     output_labels = [0] * output_len
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  */
-  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_span_group), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_span_group), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_end); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 161, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_end); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_t_5); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 161, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_t_5); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_output_len = __pyx_t_6;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":162
+  /* "uttut/pipeline/edit/label_propagation.pyx":163
  * 
  *     output_len = span_group[-1].end
- *     output_labels = [0] * output_len             # <<<<<<<<<<<<<<
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len             # <<<<<<<<<<<<<<
  * 
  *     for span, label in zip(span_group, labels):
  */
-  __pyx_t_5 = PyList_New(1 * (__pyx_v_output_len)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_Dict_GetItem(__pyx_t_5, __pyx_n_u_NOT_ENTITY); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyList_New(1 * (__pyx_v_output_len)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   { Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < __pyx_v_output_len; __pyx_temp++) {
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyList_SET_ITEM(__pyx_t_5, __pyx_temp, __pyx_int_0);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyList_SET_ITEM(__pyx_t_5, __pyx_temp, __pyx_t_4);
     }
   }
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_output_labels = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":164
- *     output_labels = [0] * output_len
+  /* "uttut/pipeline/edit/label_propagation.pyx":165
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  *     for span, label in zip(span_group, labels):             # <<<<<<<<<<<<<<
  *         for i in range(span.start, span.end):
  *             output_labels[i] = label
  */
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(((PyObject *)__pyx_v_span_group));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_span_group));
@@ -3476,16 +3507,16 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
   __Pyx_INCREF(__pyx_v_labels);
   __Pyx_GIVEREF(__pyx_v_labels);
   PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_v_labels);
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
     __pyx_t_5 = __pyx_t_4; __Pyx_INCREF(__pyx_t_5); __pyx_t_2 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 165, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   for (;;) {
@@ -3493,17 +3524,17 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
       if (likely(PyList_CheckExact(__pyx_t_5))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 165, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 165, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -3513,7 +3544,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 164, __pyx_L1_error)
+          else __PYX_ERR(0, 165, __pyx_L1_error)
         }
         break;
       }
@@ -3525,7 +3556,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 164, __pyx_L1_error)
+        __PYX_ERR(0, 165, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -3538,15 +3569,15 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
       __Pyx_INCREF(__pyx_t_8);
       __Pyx_INCREF(__pyx_t_9);
       #else
-      __pyx_t_8 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 164, __pyx_L1_error)
+      __pyx_t_8 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 164, __pyx_L1_error)
+      __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       #endif
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_10 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 164, __pyx_L1_error)
+      __pyx_t_10 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_11 = Py_TYPE(__pyx_t_10)->tp_iternext;
@@ -3554,7 +3585,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
       __Pyx_GOTREF(__pyx_t_8);
       index = 1; __pyx_t_9 = __pyx_t_11(__pyx_t_10); if (unlikely(!__pyx_t_9)) goto __pyx_L7_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_9);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_10), 2) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_10), 2) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
       __pyx_t_11 = NULL;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       goto __pyx_L8_unpacking_done;
@@ -3562,17 +3593,17 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __pyx_t_11 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 164, __pyx_L1_error)
+      __PYX_ERR(0, 165, __pyx_L1_error)
       __pyx_L8_unpacking_done:;
     }
-    if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(0, 164, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_t_9); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
+    if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_5uttut_8pipeline_4edit_4span_Span))))) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_t_9); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_XDECREF_SET(__pyx_v_span, ((struct __pyx_obj_5uttut_8pipeline_4edit_4span_Span *)__pyx_t_8));
     __pyx_t_8 = 0;
     __pyx_v_label = __pyx_t_6;
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":165
+    /* "uttut/pipeline/edit/label_propagation.pyx":166
  * 
  *     for span, label in zip(span_group, labels):
  *         for i in range(span.start, span.end):             # <<<<<<<<<<<<<<
@@ -3584,21 +3615,21 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
     for (__pyx_t_13 = __pyx_v_span->start; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
       __pyx_v_i = __pyx_t_13;
 
-      /* "uttut/pipeline/edit/label_propagation.pyx":166
+      /* "uttut/pipeline/edit/label_propagation.pyx":167
  *     for span, label in zip(span_group, labels):
  *         for i in range(span.start, span.end):
  *             output_labels[i] = label             # <<<<<<<<<<<<<<
  * 
  *     return output_labels
  */
-      __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_label); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_label); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_output_labels, __pyx_v_i, __pyx_t_4, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 1, 0, 1) < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
+      if (unlikely(__Pyx_SetItemInt(__pyx_v_output_labels, __pyx_v_i, __pyx_t_4, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 1, 0, 1) < 0)) __PYX_ERR(0, 167, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
 
-    /* "uttut/pipeline/edit/label_propagation.pyx":164
- *     output_labels = [0] * output_len
+    /* "uttut/pipeline/edit/label_propagation.pyx":165
+ *     output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
  * 
  *     for span, label in zip(span_group, labels):             # <<<<<<<<<<<<<<
  *         for i in range(span.start, span.end):
@@ -3607,7 +3638,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":168
+  /* "uttut/pipeline/edit/label_propagation.pyx":169
  *             output_labels[i] = label
  * 
  *     return output_labels             # <<<<<<<<<<<<<<
@@ -3617,7 +3648,7 @@ static PyObject *__pyx_pf_5uttut_8pipeline_4edit_17label_propagation_6expand_by_
   __pyx_r = __pyx_v_output_labels;
   goto __pyx_L0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":147
+  /* "uttut/pipeline/edit/label_propagation.pyx":148
  * 
  * 
  * def expand_by_span_group(list labels, SpanGroup span_group) -> List[int]:             # <<<<<<<<<<<<<<
@@ -3690,7 +3721,9 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Callable, __pyx_k_Callable, sizeof(__pyx_k_Callable), 0, 0, 1, 1},
+  {&__pyx_n_s_ENTITY_LABEL, __pyx_k_ENTITY_LABEL, sizeof(__pyx_k_ENTITY_LABEL), 0, 0, 1, 1},
   {&__pyx_n_s_List, __pyx_k_List, sizeof(__pyx_k_List), 0, 0, 1, 1},
+  {&__pyx_n_u_NOT_ENTITY, __pyx_k_NOT_ENTITY, sizeof(__pyx_k_NOT_ENTITY), 0, 1, 0, 1},
   {&__pyx_n_s_Sequence, __pyx_k_Sequence, sizeof(__pyx_k_Sequence), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
@@ -3725,16 +3758,17 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_transduce_func, __pyx_k_transduce_func, sizeof(__pyx_k_transduce_func), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
+  {&__pyx_n_s_uttut, __pyx_k_uttut, sizeof(__pyx_k_uttut), 0, 0, 1, 1},
   {&__pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_k_uttut_pipeline_edit_label_propag, sizeof(__pyx_k_uttut_pipeline_edit_label_propag), 0, 0, 1, 0},
   {&__pyx_n_s_uttut_pipeline_edit_label_propag_2, __pyx_k_uttut_pipeline_edit_label_propag_2, sizeof(__pyx_k_uttut_pipeline_edit_label_propag_2), 0, 0, 1, 1},
   {&__pyx_n_s_zip, __pyx_k_zip, sizeof(__pyx_k_zip), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 136, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 141, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 166, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3744,75 +3778,75 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":136
+  /* "uttut/pipeline/edit/label_propagation.pyx":137
  * 
  *     if len(labels) != span_group[-1].end:
  *         raise ValueError('labels and span_group are not compatible.')             # <<<<<<<<<<<<<<
  * 
  *     output_len = len(span_group)
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_labels_and_span_group_are_not_co); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_labels_and_span_group_are_not_co); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":155
+  /* "uttut/pipeline/edit/label_propagation.pyx":156
  * 
  *     if len(span_group) != len(labels):
  *         raise ValueError('labels and span_group are not compatible.')             # <<<<<<<<<<<<<<
  * 
  *     # empty span group and empty labels pair
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_labels_and_span_group_are_not_co); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_labels_and_span_group_are_not_co); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":7
+  /* "uttut/pipeline/edit/label_propagation.pyx":8
  * 
  * 
  * def propagate_by_replacement_group(             # <<<<<<<<<<<<<<
  *         list labels,
  *         ReplacementGroup replacement_group,
  */
-  __pyx_tuple__6 = PyTuple_Pack(10, __pyx_n_s_labels, __pyx_n_s_replacement_group, __pyx_n_s_transduce_func, __pyx_n_s_output_len, __pyx_n_s_i_start, __pyx_n_s_o_start, __pyx_n_s_fixed_len, __pyx_n_s_expand_size, __pyx_n_s_output_labels, __pyx_n_s_replacement); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(10, __pyx_n_s_labels, __pyx_n_s_replacement_group, __pyx_n_s_transduce_func, __pyx_n_s_output_len, __pyx_n_s_i_start, __pyx_n_s_o_start, __pyx_n_s_fixed_len, __pyx_n_s_expand_size, __pyx_n_s_output_labels, __pyx_n_s_replacement); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_propagate_by_replacement_group, 7, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_propagate_by_replacement_group, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 8, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":61
+  /* "uttut/pipeline/edit/label_propagation.pyx":62
  * 
  * 
  * def _get_most_common_label(list labels, unsigned int output_size=1):             # <<<<<<<<<<<<<<
  *     cdef unsigned int n_labels, most_common_label
  *     cdef list output_labels
  */
-  __pyx_tuple__7 = PyTuple_Pack(5, __pyx_n_s_labels, __pyx_n_s_output_size, __pyx_n_s_n_labels, __pyx_n_s_most_common_label, __pyx_n_s_output_labels); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(5, __pyx_n_s_labels, __pyx_n_s_output_size, __pyx_n_s_n_labels, __pyx_n_s_most_common_label, __pyx_n_s_output_labels); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_get_most_common_label, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_get_most_common_label, 62, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 62, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":117
+  /* "uttut/pipeline/edit/label_propagation.pyx":118
  * 
  * 
  * def reduce_by_span_group(             # <<<<<<<<<<<<<<
  *         list labels,
  *         SpanGroup span_group,
  */
-  __pyx_tuple__8 = PyTuple_Pack(7, __pyx_n_s_labels, __pyx_n_s_span_group, __pyx_n_s_transduce_func, __pyx_n_s_output_len, __pyx_n_s_i, __pyx_n_s_output_labels, __pyx_n_s_span); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(7, __pyx_n_s_labels, __pyx_n_s_span_group, __pyx_n_s_transduce_func, __pyx_n_s_output_len, __pyx_n_s_i, __pyx_n_s_output_labels, __pyx_n_s_span); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_reduce_by_span_group, 117, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_reduce_by_span_group, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 118, __pyx_L1_error)
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":147
+  /* "uttut/pipeline/edit/label_propagation.pyx":148
  * 
  * 
  * def expand_by_span_group(list labels, SpanGroup span_group) -> List[int]:             # <<<<<<<<<<<<<<
  *     # use case: list -> str
  * 
  */
-  __pyx_tuple__9 = PyTuple_Pack(7, __pyx_n_s_labels, __pyx_n_s_span_group, __pyx_n_s_output_len, __pyx_n_s_label, __pyx_n_s_i, __pyx_n_s_output_labels, __pyx_n_s_span); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(7, __pyx_n_s_labels, __pyx_n_s_span_group, __pyx_n_s_output_len, __pyx_n_s_label, __pyx_n_s_i, __pyx_n_s_output_labels, __pyx_n_s_span); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_expand_by_span_group, 147, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_uttut_pipeline_edit_label_propag, __pyx_n_s_expand_by_span_group, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3822,7 +3856,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -4148,63 +4181,84 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":7
+  /* "uttut/pipeline/edit/label_propagation.pyx":5
+ * from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
+ * from .span cimport Span, SpanGroup
+ * from uttut import ENTITY_LABEL             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_n_s_ENTITY_LABEL);
+  __Pyx_GIVEREF(__pyx_n_s_ENTITY_LABEL);
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_ENTITY_LABEL);
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_uttut, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_ENTITY_LABEL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENTITY_LABEL, __pyx_t_2) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "uttut/pipeline/edit/label_propagation.pyx":8
  * 
  * 
  * def propagate_by_replacement_group(             # <<<<<<<<<<<<<<
  *         list labels,
  *         ReplacementGroup replacement_group,
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_1propagate_by_replacement_group, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 7, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_propagate_by_replacement_group, __pyx_t_2) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_1propagate_by_replacement_group, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_propagate_by_replacement_group, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":61
+  /* "uttut/pipeline/edit/label_propagation.pyx":62
  * 
  * 
  * def _get_most_common_label(list labels, unsigned int output_size=1):             # <<<<<<<<<<<<<<
  *     cdef unsigned int n_labels, most_common_label
  *     cdef list output_labels
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_3_get_most_common_label, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_most_common_label, __pyx_t_2) < 0) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_3_get_most_common_label, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_most_common_label, __pyx_t_1) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":117
+  /* "uttut/pipeline/edit/label_propagation.pyx":118
  * 
  * 
  * def reduce_by_span_group(             # <<<<<<<<<<<<<<
  *         list labels,
  *         SpanGroup span_group,
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_5reduce_by_span_group, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_by_span_group, __pyx_t_2) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_5reduce_by_span_group, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_by_span_group, __pyx_t_1) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "uttut/pipeline/edit/label_propagation.pyx":147
+  /* "uttut/pipeline/edit/label_propagation.pyx":148
  * 
  * 
  * def expand_by_span_group(list labels, SpanGroup span_group) -> List[int]:             # <<<<<<<<<<<<<<
  *     # use case: list -> str
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_7expand_by_span_group, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_expand_by_span_group, __pyx_t_2) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5uttut_8pipeline_4edit_17label_propagation_7expand_by_span_group, NULL, __pyx_n_s_uttut_pipeline_edit_label_propag_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_expand_by_span_group, __pyx_t_1) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "uttut/pipeline/edit/label_propagation.pyx":1
  * from typing import List, Callable, Sequence             # <<<<<<<<<<<<<<
  * 
  * from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_TraceReturn(Py_None, 0);
 
   /*--- Wrapped vars code ---*/
@@ -4592,6 +4646,30 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
 #endif
     return __Pyx_GetBuiltinName(name);
 }
+
+/* DictGetItem */
+#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
+static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
+    PyObject *value;
+    value = PyDict_GetItemWithError(d, key);
+    if (unlikely(!value)) {
+        if (!PyErr_Occurred()) {
+            if (unlikely(PyTuple_Check(key))) {
+                PyObject* args = PyTuple_Pack(1, key);
+                if (likely(args)) {
+                    PyErr_SetObject(PyExc_KeyError, args);
+                    Py_DECREF(args);
+                }
+            } else {
+                PyErr_SetObject(PyExc_KeyError, key);
+            }
+        }
+        return NULL;
+    }
+    Py_INCREF(value);
+    return value;
+}
+#endif
 
 /* ExtTypeTest */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
@@ -5044,30 +5122,6 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED
             return PyFloat_FromDouble(result);
     }
     return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
-}
-#endif
-
-/* DictGetItem */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
-    PyObject *value;
-    value = PyDict_GetItemWithError(d, key);
-    if (unlikely(!value)) {
-        if (!PyErr_Occurred()) {
-            if (unlikely(PyTuple_Check(key))) {
-                PyObject* args = PyTuple_Pack(1, key);
-                if (likely(args)) {
-                    PyErr_SetObject(PyExc_KeyError, args);
-                    Py_DECREF(args);
-                }
-            } else {
-                PyErr_SetObject(PyExc_KeyError, key);
-            }
-        }
-        return NULL;
-    }
-    Py_INCREF(value);
-    return value;
 }
 #endif
 
