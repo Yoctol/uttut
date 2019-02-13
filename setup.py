@@ -78,7 +78,7 @@ else:
 
 setup(
     name="uttut",
-    version='1.2.0',
+    version='1.3.0',
     description="Yoctol Utterance processing utilities",
     license="MIT",
     author="cph",
