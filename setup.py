@@ -33,8 +33,8 @@ if use_cython:
         Extension('uttut.pipeline.edit.span', ['uttut/pipeline/edit/span.pyx']),
         Extension('uttut.pipeline.edit.utils', ['uttut/pipeline/edit/utils.pyx']),
         Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.pyx']),
-        # Extension('uttut.pipeline.edit.label_propagation',
-        #           ['uttut/pipeline/edit/label_propagation.pyx']),
+        Extension('uttut.pipeline.edit.label_propagation',
+                  ['uttut/pipeline/edit/label_propagation.pyx']),
     ]
     ext_modules = cythonize(
         ext_modules,
@@ -57,8 +57,8 @@ else:
         Extension('uttut.pipeline.edit.span', ['uttut/pipeline/edit/span.c']),
         Extension('uttut.pipeline.edit.utils', ['uttut/pipeline/edit/utils.c']),
         Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.c']),
-        # Extension('uttut.pipeline.edit.label_propagation',
-        #           ['uttut/pipeline/edit/label_propagation.c']),
+        Extension('uttut.pipeline.edit.label_propagation',
+                  ['uttut/pipeline/edit/label_propagation.c']),
     ]
 
 

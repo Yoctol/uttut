@@ -1,17 +1,16 @@
 from typing import List, Callable, Sequence
-from collections import Counter
 
-from .replacement import ReplacementGroup
-from .span import SpanGroup
+from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
+from .span cimport Span, SpanGroup
+from uttut import ENTITY_LABEL
 
 
 def propagate_by_replacement_group(
-        labels: List[int],
-        replacement_group: ReplacementGroup,
+        list labels,
+        ReplacementGroup replacement_group,
         transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
-
-    '''Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
+    """Map the labels[fstart_i: fend_i] to output_labels[rstart_i: rend_i]
 
     Note that the length of replacement_group should be the same as
     that of backward_replacement_group.
@@ -25,12 +24,16 @@ def propagate_by_replacement_group(
 
     Return:
         labels (list of ints)
-    '''
+    """
+    cdef unsigned int output_len, i_start, o_start, fixed_len, expand_size
+    cdef list output_labels
+    cdef Replacement replacement
+
     if transduce_func is None:
         transduce_func = _get_most_common_label
 
     output_len = _compute_output_length(labels, replacement_group)
-    output_labels = [0] * output_len
+    output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
 
     i_start = 0
     o_start = 0
@@ -56,20 +59,52 @@ def propagate_by_replacement_group(
     return output_labels
 
 
-def _get_most_common_label(labels: List[int], output_size: int = 1):
-    if len(labels) == 0:
-        most_common_label = 0
+def _get_most_common_label(list labels, unsigned int output_size=1):
+    cdef unsigned int n_labels, most_common_label
+    cdef list output_labels
+
+    n_labels = len(labels)
+
+    if n_labels == 0:
+        most_common_label = ENTITY_LABEL['NOT_ENTITY']
     else:
-        counter = Counter(labels)
-        most_common_label = counter.most_common(1)[0][0]
-    return [most_common_label] * output_size
+        most_common_label = _count_and_get_most_common(labels)
+
+    output_labels = [most_common_label] * output_size
+
+    return output_labels
 
 
-def _compute_output_length(
-        input_seq: Sequence,
-        replacement_group: ReplacementGroup,
-    ) -> int:
+cdef unsigned int _count_and_get_most_common(list ints):
+    """
+    equal to from collections import Counter
+    counter = Counter(ints)
+    return counter.most_common()[0][0]
+    """
+    cdef dict counter = {}
+    cdef unsigned int i, max_key, max_value, key
+
+    for i in ints:
+        if i in counter:
+            counter[i] += 1
+        else:
+            counter[i] = 1
+
+    max_key = 0
+    max_value = 0
+    for key in counter:
+        if counter[key] > max_value:
+            max_key = key
+            max_value = counter[key]
+
+    return max_key
+
+
+cdef unsigned int _compute_output_length(input_seq, ReplacementGroup replacement_group):
     # use cases: str -> str or list -> list
+    cdef unsigned int len_iters, offset, after, before
+    cdef Replacement replacement
+
     len_iters = len(input_seq)
     offset = 0
     for replacement in replacement_group:
@@ -81,11 +116,15 @@ def _compute_output_length(
 
 
 def reduce_by_span_group(
-        labels: List[int],
-        span_group: SpanGroup,
+        list labels,
+        SpanGroup span_group,
         transduce_func: Callable[[List[int], int], List[int]] = None,
     ) -> List[int]:
     # use case: string -> list
+
+    cdef unsigned int output_len, i
+    cdef list output_labels
+    cdef Span span
 
     if transduce_func is None:
         transduce_func = _get_most_common_label
@@ -98,7 +137,7 @@ def reduce_by_span_group(
         raise ValueError('labels and span_group are not compatible.')
 
     output_len = len(span_group)
-    output_labels = [0] * output_len
+    output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
 
     for i, span in enumerate(span_group):
         output_labels[i: i + 1] = transduce_func(labels[span.start: span.end], 1)
@@ -106,11 +145,12 @@ def reduce_by_span_group(
     return output_labels
 
 
-def expand_by_span_group(
-        labels: List[int],
-        span_group: SpanGroup,
-    ) -> List[int]:
+def expand_by_span_group(list labels, SpanGroup span_group) -> List[int]:
     # use case: list -> str
+
+    cdef unsigned int output_len, label, i
+    cdef list output_labels
+    cdef Span span
 
     if len(span_group) != len(labels):
         raise ValueError('labels and span_group are not compatible.')
@@ -120,7 +160,7 @@ def expand_by_span_group(
         return labels
 
     output_len = span_group[-1].end
-    output_labels = [0] * output_len
+    output_labels = [ENTITY_LABEL['NOT_ENTITY']] * output_len
 
     for span, label in zip(span_group, labels):
         for i in range(span.start, span.end):
