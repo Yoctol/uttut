@@ -1,8 +1,4 @@
-from abc import ABC, abstractmethod
-from typing import List, Tuple, Any
-
-
-class Operator(ABC):
+cdef class Operator:  # noqa: E999
 
     """Base class for Operators
 
@@ -18,10 +14,13 @@ class Operator(ABC):
         self._input_type = input_type
         self._output_type = output_type
 
-    def __eq__(self, other):
-        self_attrs = (self._input_type, self._output_type)
-        other_attrs = (other._input_type, other._output_type)
+    def __eq__(self, Operator other):
+        self_attrs = (self.input_type, self.output_type)
+        other_attrs = (other.input_type, other.output_type)
         return self_attrs == other_attrs
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     @property
     def input_type(self):
@@ -31,7 +30,7 @@ class Operator(ABC):
     def output_type(self):
         return self._output_type
 
-    def transform(self, input_sequence) -> Tuple[Any, 'LabelAligner']:
+    cpdef tuple transform(self, input_sequence):
         """Transform input_sequence
 
         Transform input_sequence to certain form which meets the output_type
@@ -51,20 +50,19 @@ class Operator(ABC):
         self._validate_output(output_sequence)
         return output_sequence, label_aligner
 
-    def _validate_input(self, input_sequence):
+    cpdef void _validate_input(self, input_sequence) except *:
         if not isinstance(input_sequence, self.input_type):
             raise TypeError('Invalid input type')
 
-    def _validate_output(self, output_sequence):
+    cpdef void _validate_output(self, output_sequence) except *:
         if not isinstance(output_sequence, self.output_type):
             raise TypeError('Invalid output type')
 
-    @abstractmethod
-    def _transform(self, input_sequence) -> Tuple[Any, 'LabelAligner']:
+    cpdef tuple _transform(self, input_sequence):
         pass
 
 
-class LabelAligner(ABC):
+cdef class LabelAligner:
 
     """Base class for LabelAligners
 
@@ -77,14 +75,14 @@ class LabelAligner(ABC):
 
     """
 
-    def __init__(self, input_sequence, edit, output_length: int):
+    def __init__(self, input_sequence, edit, unsigned int output_length):
         self._input_length = len(input_sequence)
         self._output_length = output_length
 
         self._input_sequence = input_sequence
         self._forward_edit = edit
 
-    def transform(self, labels: List[int]) -> List[int]:
+    cpdef list transform(self, list labels):
         """Update labels according to forward edit
 
         Args:
@@ -102,7 +100,7 @@ class LabelAligner(ABC):
         self._validate_output(output_labels)
         return output_labels
 
-    def inverse_transform(self, labels: List[int]) -> List[int]:
+    cpdef list inverse_transform(self, list labels):
         """Realign model predictions to original input
 
         Args:
@@ -120,18 +118,16 @@ class LabelAligner(ABC):
         self._validate_input(output_labels)
         return output_labels
 
-    def _validate_input(self, labels: List[int]):
+    cpdef void _validate_input(self, list labels) except *:
         if len(labels) != self._input_length:
             raise ValueError('Invalid input labels')
 
-    def _validate_output(self, labels: List[int]):
+    cpdef void _validate_output(self, list labels) except *:
         if len(labels) != self._output_length:
             raise ValueError('Invalid output labels')
 
-    @abstractmethod
-    def _transform(self, labels: List[int]) -> List[int]:
+    cpdef list _transform(self, list labels):
         pass
 
-    @abstractmethod
-    def _inverse_transform(self, labels: List[int]) -> List[int]:
+    cpdef list _inverse_transform(self, list labels):
         pass

@@ -33,7 +33,7 @@ def test_not_equal(step):
 def test_transform(step, mocker):
     mock_method = mocker.patch.object(step.op, 'transform')
     step.transform('abc')
-    mock_method.assert_called_once_with(input_sequence='abc')
+    mock_method.assert_called_once_with('abc')
 
 
 def test_attributes(step):

@@ -1,13 +1,13 @@
 from typing import List, Tuple, Dict
 
-from .base import Operator, LabelAligner
+from .base cimport Operator, LabelAligner  # noqa: E999
 from .tokens import UNK_TOKEN
 
 from ..edit import lst2lst
-from ..edit.replacement import ReplacementGroup
+from ..edit.replacement cimport ReplacementGroup  # noqa: E999
 
 
-class Token2Index(Operator):
+cdef class Token2Index(Operator):  # noqa: E999
 
     """
     Map token (str) to index (int) given token2index dictionary
@@ -28,7 +28,10 @@ class Token2Index(Operator):
 
     """
 
-    def __init__(self, token2index: Dict[str, int], unk_token: str = UNK_TOKEN):
+    cdef readonly dict token2index
+    cdef readonly str unk_token
+
+    def __init__(self, dict token2index, str unk_token=UNK_TOKEN):
         super().__init__(input_type=list, output_type=list)
         self._validate_token2index(token2index, unk_token)
         self.token2index = token2index
@@ -39,7 +42,10 @@ class Token2Index(Operator):
         same_unk_token = self.unk_token == other.unk_token
         return same_token2index and same_unk_token and super().__eq__(other)
 
-    def _validate_token2index(self, token2index: Dict[str, int], unk_token: str):
+    cdef void _validate_token2index(self, dict token2index, str unk_token) except *:
+        cdef set indices
+        cdef unsigned int start_from_zero, end_at_size
+
         indices = set([index for _, index in token2index.items()])
         if len(token2index) != len(indices):
             raise ValueError("duplicated index")
@@ -52,7 +58,11 @@ class Token2Index(Operator):
         if unk_token not in token2index:
             raise KeyError(f"token2index should have token {unk_token}")
 
-    def _transform(self, input_sequence: List[str]) -> Tuple[List[int], 'LabelAligner']:
+    cpdef tuple _transform(self, input_sequence):
+        cdef ReplacementGroup forward_replacement_group
+        cdef list output_sequence
+        cdef Token2IndexAligner label_aligner
+
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = lst2lst.apply(input_sequence, forward_replacement_group)
 
@@ -63,10 +73,10 @@ class Token2Index(Operator):
         )
         return output_sequence, label_aligner
 
-    def _gen_forward_replacement_group(
-            self,
-            input_lst: List[str],
-        ) -> ReplacementGroup:
+    cdef ReplacementGroup _gen_forward_replacement_group(self, list input_lst):
+        cdef str token
+        cdef ReplacementGroup replacement_group
+        cdef unsigned int idx, index
 
         replacement_group = ReplacementGroup()
         for idx, token in enumerate(input_lst):
@@ -84,10 +94,10 @@ class Token2Index(Operator):
         return replacement_group
 
 
-class Token2IndexAligner(LabelAligner):
+cdef class Token2IndexAligner(LabelAligner):
 
-    def _transform(self, labels: List[int]):
+    cpdef list _transform(self, list labels):
         return labels
 
-    def _inverse_transform(self, labels):
+    cpdef list _inverse_transform(self, list labels):
         return labels

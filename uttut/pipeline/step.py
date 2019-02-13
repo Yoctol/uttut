@@ -21,4 +21,4 @@ class Step:
         return self.op.output_type
 
     def transform(self, input_sequence):
-        return self.op.transform(input_sequence=input_sequence)
+        return self.op.transform(input_sequence)

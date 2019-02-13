@@ -35,6 +35,8 @@ if use_cython:
         Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.pyx']),
         Extension('uttut.pipeline.edit.label_propagation',
                   ['uttut/pipeline/edit/label_propagation.pyx']),
+        Extension('uttut.pipeline.ops.base', ['uttut/pipeline/ops/base.pyx']),
+        Extension('uttut.pipeline.ops.token_to_index', ['uttut/pipeline/ops/token_to_index.pyx']),
     ]
     ext_modules = cythonize(
         ext_modules,
@@ -59,6 +61,8 @@ else:
         Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.c']),
         Extension('uttut.pipeline.edit.label_propagation',
                   ['uttut/pipeline/edit/label_propagation.c']),
+        Extension('uttut.pipeline.ops.base', ['uttut/pipeline/ops/base.c']),
+        Extension('uttut.pipeline.ops.token_to_index', ['uttut/pipeline/ops/token_to_index.c']),
     ]
 
 
