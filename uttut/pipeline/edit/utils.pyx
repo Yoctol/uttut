@@ -1,13 +1,13 @@
-from typing import List, Sequence, MutableSequence, Union
+from typing import List, Union
 
 from .replacement cimport Replacement, ReplacementGroup  # noqa: E999
 
 
-def _transform_sequence(
+cdef object _transform_sequence(
         input_seq: Union[str, List[str]],
         ReplacementGroup replacement_group,
         list output,
-    ) -> Sequence:
+    ):
     '''
     input_seq: list of str or pure str
     '''
@@ -29,15 +29,15 @@ def _transform_sequence(
     return output
 
 
-def _gen_inverse_replacement_group(
-        input_seq: Union[str, List[str]],
+cdef ReplacementGroup _gen_inverse_replacement_group(
+        input_seq,
         ReplacementGroup replacement_group,
-    ) -> ReplacementGroup:
+    ):
     '''
     input_seq: list of str or pure str
     '''
 
-    cdef unsigned int n_replacement, start, dist
+    cdef unsigned int n_replacement, start, i, dist
     cdef list dists
     cdef Replacement replacement
     cdef ReplacementGroup inverse_replacement_group
@@ -68,7 +68,7 @@ def _gen_inverse_replacement_group(
     return inverse_replacement_group
 
 
-def get_dist_bt_replacement_group(ReplacementGroup replacement_group) -> List[int]:
+cdef list get_dist_bt_replacement_group(ReplacementGroup replacement_group):
 
     '''Compute the distance between replacement_group
 
@@ -86,7 +86,7 @@ def get_dist_bt_replacement_group(ReplacementGroup replacement_group) -> List[in
         dist (ints)
     '''
 
-    cdef unsigned int n_replacement, dist
+    cdef unsigned int n_replacement, i, dist
     cdef list dists
     cdef Replacement current_replacement, next_replacement
 

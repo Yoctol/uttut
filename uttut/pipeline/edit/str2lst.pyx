@@ -1,10 +1,11 @@
-from typing import List
-
-from .replacement import ReplacementGroup
-from .span import SpanGroup
+from .replacement cimport ReplacementGroup  # noqa: E999
+from .span cimport Span, SpanGroup
 
 
-def apply(input_str: str, span_group: SpanGroup) -> List[str]:
+cpdef list apply(str input_str, SpanGroup span_group):
+    cdef list output_lst
+    cdef Span span
+    cdef unsigned int i
 
     _validate_compatibility(input_str, span_group)
 
@@ -15,13 +16,20 @@ def apply(input_str: str, span_group: SpanGroup) -> List[str]:
     return output_lst
 
 
-def _validate_compatibility(input_str: str, span_group: SpanGroup):
-    if len(input_str) != span_group[-1].end:
-        raise ValueError('Input list and span group is not compatible.')
+cdef void _validate_compatibility(str input_str, SpanGroup span_group) except *:
+    cdef unsigned int n_spans
+    n_spans = len(span_group)
+    if n_spans > 0:
+        if len(input_str) != span_group[-1].end:
+            raise ValueError('Input list and span group is not compatible.')
 
 
-def gen_span_group(input_str: str, tokens: List[str]) -> SpanGroup:
+cpdef SpanGroup gen_span_group(str input_str, list tokens):
     '''Compare string and tokens then generate SpanGroup'''
+    cdef unsigned int shift, end
+    cdef int start
+    cdef SpanGroup span_group
+    cdef str token
 
     if input_str != ''.join(tokens):
         raise ValueError('input_str and tokens are not compatible')
@@ -38,8 +46,12 @@ def gen_span_group(input_str: str, tokens: List[str]) -> SpanGroup:
     return span_group
 
 
-def gen_replacement_group(input_str: str, tokens: List[str]) -> ReplacementGroup:
+cpdef ReplacementGroup gen_replacement_group(str input_str, list tokens):
     '''Compare string and tokens then generate ReplacementGroup'''
+    cdef unsigned int shift
+    cdef int start
+    cdef ReplacementGroup replacement_group
+    cdef str token
 
     shift = 0
     replacement_group = ReplacementGroup()

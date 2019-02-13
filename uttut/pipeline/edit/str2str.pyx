@@ -1,11 +1,15 @@
-from .replacement import ReplacementGroup
-from .utils import (
+from .replacement cimport ReplacementGroup  # noqa: E999
+from .utils cimport (  # noqa: E211
     _transform_sequence,
     _gen_inverse_replacement_group,
 )
 
 
-def apply(input_str: str, replacement_group: ReplacementGroup) -> str:
+cpdef str apply(str input_str, ReplacementGroup replacement_group):
+    cdef unsigned int n_replacement
+    cdef list output, output_lst
+    cdef str output_str
+
     n_replacement = len(replacement_group)
     output = [''] * (2 * n_replacement + 1)
     output_lst = _transform_sequence(
@@ -17,7 +21,9 @@ def apply(input_str: str, replacement_group: ReplacementGroup) -> str:
     return output_str
 
 
-def inverse(input_str: str, replacement_group: ReplacementGroup) -> ReplacementGroup:
+cpdef ReplacementGroup inverse(str input_str, ReplacementGroup replacement_group):
+    cdef ReplacementGroup inverse_replacement_group
+
     inverse_replacement_group = _gen_inverse_replacement_group(
         input_seq=input_str,
         replacement_group=replacement_group,
