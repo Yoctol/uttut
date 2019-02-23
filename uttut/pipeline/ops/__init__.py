@@ -8,6 +8,7 @@ from .lowercase import Lowercase
 from .add_whitespace_around_cjk import AddWhitespaceAroundCJK
 from .add_whitespace_around_punctuation import AddWhitespaceAroundPunctuation
 from .strip_accent_token import StripAccentToken
+from .punctuation_except_endpoint_to_whitespace import PunctuationExceptEndpointToWhitespace
 
 from .char_tokenizer import CharTokenizer
 from .eng_tokenizer import EngTokenizer
@@ -35,6 +36,7 @@ op_factory.register(Lowercase.__name__, Lowercase)
 op_factory.register(AddWhitespaceAroundCJK.__name__, AddWhitespaceAroundCJK)
 op_factory.register(AddWhitespaceAroundPunctuation.__name__, AddWhitespaceAroundPunctuation)
 op_factory.register(StripAccentToken.__name__, StripAccentToken)
+op_factory.register(PunctuationExceptEndpointToWhitespace.__name__, PunctuationExceptEndpointToWhitespace)
 
 # string -> tokens
 op_factory.register(CharTokenizer.__name__, CharTokenizer)
