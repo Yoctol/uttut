@@ -27,15 +27,15 @@ class Token2Index(Operator):
 
     E.g.
     >>> from uttut.pipeline.ops.token_to_index import Token2Index
-    >>> op = Token2Index({'I': 1, 'like': 2, 'apples': 3})
-    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples'])
-    >>> output_labels = label_aligner.transform([3, 4, 5])
+    >>> op = Token2Index({'unk': 0, 'I': 1, 'like': 2, 'apples': 3}, 'unk')
+    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples', 'oh'])
+    >>> output_labels = label_aligner.transform([3, 4, 5, 6])
     >>> output_seq
-    [1, 2, 3]
+    [1, 2, 3, 0]
     >>> output_labels
-    [3, 4, 5]
+    [3, 4, 5, 6]
     >>> label_aligner.inverse_transform(output_labels)
-    [3, 4, 5]
+    [3, 4, 5, 6]
 
     """
 

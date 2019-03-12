@@ -13,19 +13,21 @@ class Token2IndexwithHash(Operator):
     """
     Map token (str) to index (int) given token2index dictionary
 
-    Note that token2index should have UNK_TOKEN (<unk>).
+    If the input token is not in dictionary, return hash(token).
 
     E.g.
-    >>> from uttut.pipeline.ops.token_to_index import Token2Index
-    >>> op = Token2Index({'I': 1, 'like': 2, 'apples': 3})
-    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples'])
-    >>> output_labels = label_aligner.transform([3, 4, 5])
+    >>> from uttut.pipeline.ops.token_to_index_with_hash import Token2IndexwithHash
+    >>> from uttut.pipeline.ops.utils.consistent_hash import consistent_hash
+    >>> token2index = {'oh': 0, 'I': 1, 'like': 2, 'apples': 3}
+    >>> op = Token2IndexwithHash(token2index)
+    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples', '!'])
+    >>> output_labels = label_aligner.transform([3, 4, 5, 6])
     >>> output_seq
-    [1, 2, 3]
+    [1, 2, 3, consistent_hash('!', len(token2index))]
     >>> output_labels
-    [3, 4, 5]
+    [3, 4, 5, 6]
     >>> label_aligner.inverse_transform(output_labels)
-    [3, 4, 5]
+    [3, 4, 5, 6]
 
     """
 
