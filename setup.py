@@ -35,6 +35,15 @@ if use_cython:
         Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.pyx']),
         Extension('uttut.pipeline.edit.label_propagation',
                   ['uttut/pipeline/edit/label_propagation.pyx']),
+        Extension(
+            name='uttut.pipeline.ops.utils.consistent_hash',
+            sources=[
+                'uttut/pipeline/ops/utils/consistent_hash.pyx',
+                'uttut/pipeline/ops/utils/MurmurHash3.cpp',
+            ],
+            extra_compile_args=['-O3'],
+            language='c++',
+        ),
     ]
     ext_modules = cythonize(
         ext_modules,
@@ -51,14 +60,17 @@ else:
         Extension('uttut.elements', ['uttut/elements.c']),
         Extension('uttut.expand_by_entities', ['uttut/expand_by_entities.c']),
         Extension('uttut.toolkits.get_kth_combination', ['uttut/toolkits/get_kth_combination.c']),
-        Extension('uttut.toolkits.partition_by_entities', [
-                  'uttut/toolkits/partition_by_entities.c']),
+        Extension('uttut.toolkits.partition_by_entities',
+                  ['uttut/toolkits/partition_by_entities.c']),
         Extension('uttut.pipeline.edit.replacement', ['uttut/pipeline/edit/replacement.c']),
         Extension('uttut.pipeline.edit.span', ['uttut/pipeline/edit/span.c']),
         Extension('uttut.pipeline.edit.utils', ['uttut/pipeline/edit/utils.c']),
         Extension('uttut.pipeline.edit.validation', ['uttut/pipeline/edit/validation.c']),
         Extension('uttut.pipeline.edit.label_propagation',
                   ['uttut/pipeline/edit/label_propagation.c']),
+        Extension('uttut.pipeline.ops.utils.consistent_hash',
+                  ['uttut/pipeline/ops/utils/consistent_hash.cpp',
+                   'uttut/pipeline/ops/utils/MurmurHash3.cpp']),
     ]
 
 

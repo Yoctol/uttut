@@ -49,7 +49,7 @@ clean:
 .PHONY: clean-c
 clean-c:
 	rm -f `find uttut -name *.c`
-	rm -f `find uttut -name *.cpp`
+	rm -f `find uttut -name '*.cpp' ! -name 'MurmurHash3.cpp'`
 
 .PHONY: docs
 docs:
