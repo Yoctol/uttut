@@ -19,6 +19,7 @@ from .add_sos_eos import AddSosEos
 from .pad import Pad
 from .token_to_index import Token2Index
 from .span_subwords import SpanSubwords
+from .token_to_index_with_hash import Token2IndexwithHash
 
 from .factory import OperatorFactory
 
@@ -49,3 +50,4 @@ op_factory.register(AddSosEos.__name__, AddSosEos)
 op_factory.register(Pad.__name__, Pad)
 op_factory.register(Token2Index.__name__, Token2Index)
 op_factory.register(SpanSubwords.__name__, SpanSubwords)
+op_factory.register(Token2IndexwithHash.__name__, Token2IndexwithHash)

@@ -1,37 +1,29 @@
 from typing import List, Tuple, Dict
 
-from .base import Operator, LabelAligner
-from .tokens import UNK_TOKEN
+from .base import Operator
 
 from ..edit import lst2lst
 from ..edit.replacement import ReplacementGroup
+from .utils.consistent_hash import consistent_hash
+from .token_to_index import validate_continuity, Token2IndexAligner
 
 
-def validate_continuity(token2index: Dict[str, int]):
-    indices = set([index for _, index in token2index.items()])
-    if len(token2index) != len(indices):
-        raise ValueError("duplicated index")
-
-    start_from_zero = min(indices) == 0
-    end_at_size = max(indices) == len(token2index) - 1
-    if not (start_from_zero and end_at_size):
-        raise ValueError("indices are not continuous.")
-
-
-class Token2Index(Operator):
+class Token2IndexwithHash(Operator):
 
     """
     Map token (str) to index (int) given token2index dictionary
 
-    Note that token2index should have UNK_TOKEN (<unk>).
+    If the input token is not in dictionary, return hash(token).
 
     E.g.
-    >>> from uttut.pipeline.ops.token_to_index import Token2Index
-    >>> op = Token2Index({'unk': 0, 'I': 1, 'like': 2, 'apples': 3}, 'unk')
-    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples', 'oh'])
+    >>> from uttut.pipeline.ops.token_to_index_with_hash import Token2IndexwithHash
+    >>> from uttut.pipeline.ops.utils.consistent_hash import consistent_hash
+    >>> token2index = {'oh': 0, 'I': 1, 'like': 2, 'apples': 3}
+    >>> op = Token2IndexwithHash(token2index)
+    >>> output_seq, label_aligner = op.transform(['I', 'like', 'apples', '!'])
     >>> output_labels = label_aligner.transform([3, 4, 5, 6])
     >>> output_seq
-    [1, 2, 3, 0]
+    [1, 2, 3, consistent_hash('!', len(token2index))]
     >>> output_labels
     [3, 4, 5, 6]
     >>> label_aligner.inverse_transform(output_labels)
@@ -39,21 +31,17 @@ class Token2Index(Operator):
 
     """
 
-    def __init__(self, token2index: Dict[str, int], unk_token: str = UNK_TOKEN):
+    def __init__(self, token2index: Dict[str, int]):
         super().__init__(input_type=list, output_type=list)
-        self._validate_token2index(token2index, unk_token)
+        self._validate_token2index(token2index)
         self.token2index = token2index
-        self.unk_token = unk_token
 
     def __eq__(self, other):
         same_token2index = self.token2index == other.token2index
-        same_unk_token = self.unk_token == other.unk_token
-        return same_token2index and same_unk_token and super().__eq__(other)
+        return same_token2index and super().__eq__(other)
 
-    def _validate_token2index(self, token2index: Dict[str, int], unk_token: str):
+    def _validate_token2index(self, token2index: Dict[str, int]):
         validate_continuity(token2index)
-        if unk_token not in token2index:
-            raise KeyError(f"token2index should have token {unk_token}")
 
     def _transform(self, input_sequence: List[str]) -> Tuple[List[int], 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
@@ -73,21 +61,12 @@ class Token2Index(Operator):
             if token in self.token2index:
                 index = self.token2index[token]
             else:
-                index = self.token2index[self.unk_token]
+                index = consistent_hash(token, len(self.token2index))
             replacement_group.add(
                 start=idx,
                 end=idx + 1,
                 new_value=[index],
-                annotation='token2index',
+                annotation='token2indexwithhash',
             )
         replacement_group.done()
         return replacement_group
-
-
-class Token2IndexAligner(LabelAligner):
-
-    def _transform(self, labels: List[int]):
-        return labels
-
-    def _inverse_transform(self, labels):
-        return labels
