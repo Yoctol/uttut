@@ -11,15 +11,15 @@ class CustomWordTokenizer(Tokenizer):
 
     E.g.
     >>> from uttut.pipeline.ops.custom_word_tokenizer import CustomWordTokenizer
-    >>> op = CustomWordTokenizer()
-    >>> output_seq, label_aligner = op.transform("a b")
-    >>> output_labels = label_aligner.transform([1, 2, 3])
+    >>> op = CustomWordTokenizer(['珍奶', '珍奶去冰', '去冰'])
+    >>> output_seq, label_aligner = op.transform("一杯珍奶去冰")
+    >>> output_labels = label_aligner.transform([1, 2, 3, 3, 3, 0])
     >>> output_seq
-    ["a", "b"]
+    ["一", "杯", "珍奶去冰"]
     >>> output_labels
-    [1, 3]
+    [1, 2, 3]
     >>> label_aligner.inverse_transform(output_labels)
-    [1, 0, 3]
+    [1, 2, 3, 3, 3, 3]
 
     """
 
