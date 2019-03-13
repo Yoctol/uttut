@@ -1,8 +1,20 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Tuple, Any
 
+from .factory import OperatorFactory
 
-class Operator(ABC):
+
+class OperatorMeta(ABCMeta):
+
+    op_factory = OperatorFactory()
+
+    def __new__(meta, cls_name, super_classes, attr_dict):
+        cls = super().__new__(meta, cls_name, super_classes, attr_dict)
+        meta.op_factory.register(cls_name, cls)
+        return cls
+
+
+class Operator(metaclass=OperatorMeta):
 
     """Base class for Operators
 
