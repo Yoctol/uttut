@@ -5,7 +5,7 @@ from collections import Counter
 from uttut import ENTITY_LABEL
 from ..label_transducer import get_most_common_except_not_entity
 from ..tokens import FLOAT_TOKEN_WITH_SPACE
-from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
+from .base import PatternRecognizer, PatternRecognizerAligner
 
 
 class FloatTokenWithSpace(PatternRecognizer):

@@ -4,7 +4,7 @@ import re
 
 from ..label_transducer import get_most_common, get_most_common_except_not_entity
 from ..tokens import INT_TOKEN
-from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
+from .base import PatternRecognizer, PatternRecognizerAligner
 
 
 class IntToken(PatternRecognizer):

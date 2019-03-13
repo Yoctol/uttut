@@ -1,7 +1,7 @@
 from typing import List
 
 from ..label_transducer import get_most_common_except_not_entity
-from .tokenizer import Tokenizer, TokenizerAligner
+from .base import Tokenizer, TokenizerAligner
 
 
 class WhiteSpaceTokenizer(Tokenizer):
