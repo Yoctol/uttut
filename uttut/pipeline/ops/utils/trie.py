@@ -13,14 +13,16 @@ class TrieNode:
     def insert_child(self, key):
         self._children[key] = TrieNode()
 
-    def set_word(self, word):
+    @property
+    def word(self):
+        return self._word
+
+    @word.setter
+    def word(self, word):
         if not self._word:
             self._word = word
         else:
-            raise ValueError('Word exists')
-
-    def get_word(self):
-        return self._word
+            raise AttributeError('Word can only be set once')
 
 
 class Trie:
@@ -37,7 +39,7 @@ class Trie:
             if not current.has_child(char):
                 return False
             current = current.get_child(char)
-        if current.get_word():
+        if current.word:
             return True
         return False
 
@@ -47,7 +49,7 @@ class Trie:
             if not current.has_child(char):
                 current.insert_child(char)
             current = current.get_child(char)
-        current.set_word(word)
+        current.word = word
 
     def match_prefix(self, word: str, shortest: bool = False):
         current = self.root
@@ -56,8 +58,8 @@ class Trie:
             if not current.has_child(char):
                 return longest_word
             current = current.get_child(char)
-            if current.get_word():
-                longest_word = current.get_word()
+            if current.word:
+                longest_word = current.word
                 if shortest:
                     return longest_word
         return longest_word
