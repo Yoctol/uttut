@@ -1,6 +1,6 @@
 from typing import List, Tuple, Dict
 
-from .base import Operator, LabelAligner
+from .base import Operator, NullLabelAligner
 from .tokens import UNK_TOKEN
 
 from ..edit import lst2lst
@@ -84,10 +84,4 @@ class Token2Index(Operator):
         return replacement_group
 
 
-class Token2IndexAligner(LabelAligner):
-
-    def _transform(self, labels: List[int]):
-        return labels
-
-    def _inverse_transform(self, labels):
-        return labels
+Token2IndexAligner = NullLabelAligner

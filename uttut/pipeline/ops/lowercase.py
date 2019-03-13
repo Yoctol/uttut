@@ -1,8 +1,8 @@
-from typing import List, Tuple
+from typing import Tuple
 
 import re
 
-from .base import Operator, LabelAligner
+from .base import Operator, NullLabelAligner
 from ..edit.replacement import ReplacementGroup
 from ..edit import str2str
 
@@ -63,10 +63,4 @@ class Lowercase(Operator):
         return replacement_group
 
 
-class LowercaseAligner(LabelAligner):
-
-    def _transform(self, labels: List[int]) -> List[int]:
-        return labels
-
-    def _inverse_transform(self, labels: List[int]) -> List[int]:
-        return labels
+LowercaseAligner = NullLabelAligner
