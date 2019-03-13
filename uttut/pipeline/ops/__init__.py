@@ -10,11 +10,13 @@ from .add_whitespace_around_punctuation import AddWhitespaceAroundPunctuation
 from .strip_accent_token import StripAccentToken
 from .punctuation_except_endpoint_to_whitespace import PunctuationExceptEndpointToWhitespace
 
-from .char_tokenizer import CharTokenizer
-from .eng_tokenizer import EngTokenizer
-from .zh_char_tokenizer import ZhCharTokenizer
-from .whitespace_tokenizer import WhiteSpaceTokenizer
-from .custom_word_tokenizer import CustomWordTokenizer
+from .tokenizers import (
+    CharTokenizer,
+    EngTokenizer,
+    ZhCharTokenizer,
+    WhiteSpaceTokenizer,
+    CustomWordTokenizer,
+)
 
 from .add_sos_eos import AddSosEos
 from .pad import Pad
