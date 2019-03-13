@@ -19,5 +19,3 @@ def test_match_prefix():
     assert '珍奶' == trie.match_prefix('珍奶去冰', shortest=True)
     assert '珍奶去冰' == trie.match_prefix('珍奶去冰謝謝')
     assert trie.match_prefix('我想要珍奶去冰') is None
-    assert '珍奶去冰' == trie.match_prefix('我想要珍奶去冰', start_idx=3)
-    assert '珍奶' == trie.match_prefix('我想要珍奶去冰', shortest=True, start_idx=3)

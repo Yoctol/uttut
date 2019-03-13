@@ -44,9 +44,8 @@ class CustomWordTokenizer(Tokenizer):
         tokens = []
         while start < len(input_str):
             match_result = self._trie.match_prefix(
-                input_str,
+                input_str[start:],
                 shortest=self._shortest,
-                start_idx=start,
             )
             if match_result is None:
                 token = input_str[start: start + 1]

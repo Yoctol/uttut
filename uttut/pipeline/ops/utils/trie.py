@@ -48,15 +48,13 @@ class Trie:
             current = current.get_child(char)
         current.set_word(word)
 
-    def match_prefix(self, word: str, shortest: bool = False, start_idx: int = 0):
+    def match_prefix(self, word: str, shortest: bool = False):
         current = self.root
         longest_word = None
-        for idx in range(start_idx, len(word)):
-            char = word[idx]
+        for char in word:
             if not current.has_child(char):
                 return longest_word
             current = current.get_child(char)
-
             if current.get_word():
                 longest_word = current.get_word()
                 if shortest:
