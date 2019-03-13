@@ -14,6 +14,7 @@ from .char_tokenizer import CharTokenizer
 from .eng_tokenizer import EngTokenizer
 from .zh_char_tokenizer import ZhCharTokenizer
 from .whitespace_tokenizer import WhiteSpaceTokenizer
+from .custom_word_tokenizer import CustomWordTokenizer
 
 from .add_sos_eos import AddSosEos
 from .pad import Pad
@@ -44,6 +45,7 @@ op_factory.register(CharTokenizer.__name__, CharTokenizer)
 op_factory.register(EngTokenizer.__name__, EngTokenizer)
 op_factory.register(ZhCharTokenizer.__name__, ZhCharTokenizer)
 op_factory.register(WhiteSpaceTokenizer.__name__, WhiteSpaceTokenizer)
+op_factory.register(CustomWordTokenizer.__name__, CustomWordTokenizer)
 
 # tokens -> tokens
 op_factory.register(AddSosEos.__name__, AddSosEos)
