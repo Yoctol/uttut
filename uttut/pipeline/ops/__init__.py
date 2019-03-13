@@ -22,34 +22,7 @@ from .token_to_index import Token2Index
 from .span_subwords import SpanSubwords
 from .token_to_index_with_hash import Token2IndexwithHash
 
-from .factory import OperatorFactory
+from .base import OperatorMeta
 
 
-op_factory = OperatorFactory()
-
-# string -> string
-op_factory.register(IntToken.__name__, IntToken)
-op_factory.register(FloatToken.__name__, FloatToken)
-op_factory.register(IntTokenWithSpace.__name__, IntTokenWithSpace)
-op_factory.register(FloatTokenWithSpace.__name__, FloatTokenWithSpace)
-op_factory.register(MergeWhiteSpaceCharacters.__name__, MergeWhiteSpaceCharacters)
-op_factory.register(StripWhiteSpaceCharacters.__name__, StripWhiteSpaceCharacters)
-op_factory.register(Lowercase.__name__, Lowercase)
-op_factory.register(AddWhitespaceAroundCJK.__name__, AddWhitespaceAroundCJK)
-op_factory.register(AddWhitespaceAroundPunctuation.__name__, AddWhitespaceAroundPunctuation)
-op_factory.register(StripAccentToken.__name__, StripAccentToken)
-op_factory.register(PunctuationExceptEndpointToWhitespace.__name__, PunctuationExceptEndpointToWhitespace)
-
-# string -> tokens
-op_factory.register(CharTokenizer.__name__, CharTokenizer)
-op_factory.register(EngTokenizer.__name__, EngTokenizer)
-op_factory.register(ZhCharTokenizer.__name__, ZhCharTokenizer)
-op_factory.register(WhiteSpaceTokenizer.__name__, WhiteSpaceTokenizer)
-op_factory.register(CustomWordTokenizer.__name__, CustomWordTokenizer)
-
-# tokens -> tokens
-op_factory.register(AddSosEos.__name__, AddSosEos)
-op_factory.register(Pad.__name__, Pad)
-op_factory.register(Token2Index.__name__, Token2Index)
-op_factory.register(SpanSubwords.__name__, SpanSubwords)
-op_factory.register(Token2IndexwithHash.__name__, Token2IndexwithHash)
+op_factory = OperatorMeta.op_factory
