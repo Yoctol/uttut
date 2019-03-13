@@ -3,10 +3,10 @@ from typing import List
 import re
 from collections import Counter
 
-from .tokens import INT_TOKEN_WITH_SPACE
-from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
-from .label_transducer import get_most_common_except_not_entity
 from uttut import ENTITY_LABEL
+from ..label_transducer import get_most_common_except_not_entity
+from ..tokens import INT_TOKEN_WITH_SPACE
+from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
 
 
 class IntTokenWithSpace(PatternRecognizer):

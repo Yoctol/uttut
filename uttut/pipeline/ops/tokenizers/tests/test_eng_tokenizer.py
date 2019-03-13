@@ -1,7 +1,7 @@
 import pytest
 
-from ..eng_tokenizer import EngTokenizer
 from ...tests.common_tests import common_test, update_locals
+from ..eng_tokenizer import EngTokenizer
 
 
 @pytest.fixture

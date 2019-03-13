@@ -2,8 +2,8 @@ from typing import List
 
 import re
 
+from ..label_transducer import get_most_common
 from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
-from .label_transducer import get_most_common
 
 
 class MergeWhiteSpaceCharacters(PatternRecognizer):

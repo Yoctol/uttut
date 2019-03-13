@@ -1,7 +1,7 @@
 import pytest
 
-from ..char_tokenizer import CharTokenizer
 from ...tests.common_tests import common_test, update_locals
+from ..char_tokenizer import CharTokenizer
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 import pytest
 
-from ..custom_word_tokenizer import CustomWordTokenizer
 from ...tests.common_tests import common_test, update_locals
+from ..custom_word_tokenizer import CustomWordTokenizer
 
 
 @pytest.fixture

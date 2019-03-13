@@ -1,7 +1,7 @@
 import pytest
 
-from ..zh_char_tokenizer import ZhCharTokenizer
 from ...tests.common_tests import common_test, update_locals
+from ..zh_char_tokenizer import ZhCharTokenizer
 
 
 @pytest.fixture

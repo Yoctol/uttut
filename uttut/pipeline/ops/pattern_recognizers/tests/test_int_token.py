@@ -1,7 +1,7 @@
 import pytest
 
+from ...tests.common_tests import common_test, update_locals
 from ..int_token import IntToken
-from .common_tests import common_test, update_locals
 
 
 @pytest.fixture
