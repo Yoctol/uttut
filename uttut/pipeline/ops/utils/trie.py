@@ -5,9 +5,7 @@ class TrieNode:
         self._word = None
 
     def has_child(self, key):
-        if key in self._children:
-            return True
-        return False
+        return key in self._children
 
     def get_child(self, key):
         return self._children[key]
@@ -16,7 +14,10 @@ class TrieNode:
         self._children[key] = TrieNode()
 
     def set_word(self, word):
-        self._word = word
+        if not self._word:
+            self._word = word
+        else:
+            raise ValueError('Word exists')
 
     def get_word(self):
         return self._word
