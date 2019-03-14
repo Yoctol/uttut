@@ -1,13 +1,13 @@
 from typing import List, Tuple
 
-from ..edit import str2str, str2lst
-from ..edit.label_propagation import (
+from uttut.pipeline.edit import str2str, str2lst
+from uttut.pipeline.edit.label_propagation import (
     propagate_by_replacement_group,
     reduce_by_span_group,
     expand_by_span_group,
 )
 
-from .base import Operator, LabelAligner
+from ..base import Operator, LabelAligner
 
 
 class Tokenizer(Operator):

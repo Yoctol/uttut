@@ -1,6 +1,5 @@
 from typing import List
 
-
 from .eng_tokenizer import EngTokenizer
 
 

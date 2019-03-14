@@ -147,3 +147,12 @@ class LabelAligner(ABC):
     @abstractmethod
     def _inverse_transform(self, labels: List[int]) -> List[int]:
         pass
+
+
+class NullLabelAligner(LabelAligner):
+
+    def _transform(self, labels: List[int]):
+        return labels
+
+    def _inverse_transform(self, labels):
+        return labels

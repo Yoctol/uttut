@@ -1,8 +1,8 @@
 import re
 
-from .tokens import FLOAT_TOKEN
+from ..tokens import FLOAT_TOKEN
 from .int_token import IntTokenAligner
-from .pattern_to_token import PatternRecognizer
+from .base import PatternRecognizer
 
 
 class FloatToken(PatternRecognizer):

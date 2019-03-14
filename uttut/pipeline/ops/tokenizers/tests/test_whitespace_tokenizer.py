@@ -1,7 +1,7 @@
 import pytest
 
+from ...tests.common_tests import common_test, update_locals
 from ..whitespace_tokenizer import WhiteSpaceTokenizer
-from .common_tests import common_test, update_locals
 
 
 @pytest.fixture

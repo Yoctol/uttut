@@ -2,8 +2,8 @@ from typing import List
 
 import re
 
-from .pattern_to_token import PatternRecognizer, PatternRecognizerAligner
-from .label_transducer import get_not_entity
+from ..label_transducer import get_not_entity
+from .base import PatternRecognizer, PatternRecognizerAligner
 
 
 class StripWhiteSpaceCharacters(PatternRecognizer):

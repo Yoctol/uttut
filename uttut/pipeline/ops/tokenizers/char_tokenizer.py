@@ -1,6 +1,6 @@
 from typing import List
 
-from .tokenizer import Tokenizer, TokenizerAligner
+from .base import Tokenizer, TokenizerAligner
 
 
 class CharTokenizer(Tokenizer):

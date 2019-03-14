@@ -1,9 +1,9 @@
 from typing import List, Tuple, Pattern
 
-from .base import Operator, LabelAligner
-from ..edit.replacement import ReplacementGroup
-from ..edit import str2str
-from ..edit.label_propagation import propagate_by_replacement_group
+from uttut.pipeline.edit import str2str
+from uttut.pipeline.edit.label_propagation import propagate_by_replacement_group
+from uttut.pipeline.edit.replacement import ReplacementGroup
+from ..base import Operator, LabelAligner
 
 
 class PatternRecognizer(Operator):

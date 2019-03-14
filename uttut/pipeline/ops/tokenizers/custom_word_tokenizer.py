@@ -1,8 +1,8 @@
 from typing import List
 
-from .tokenizer import Tokenizer, TokenizerAligner
-from .label_transducer import get_most_common_except_not_entity
-from .utils.trie import Trie
+from ..label_transducer import get_most_common_except_not_entity
+from ..utils.trie import Trie
+from .base import Tokenizer, TokenizerAligner
 
 
 class CustomWordTokenizer(Tokenizer):
