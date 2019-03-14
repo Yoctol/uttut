@@ -1,70 +1,68 @@
 import pytest
 
-from ...tests.common_tests import common_test, update_locals
+from ...tests.common_tests import OperatorTestTemplate, ParamTuple
 from ..custom_word_tokenizer import CustomWordTokenizer
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def user_words():
-    user_words = ['珍奶', '珍奶去冰', '去冰']
-    return user_words
+    return ['珍奶', '珍奶去冰', '去冰']
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def op(user_words):
-    yield CustomWordTokenizer(user_words)
+    return CustomWordTokenizer(user_words)
 
 
-test_cases = [
-    pytest.param(
-        "珍奶",
-        [1, 1],
-        ["珍奶"],
-        [1],
-        id='exactly fit',
-    ),
-    pytest.param(
-        "去冰珍奶謝謝",
-        [1, 1, 2, 2, 3, 4],
-        ["去冰", "珍奶", "謝", "謝"],
-        [1, 2, 3, 4],
-        id='multiple',
-    ),
-    pytest.param(
-        "我想要珍奶去冰",
-        [1, 2, 3, 4, 4, 4, 4],
-        ["我", "想", "要", "珍奶去冰"],
-        [1, 2, 3, 4],
-        id='fit end',
-    ),
-    pytest.param(
-        "GB亂入",
-        [1, 2, 3, 4],
-        ["G", "B", "亂", "入"],
-        [1, 2, 3, 4],
-        id='not fit',
-    ),
-]
+class TestCustomWordTokenizer(OperatorTestTemplate):
 
+    params = [
+        ParamTuple(
+            "珍奶",
+            [1, 1],
+            ["珍奶"],
+            [1],
+            id='exactly fit',
+        ),
+        ParamTuple(
+            "去冰珍奶謝謝",
+            [1, 1, 2, 2, 3, 4],
+            ["去冰", "珍奶", "謝", "謝"],
+            [1, 2, 3, 4],
+            id='multiple',
+        ),
+        ParamTuple(
+            "我想要珍奶去冰",
+            [1, 2, 3, 4, 4, 4, 4],
+            ["我", "想", "要", "珍奶去冰"],
+            [1, 2, 3, 4],
+            id='fit end',
+        ),
+        ParamTuple(
+            "GB亂入",
+            [1, 2, 3, 4],
+            ["G", "B", "亂", "入"],
+            [1, 2, 3, 4],
+            id='not fit',
+        ),
+    ]
 
-funcs = common_test(test_cases)
-update_locals(locals(), funcs)
+    def op(self):
+        pass
 
+    def test_equal(self, op, user_words):
+        assert CustomWordTokenizer(user_words) == op
 
-def test_equal(op, user_words):
-    assert CustomWordTokenizer(user_words) == op
-
-
-@pytest.mark.parametrize(  # type: ignore
-    "user_words",
-    [
-        pytest.param([], id='empty'),
-        pytest.param(None, id='none'),
-    ],
-)
-def test_invalid_init(user_words):
-    with pytest.raises(ValueError):
-        CustomWordTokenizer(user_words)
+    @pytest.mark.parametrize(  # type: ignore
+        "user_words",
+        [
+            pytest.param([], id='empty'),
+            pytest.param(None, id='none'),
+        ],
+    )
+    def test_invalid_init(self, user_words):
+        with pytest.raises(ValueError):
+            CustomWordTokenizer(user_words)
 
 
 @pytest.mark.parametrize(

@@ -1,28 +1,24 @@
 import pytest
 
-from ...tests.common_tests import common_test, update_locals
+from ...tests.common_tests import OperatorTestTemplate, ParamTuple
 from ..char_tokenizer import CharTokenizer
 
 
-@pytest.fixture
-def op():
-    yield CharTokenizer()
+class TestCharTokenizer(OperatorTestTemplate):
 
+    params = [
+        ParamTuple(
+            "GB亂入",
+            [1, 1, 2, 2],
+            ["G", "B", "亂", "入"],
+            [1, 1, 2, 2],
+            id='zh',
+        ),
+    ]
 
-test_cases = [
-    pytest.param(
-        "GB亂入",
-        [1, 1, 2, 2],
-        ["G", "B", "亂", "入"],
-        [1, 1, 2, 2],
-        id='zh',
-    ),
-]
+    @pytest.fixture(scope='class')
+    def op(self):
+        return CharTokenizer()
 
-
-funcs = common_test(test_cases)
-update_locals(locals(), funcs)
-
-
-def test_equal(op):
-    assert CharTokenizer() == op
+    def test_equal(self, op):
+        assert CharTokenizer() == op

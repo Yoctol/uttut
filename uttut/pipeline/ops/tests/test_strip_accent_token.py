@@ -1,28 +1,24 @@
 import pytest
 
 from ..strip_accent_token import StripAccentToken
-from .common_tests import common_test, update_locals
+from .common_tests import OperatorTestTemplate, ParamTuple
 
 
-@pytest.fixture
-def op():
-    yield StripAccentToken()
+class TestStripAccentToken(OperatorTestTemplate):
 
+    params = [
+        ParamTuple(  # ref: Bert tokenization_test.py#L64
+            u"H\u00E9llo",
+            [1, 2, 3, 4, 5],
+            "Hello",
+            [1, 2, 3, 4, 5],
+            id='eng',
+        ),
+    ]
 
-test_cases = [
-    pytest.param(  # ref: Bert tokenization_test.py#L64
-        u"H\u00E9llo",
-        [1, 2, 3, 4, 5],
-        "Hello",
-        [1, 2, 3, 4, 5],
-        id='eng',
-    ),
-]
+    @pytest.fixture(scope='class')
+    def op(self):
+        return StripAccentToken()
 
-
-funcs = common_test(test_cases)
-update_locals(locals(), funcs)
-
-
-def test_equal(op):
-    assert op == StripAccentToken()
+    def test_equal(self, op):
+        assert op == StripAccentToken()

@@ -1,52 +1,52 @@
 import pytest
 
 from ..punctuation_except_endpoint_to_whitespace import PunctuationExceptEndpointToWhitespace
-from .common_tests import common_test, update_locals
+from .common_tests import OperatorTestTemplate, ParamTuple
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def op():
-    yield PunctuationExceptEndpointToWhitespace()
+    return PunctuationExceptEndpointToWhitespace()
 
 
-test_cases = [
-    pytest.param(
-        "0.3",
-        [1, 2, 3],
-        "0.3",
-        [1, 2, 3],
-        id='float',
-    ),
-    pytest.param(
-        "O.O",
-        [2, 3, 4],
-        "O.O",
-        [2, 3, 4],
-        id='emoji',
-    ),
-    pytest.param(
-        "abc def",
-        [2, 3, 4, 5, 6, 7, 8],
-        "abc def",
-        [2, 3, 4, 5, 6, 7, 8],
-        id='all english',
-    ),
-    pytest.param(
-        "隼興亂入",
-        [2, 3, 4, 5],
-        "隼興亂入",
-        [2, 3, 4, 5],
-        id='all chinese',
-    ),
-]
+class TestPunctuationExceptEndpointToWhitespace(OperatorTestTemplate):
 
+    params = [
+        ParamTuple(
+            "0.3",
+            [1, 2, 3],
+            "0.3",
+            [1, 2, 3],
+            id='float',
+        ),
+        ParamTuple(
+            "O.O",
+            [2, 3, 4],
+            "O.O",
+            [2, 3, 4],
+            id='emoji',
+        ),
+        ParamTuple(
+            "abc def",
+            [2, 3, 4, 5, 6, 7, 8],
+            "abc def",
+            [2, 3, 4, 5, 6, 7, 8],
+            id='all english',
+        ),
+        ParamTuple(
+            "隼興亂入",
+            [2, 3, 4, 5],
+            "隼興亂入",
+            [2, 3, 4, 5],
+            id='all chinese',
+        ),
+    ]
 
-funcs = common_test(test_cases)
-update_locals(locals(), funcs)
+    def op(self):
+        pass
 
-
-def test_equal(op):
-    assert op == PunctuationExceptEndpointToWhitespace()
+    def test_equal(self, op):
+        assert op == PunctuationExceptEndpointToWhitespace()
 
 
 @pytest.mark.parametrize(
@@ -72,8 +72,10 @@ def test_equal(op):
     ],
 )
 def test_invertible_cases(
-        input_str, input_labels,
-        expected_output_seq, expected_output_labels,
+        input_str,
+        input_labels,
+        expected_output_seq,
+        expected_output_labels,
         expected_realigned_labels,
         op,
     ):

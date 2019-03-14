@@ -22,6 +22,9 @@ class OperatorTestTemplate(abc.ABC):
         # intersection
         needed_args = list(set(self.allowed_fixtures) & set(metafunc.fixturenames))
 
+        if not needed_args:
+            return
+
         def choose_needed_param(param):
             return [getattr(param, key) for key in needed_args]
 
@@ -53,3 +56,6 @@ class OperatorTestTemplate(abc.ABC):
         _, label_aligner = op.transform(input_sequence)
         output = label_aligner.inverse_transform(output_labels)
         assert input_labels == output
+
+
+ParamTuple = OperatorTestTemplate.ParamTuple

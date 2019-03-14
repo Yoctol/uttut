@@ -1,49 +1,53 @@
 import pytest
 
-from ...tests.common_tests import common_test, update_locals
+from ...tests.common_tests import OperatorTestTemplate, ParamTuple
 from ..eng_tokenizer import EngTokenizer
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def op():
     return EngTokenizer()
 
 
-test_cases = [
-    pytest.param(
-        "How's it going today, Mr.Smith?",
-        [1, 1, 1, 1, 1, 0, 2, 2, 0, 3, 3, 3, 3, 3, 0, 4, 4, 4, 4, 4, 5, 0,
-         6, 6, 6, 6, 6, 6, 6, 6, 7],
-        ['How', "'", 's', 'it', 'going', 'today', ',', 'Mr', '.', 'Smith', '?'],
-        [1, 1, 1, 2, 3, 4, 5, 6, 6, 6, 7],
-        id='the same as nltk with punct',
-    ),
-    pytest.param(
-        "a \t \t \nb",
-        [1, 0, 0, 0, 0, 0, 0, 2],
-        ["a", "b"],
-        [1, 2],
-        id='split effect',
-    ),
-    pytest.param(
-        "GB亂入",
-        [2, 2, 2, 2],
-        ['GB亂入'],
-        [2],
-        id='eng + zh',
-    ),
-    pytest.param(
-        "",
-        [],
-        [],
-        [],
-        id='empty string',
-    ),
-]
+class TestEngTokenizer(OperatorTestTemplate):
 
+    params = [
+        ParamTuple(
+            "How's it going today, Mr.Smith?",
+            [1, 1, 1, 1, 1, 0, 2, 2, 0, 3, 3, 3, 3, 3, 0, 4, 4, 4, 4, 4, 5, 0,
+             6, 6, 6, 6, 6, 6, 6, 6, 7],
+            ['How', "'", 's', 'it', 'going', 'today', ',', 'Mr', '.', 'Smith', '?'],
+            [1, 1, 1, 2, 3, 4, 5, 6, 6, 6, 7],
+            id='the same as nltk with punct',
+        ),
+        ParamTuple(
+            "a \t \t \nb",
+            [1, 0, 0, 0, 0, 0, 0, 2],
+            ["a", "b"],
+            [1, 2],
+            id='split effect',
+        ),
+        ParamTuple(
+            "GB亂入",
+            [2, 2, 2, 2],
+            ['GB亂入'],
+            [2],
+            id='eng + zh',
+        ),
+        ParamTuple(
+            "",
+            [],
+            [],
+            [],
+            id='empty string',
+        ),
+    ]
 
-funcs = common_test(test_cases)
-update_locals(locals(), funcs)
+    def op(self):
+        pass
+
+    def test_equal(self, op):
+        assert EngTokenizer() == op
 
 
 @pytest.mark.parametrize(
@@ -78,7 +82,3 @@ def test_invertible_cases(
 
     realigned_labels = label_aligner.inverse_transform(expected_output_labels)
     assert expected_realigned_labels == realigned_labels
-
-
-def test_equal(op):
-    assert EngTokenizer() == op
