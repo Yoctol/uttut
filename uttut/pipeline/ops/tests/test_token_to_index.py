@@ -54,3 +54,33 @@ class TestToken2Index(OperatorTestTemplate):
         op3 = Token2Index(token2index={'薄餡': 0, UNK_TOKEN: 1})
         assert op1 != op2
         assert op2 != op3
+
+
+@pytest.mark.parametrize(
+    "op, expected_configs",
+    [
+        pytest.param(
+            Token2Index(token2index={'薄餡': 0, '要': 1, '帶': 2, '妹': 3, UNK_TOKEN: 4}),
+            {
+                'token2index': {'薄餡': 0, '要': 1, '帶': 2, '妹': 3, UNK_TOKEN: 4},
+                'unk_token': UNK_TOKEN,
+            },
+            id="default token",
+        ),
+        pytest.param(
+            Token2Index({'薄餡': 0, '要': 1, '帶': 2, '妹': 3, '<pad>': 4}, '<pad>'),
+            {
+                'token2index': {'薄餡': 0, '要': 1, '帶': 2, '妹': 3, '<pad>': 4},
+                'unk_token': '<pad>',
+            },
+            id="input without key",
+        ),
+        pytest.param(
+            Token2Index(unk_token='PAD', token2index={'薄餡': 0, 'PAD': 1}),
+            {'unk_token': 'PAD', 'token2index': {'薄餡': 0, 'PAD': 1}},
+            id="input with key",
+        ),
+    ],
+)
+def test_correct_configs(op, expected_configs):
+    assert op.configs == expected_configs

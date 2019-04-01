@@ -50,3 +50,27 @@ class TestPad(OperatorTestTemplate):
         op3 = Pad(maxlen=10)
         assert op1 != op2
         assert op2 != op3
+
+
+@pytest.mark.parametrize(
+    "op, expected_configs",
+    [
+        pytest.param(
+            Pad(5),
+            {'pad_token': PAD_TOKEN, 'maxlen': 5},
+            id="default token",
+        ),
+        pytest.param(
+            Pad(10, 'PAD'),
+            {'pad_token': 'PAD', 'maxlen': 10},
+            id="input without key",
+        ),
+        pytest.param(
+            Pad(pad_token='PAD', maxlen=1),
+            {'pad_token': 'PAD', 'maxlen': 1},
+            id="input with key",
+        ),
+    ],
+)
+def test_correct_configs(op, expected_configs):
+    assert op.configs == expected_configs
