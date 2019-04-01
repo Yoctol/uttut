@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import List, Tuple, Any
+from inspect import getfullargspec
+from typing import Any, Dict, List, Tuple
 
 from .factory import OperatorFactory
 
@@ -30,6 +31,18 @@ class Operator(ABC):
         cls.assert_has_class_attributes(['_input_type', '_output_type'])
         op_factory.register(cls.__name__, cls)
 
+        original_init = cls.__init__
+
+        def __init__(self, *args, **kwargs):
+            original_init(self, *args, **kwargs)
+            self._configs = dict(zip(
+                getfullargspec(original_init).args[1:],  # omit `self`
+                args,
+            ))
+            self._configs.update(kwargs)
+
+        cls.__init__ = __init__
+
     @classmethod
     def is_abstract(cls):
         if getattr(cls, '__abstractmethods__', None):
@@ -41,6 +54,22 @@ class Operator(ABC):
         for attr_name in attrs:
             assert getattr(cls, attr_name, None) is not None, \
                 f"Concrete class: {cls} should declare `{attr_name}`!"
+
+    @staticmethod
+    def deserialize(params: Dict):
+        cls_name = params['op_name']
+        kwargs = params['op_kwargs']
+        return op_factory[cls_name](**kwargs)
+
+    def serialize(self) -> Dict:
+        return {
+            'op_name': self.__class__.__name__,
+            'op_kwargs': self.configs,
+        }
+
+    @property
+    def configs(self):
+        return self._configs
 
     def __eq__(self, other):
         self_attrs = (self._input_type, self._output_type)
