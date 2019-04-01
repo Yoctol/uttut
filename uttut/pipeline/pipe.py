@@ -7,20 +7,16 @@ from uttut.elements import Datum
 from .ops.base import LabelAligner
 from .step import Step
 from .intermediate import Intermediate
-from .ops import op_factory as default_factory
+from .ops import Operator
 from .utils import unpack_datum
 
 
 class Pipe:
 
-    def __init__(self, operator_factory=None):
+    def __init__(self):
         self._steps = []
         self._step_info = []
         self._checkpoints = {}
-
-        self.operator_factory = operator_factory
-        if self.operator_factory is None:
-            self.operator_factory = default_factory
 
     def add(self, op_name: str, op_kwargs=None, checkpoint=None):
         """Add steps based on the operation name.
@@ -40,7 +36,7 @@ class Pipe:
         if op_kwargs is None:
             op_kwargs = {}
 
-        op = self.operator_factory[op_name](**op_kwargs)
+        op = Operator.deserialize({'op_name': op_name, 'op_kwargs': op_kwargs})
         step = Step(op)
 
         self._validate_steps(step)
@@ -76,11 +72,7 @@ class Pipe:
         )
 
     def __eq__(self, other):
-        same_op_factory = self.operator_factory == other.operator_factory
-        same_steps = self._steps == other._steps
-        same_step_info = self._step_info == other._step_info
-        same_checkpoints = self._checkpoints == other._checkpoints
-        return same_op_factory and same_steps and same_step_info and same_checkpoints
+        return (self._steps, self._checkpoints) == (other._steps, other._checkpoints)
 
     def transform(self, datum: Datum):
         """Process data based on Steps(Ops).
@@ -132,14 +124,14 @@ class Pipe:
 
     def serialize(self) -> str:
         to_serialize = {
-            'steps': self._step_info,
+            'steps': [step.op.serialize() for step in self._steps],
             'checkpoints': self._checkpoints,
         }
         return json.dumps(to_serialize)
 
     @classmethod
-    def deserialize(cls, serialized_str: str, operator_factory=None) -> 'Pipe':
-        pipe = cls(operator_factory)
+    def deserialize(cls, serialized_str: str) -> 'Pipe':
+        pipe = cls()
         pipe_bundle = json.loads(serialized_str)
         # restore steps
         step_infos = pipe_bundle['steps']

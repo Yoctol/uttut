@@ -1,3 +1,5 @@
+from .base import Operator
+
 from .lowercase import Lowercase
 from .add_whitespace_around_cjk import AddWhitespaceAroundCJK
 from .add_whitespace_around_punctuation import AddWhitespaceAroundPunctuation
@@ -25,5 +27,3 @@ from .pad import Pad
 from .token_to_index import Token2Index
 from .span_subwords import SpanSubwords
 from .token_to_index_with_hash import Token2IndexwithHash
-
-from .base import op_factory
