@@ -131,7 +131,7 @@ class Pipe:
 
     def serialize(self) -> str:
         return json.dumps({
-            'steps': [step.op.serialize() for step in self.steps],
+            'steps': [op.serialize() for op in self.steps],
             'checkpoints': self.checkpoints,
         })
 
