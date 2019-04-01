@@ -26,7 +26,4 @@ from .token_to_index import Token2Index
 from .span_subwords import SpanSubwords
 from .token_to_index_with_hash import Token2IndexwithHash
 
-from .base import OperatorMeta
-
-
-op_factory = OperatorMeta.op_factory
+from .base import op_factory

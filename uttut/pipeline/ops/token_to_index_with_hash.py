@@ -31,8 +31,10 @@ class Token2IndexwithHash(Operator):
 
     """
 
+    _input_type = list
+    _output_type = list
+
     def __init__(self, token2index: Dict[str, int]):
-        super().__init__(input_type=list, output_type=list)
         self._validate_token2index(token2index)
         self.token2index = token2index
 

@@ -25,11 +25,10 @@ class FloatToken(PatternRecognizer):
 
     """
 
+    _label_aligner_class = IntTokenAligner
+
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+\.\d+(?![\.\d])")
     TOKEN = FLOAT_TOKEN
-
-    def __init__(self):
-        super().__init__(label_aligner_class=IntTokenAligner)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(

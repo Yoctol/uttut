@@ -28,12 +28,14 @@ class AddSosEos(Operator):
 
     """
 
+    _input_type = list
+    _output_type = list
+
     def __init__(
             self,
             start_token: str = START_TOKEN,
             end_token: str = END_TOKEN,
         ):
-        super().__init__(input_type=list, output_type=list)
         self.start_token = start_token
         self.end_token = end_token
 

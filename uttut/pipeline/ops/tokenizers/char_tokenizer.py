@@ -3,6 +3,15 @@ from typing import List
 from .base import Tokenizer, TokenizerAligner
 
 
+class CharTokenizerAligner(TokenizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        pass
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        pass
+
+
 class CharTokenizer(Tokenizer):
 
     """Character level tokenizer
@@ -21,17 +30,7 @@ class CharTokenizer(Tokenizer):
 
     """
 
-    def __init__(self):
-        super().__init__(label_aligner_class=CharTokenizerAligner)
+    _label_aligner_class = CharTokenizerAligner
 
     def _tokenize(self, input_str: str) -> List[str]:
         return list(input_str)
-
-
-class CharTokenizerAligner(TokenizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        pass
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        pass

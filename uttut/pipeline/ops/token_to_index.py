@@ -39,8 +39,10 @@ class Token2Index(Operator):
 
     """
 
+    _input_type = list
+    _output_type = list
+
     def __init__(self, token2index: Dict[str, int], unk_token: str = UNK_TOKEN):
-        super().__init__(input_type=list, output_type=list)
         self._validate_token2index(token2index, unk_token)
         self.token2index = token2index
         self.unk_token = unk_token

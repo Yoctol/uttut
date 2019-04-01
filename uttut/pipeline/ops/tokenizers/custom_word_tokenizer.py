@@ -5,6 +5,15 @@ from ..utils.trie import Trie
 from .base import Tokenizer, TokenizerAligner
 
 
+class CustomWordTokenizerAligner(TokenizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+
 class CustomWordTokenizer(Tokenizer):
 
     """Word Tokenizer Given User Words
@@ -23,6 +32,8 @@ class CustomWordTokenizer(Tokenizer):
 
     """
 
+    _label_aligner_class = CustomWordTokenizerAligner
+
     def __init__(self, user_words: List[str], shortest: bool = False):
         self.validate_user_words(user_words)
         self._user_words = user_words
@@ -31,8 +42,6 @@ class CustomWordTokenizer(Tokenizer):
             self._trie.insert(word)
 
         self._shortest = shortest
-
-        super().__init__(label_aligner_class=CustomWordTokenizerAligner)
 
     @staticmethod
     def validate_user_words(user_words):
@@ -55,12 +64,3 @@ class CustomWordTokenizer(Tokenizer):
                 start += len(match_result)
             tokens.append(token)
         return tokens
-
-
-class CustomWordTokenizerAligner(TokenizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)

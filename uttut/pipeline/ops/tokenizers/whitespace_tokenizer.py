@@ -4,6 +4,15 @@ from ..label_transducer import get_most_common_except_not_entity
 from .base import Tokenizer, TokenizerAligner
 
 
+class WhiteSpaceTokenizerAligner(TokenizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+
 class WhiteSpaceTokenizer(Tokenizer):
 
     """
@@ -25,8 +34,7 @@ class WhiteSpaceTokenizer(Tokenizer):
 
     """
 
-    def __init__(self):
-        super().__init__(WhiteSpaceTokenizerAligner)
+    _label_aligner_class = WhiteSpaceTokenizerAligner
 
     def _tokenize(self, input_str: str) -> List[str]:
         """Split text into list by whitespace characters
@@ -38,12 +46,3 @@ class WhiteSpaceTokenizer(Tokenizer):
 
         """
         return input_str.split()
-
-
-class WhiteSpaceTokenizerAligner(TokenizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)

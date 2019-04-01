@@ -10,6 +10,9 @@ from ..edit.label_propagation import propagate_by_replacement_group
 
 class SpanSubwords(Operator):
 
+    _input_type = list
+    _output_type = list
+
     def __init__(
             self,
             vocab: Dict[str, int],
@@ -42,7 +45,6 @@ class SpanSubwords(Operator):
 
         """
 
-        super().__init__(input_type=list, output_type=list)
         self.vocab = vocab
         self.unk_token = unk_token
         self.maxlen_per_token = maxlen_per_token

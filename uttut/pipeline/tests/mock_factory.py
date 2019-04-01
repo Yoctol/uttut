@@ -15,9 +15,11 @@ class MockLabelAligner(LabelAligner):
 
 class MockStr2StrOp(Operator):
 
+    _input_type = str
+    _output_type = str
+
     def __init__(self, **kwargs):
         self.kwargs = kwargs
-        super().__init__(str, str)
 
     def __eq__(self, other):
         same_kwargs = self.kwargs == other.kwargs
@@ -33,9 +35,11 @@ class MockStr2StrOp(Operator):
 
 class MockLst2LstOp(Operator):
 
+    _input_type = list
+    _output_type = list
+
     def __init__(self, **kwargs):
         self.kwargs = kwargs
-        super().__init__(list, list)
 
     def __eq__(self, other):
         same_kwargs = self.kwargs == other.kwargs
@@ -51,9 +55,11 @@ class MockLst2LstOp(Operator):
 
 class MockStr2LstOp(Operator):
 
+    _input_type = str
+    _output_type = list
+
     def __init__(self, **kwargs):
         self.kwargs = kwargs
-        super().__init__(str, list)
 
     def __eq__(self, other):
         same_kwargs = self.kwargs == other.kwargs
