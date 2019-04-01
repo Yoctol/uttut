@@ -7,6 +7,15 @@ from ..tokens import INT_TOKEN
 from .base import PatternRecognizer, PatternRecognizerAligner
 
 
+class IntTokenAligner(PatternRecognizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common(labels=labels, output_size=output_size)
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+
 class IntToken(PatternRecognizer):
     """
     Recognize integer (ex: 12, 10000) in the input string
@@ -26,23 +35,13 @@ class IntToken(PatternRecognizer):
 
     """
 
+    _label_aligner_class = IntTokenAligner
+
     REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+(?![\.\d])")
     TOKEN = INT_TOKEN
-
-    def __init__(self):
-        super().__init__(label_aligner_class=IntTokenAligner)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(
             input_str=input_str,
             annotation='int-token',
         )
-
-
-class IntTokenAligner(PatternRecognizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common(labels=labels, output_size=output_size)
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)

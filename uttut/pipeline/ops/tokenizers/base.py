@@ -17,9 +17,14 @@ class Tokenizer(Operator):
 
     _input_type = str
     _output_type = list
+    _label_aligner_class = None
 
-    def __init__(self, label_aligner_class):
-        self._label_aligner_class = label_aligner_class
+    @classmethod
+    def __init_subclass__(cls):
+        super().__init_subclass__()
+        if cls.is_abstract():
+            return
+        cls.assert_has_class_attributes(['_label_aligner_class'])
 
     def __eq__(self, other):
         same_label_aligner_class = self._label_aligner_class == other._label_aligner_class

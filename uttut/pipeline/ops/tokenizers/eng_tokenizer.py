@@ -6,6 +6,15 @@ from ..label_transducer import get_most_common_except_not_entity
 from .base import Tokenizer, TokenizerAligner
 
 
+class EngTokenizerAligner(TokenizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common_except_not_entity(labels, output_size)
+
+
 class EngTokenizer(Tokenizer):
 
     """English Word level tokenizer
@@ -27,8 +36,7 @@ class EngTokenizer(Tokenizer):
 
     """
 
-    def __init__(self):
-        super().__init__(label_aligner_class=EngTokenizerAligner)
+    _label_aligner_class = EngTokenizerAligner
 
     def _tokenize(self, input_str: str) -> List[str]:
         orig_tokens = whitespace_tokenize(input_str)
@@ -99,12 +107,3 @@ def _is_punctuation(char):
     if cat.startswith("P"):
         return True
     return False
-
-
-class EngTokenizerAligner(TokenizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common_except_not_entity(labels, output_size)

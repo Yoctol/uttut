@@ -24,16 +24,23 @@ class Operator(ABC):
 
     @classmethod
     def __init_subclass__(cls):
-        # abstract class
-        if getattr(cls, '__abstractmethods__', None):
+        if cls.is_abstract():
             return
-        # else: is concrete class
-        assert cls._input_type is not None, \
-            f"Concrete class: {cls} should declare `_input_type`!"
-        assert cls._output_type is not None, \
-            f"Concrete class: {cls} should declare `_output_type`!"
 
+        cls.assert_has_class_attributes(['_input_type', '_output_type'])
         op_factory.register(cls.__name__, cls)
+
+    @classmethod
+    def is_abstract(cls):
+        if getattr(cls, '__abstractmethods__', None):
+            return True
+        return False
+
+    @classmethod
+    def assert_has_class_attributes(cls, attrs):
+        for attr_name in attrs:
+            assert getattr(cls, attr_name, None) is not None, \
+                f"Concrete class: {cls} should declare `{attr_name}`!"
 
     def __eq__(self, other):
         self_attrs = (self._input_type, self._output_type)

@@ -6,6 +6,15 @@ from ..label_transducer import get_not_entity
 from .base import PatternRecognizer, PatternRecognizerAligner
 
 
+class StripWhiteSpaceCharactersAligner(PatternRecognizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_not_entity(labels=labels, output_size=output_size)
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_not_entity(labels=labels, output_size=output_size)
+
+
 class StripWhiteSpaceCharacters(PatternRecognizer):
 
     """
@@ -26,23 +35,13 @@ class StripWhiteSpaceCharacters(PatternRecognizer):
 
     """
 
+    _label_aligner_class = StripWhiteSpaceCharactersAligner
+
     REGEX_PATTERN = re.compile(r"\A\s+|\s+\Z")
     TOKEN = ""
-
-    def __init__(self):
-        super().__init__(label_aligner_class=StripWhiteSpaceCharactersAligner)
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore
         return super()._gen_forward_replacement_group(
             input_str=input_str,
             annotation='strip whitespace',
         )
-
-
-class StripWhiteSpaceCharactersAligner(PatternRecognizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_not_entity(labels=labels, output_size=output_size)
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_not_entity(labels=labels, output_size=output_size)

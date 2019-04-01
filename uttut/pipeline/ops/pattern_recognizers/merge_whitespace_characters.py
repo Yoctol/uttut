@@ -6,6 +6,15 @@ from ..label_transducer import get_most_common
 from .base import PatternRecognizer, PatternRecognizerAligner
 
 
+class MergeWhiteSpaceCharactersAligner(PatternRecognizerAligner):
+
+    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common(labels=labels, output_size=output_size)
+
+    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
+        return get_most_common(labels=labels, output_size=output_size)
+
+
 class MergeWhiteSpaceCharacters(PatternRecognizer):
 
     """
@@ -26,17 +35,7 @@ class MergeWhiteSpaceCharacters(PatternRecognizer):
 
     """
 
+    _label_aligner_class = MergeWhiteSpaceCharactersAligner
+
     REGEX_PATTERN = re.compile(r"\s+")
     TOKEN = " "
-
-    def __init__(self):
-        super().__init__(label_aligner_class=MergeWhiteSpaceCharactersAligner)
-
-
-class MergeWhiteSpaceCharactersAligner(PatternRecognizerAligner):
-
-    def _forward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common(labels=labels, output_size=output_size)
-
-    def _backward_transduce_func(self, labels: List[int], output_size: int) -> List[int]:
-        return get_most_common(labels=labels, output_size=output_size)
