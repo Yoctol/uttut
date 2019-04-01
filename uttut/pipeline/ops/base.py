@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from inspect import getfullargspec
+from inspect import signature
 from typing import Any, Dict, List, Tuple
 
 from .factory import OperatorFactory
@@ -35,10 +35,15 @@ class Operator(ABC):
 
         def __init__(self, *args, **kwargs):
             original_init(self, *args, **kwargs)
-            self._configs = dict(zip(
-                getfullargspec(original_init).args[1:],  # omit `self`
-                args,
-            ))
+            self._configs = {}
+
+            for i, param in enumerate(signature(original_init).parameters.values()):
+                if param.name == 'self':  # omit `self`
+                    continue
+                if param.default is not None:  # case: args with default value
+                    self._configs[param.name] = param.default
+                if i <= len(args):
+                    self._configs[param.name] = args[i - 1]
             self._configs.update(kwargs)
 
         cls.__init__ = __init__
