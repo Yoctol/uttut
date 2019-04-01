@@ -32,7 +32,6 @@ class Pad(Operator):
     _output_type = list
 
     def __init__(self, maxlen: int, pad_token: str = PAD_TOKEN):
-        super().__init__()
         self.pad_token = pad_token
         self.maxlen = maxlen
 

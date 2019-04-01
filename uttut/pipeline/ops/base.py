@@ -10,6 +10,12 @@ class OperatorMeta(ABCMeta):
 
     def __new__(meta, cls_name, super_classes, attr_dict):
         cls = super().__new__(meta, cls_name, super_classes, attr_dict)
+        if len(cls.__abstractmethods__) == 0:  # is concrete class
+            assert cls._input_type is not None, \
+                f"Concrete class: {cls} should declare `_input_type`!"
+            assert cls._output_type is not None, \
+                f"Concrete class: {cls} should declare `_output_type`!"
+
         meta.op_factory.register(cls_name, cls)
         return cls
 
