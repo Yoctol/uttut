@@ -1,26 +1,13 @@
-from abc import ABC, abstractmethod, ABCMeta
+from abc import ABC, abstractmethod
 from typing import List, Tuple, Any
 
 from .factory import OperatorFactory
 
 
-class OperatorMeta(ABCMeta):
-
-    op_factory = OperatorFactory()
-
-    def __new__(meta, cls_name, super_classes, attr_dict):
-        cls = super().__new__(meta, cls_name, super_classes, attr_dict)
-        if len(cls.__abstractmethods__) == 0:  # is concrete class
-            assert cls._input_type is not None, \
-                f"Concrete class: {cls} should declare `_input_type`!"
-            assert cls._output_type is not None, \
-                f"Concrete class: {cls} should declare `_output_type`!"
-
-        meta.op_factory.register(cls_name, cls)
-        return cls
+op_factory = OperatorFactory()
 
 
-class Operator(metaclass=OperatorMeta):
+class Operator(ABC):
 
     """Base class for Operators
 
@@ -34,6 +21,19 @@ class Operator(metaclass=OperatorMeta):
 
     _input_type = None
     _output_type = None
+
+    @classmethod
+    def __init_subclass__(cls):
+        # abstract class
+        if getattr(cls, '__abstractmethods__', None):
+            return
+        # else: is concrete class
+        assert cls._input_type is not None, \
+            f"Concrete class: {cls} should declare `_input_type`!"
+        assert cls._output_type is not None, \
+            f"Concrete class: {cls} should declare `_output_type`!"
+
+        op_factory.register(cls.__name__, cls)
 
     def __eq__(self, other):
         self_attrs = (self._input_type, self._output_type)
