@@ -38,25 +38,35 @@ class Pipe:
         op = Operator.deserialize({'op_name': op_name, 'op_kwargs': op_kwargs})
         step = Step(op)
 
-        self._validate_steps(step)
+        if self.steps:
+            if step.input_type != self.output_type:
+                raise TypeError(
+                    "InputType of the step op is not valid."
+                    f"Got {step.input_type}, but requires {self.output_type}",
+                )
         self._steps.append(step)
 
         if checkpoint is not None:
-            if checkpoint in self._checkpoints:
+            if checkpoint in self.checkpoints:
                 raise KeyError(f"duplicated checkpoints: {checkpoint}")
-            self._checkpoints[checkpoint] = len(self._steps)
-
-    def _validate_steps(self, step: Step):
-        if len(self._steps) > 0:
-            target_type = self._steps[-1].output_type
-            in_type = step.input_type
-            if in_type != target_type:
-                raise TypeError(
-                    "InputType of the step op is not valid."
-                    f"Got {in_type}, but requires {target_type}")
+            self._checkpoints[checkpoint] = len(self.steps)
 
     def __eq__(self, other):
-        return (self._steps, self._checkpoints) == (other._steps, other._checkpoints)
+        return (self.steps, self._checkpoints) == (other.steps, other._checkpoints)
+
+    @property
+    def steps(self):
+        return self._steps
+
+    @property
+    def checkpoints(self):
+        return self._checkpoints
+
+    @property
+    def output_type(self):
+        if not self.steps:
+            raise IndexError("Pipe is empty!")
+        return self.steps[-1].output_type
 
     def transform(self, datum: Datum):
         """Process data based on Steps(Ops).
@@ -94,12 +104,12 @@ class Pipe:
             intermediate: an instance of Intermediate
 
         """
-        intermediate = Intermediate(self._checkpoints)
+        intermediate = Intermediate(self.checkpoints)
 
         intermediate.add(input_sequence)
         label_aligners = LabelAlignerSequence()
 
-        for step in self._steps:
+        for step in self.steps:
             input_sequence, label_aligner = step.transform(input_sequence)
             intermediate.add(input_sequence)
             label_aligners.add(label_aligner)
@@ -108,8 +118,8 @@ class Pipe:
 
     def serialize(self) -> str:
         to_serialize = {
-            'steps': [step.op.serialize() for step in self._steps],
-            'checkpoints': self._checkpoints,
+            'steps': [step.op.serialize() for step in self.steps],
+            'checkpoints': self.checkpoints,
         }
         return json.dumps(to_serialize)
 
