@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 import json
 
@@ -15,10 +15,9 @@ class Pipe:
 
     def __init__(self):
         self._steps = []
-        self._step_info = []
         self._checkpoints = {}
 
-    def add(self, op_name: str, op_kwargs=None, checkpoint=None):
+    def add(self, op_name: str, op_kwargs: Dict = None, checkpoint: str = None):
         """Add steps based on the operation name.
 
         This method creates a step, which has an op. The op
@@ -40,10 +39,12 @@ class Pipe:
         step = Step(op)
 
         self._validate_steps(step)
+        self._steps.append(step)
 
-        self._push_step(step)
-        self._push_step_info(op_name, op_kwargs)
-        self._push_checkpoint(checkpoint)
+        if checkpoint is not None:
+            if checkpoint in self._checkpoints:
+                raise KeyError(f"duplicated checkpoints: {checkpoint}")
+            self._checkpoints[checkpoint] = len(self._steps)
 
     def _validate_steps(self, step: Step):
         if len(self._steps) > 0:
@@ -53,23 +54,6 @@ class Pipe:
                 raise TypeError(
                     "InputType of the step op is not valid."
                     f"Got {in_type}, but requires {target_type}")
-
-    def _push_checkpoint(self, name: str):
-        if name is not None:
-            if name in self._checkpoints:
-                raise KeyError(f"duplicated checkpoints {name}")
-            self._checkpoints[name] = len(self._steps)
-
-    def _push_step(self, step: Step):
-        self._steps.append(step)
-
-    def _push_step_info(self, name: str, kwargs: dict):
-        self._step_info.append(
-            {  # for serialization
-                'op_name': name,
-                'op_kwargs': kwargs,
-            },
-        )
 
     def __eq__(self, other):
         return (self._steps, self._checkpoints) == (other._steps, other._checkpoints)
