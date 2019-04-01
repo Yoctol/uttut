@@ -6,8 +6,10 @@ from ..step import Step
 
 class MockedOperator(Operator):
 
+    _input_type = 'in'
+    _output_type = 'out'
+
     def __init__(self, state=None):
-        super().__init__('in', 'out')
         self.state = state
 
     def __eq__(self, other):

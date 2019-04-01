@@ -28,8 +28,11 @@ class Pad(Operator):
 
     """
 
+    _input_type = list
+    _output_type = list
+
     def __init__(self, maxlen: int, pad_token: str = PAD_TOKEN):
-        super().__init__(input_type=list, output_type=list)
+        super().__init__()
         self.pad_token = pad_token
         self.maxlen = maxlen
 

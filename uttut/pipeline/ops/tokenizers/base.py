@@ -15,8 +15,10 @@ class Tokenizer(Operator):
     Base class for Operators which tokenize text.
     """
 
+    _input_type = str
+    _output_type = list
+
     def __init__(self, label_aligner_class):
-        super().__init__(input_type=str, output_type=list)
         self._label_aligner_class = label_aligner_class
 
     def __eq__(self, other):

@@ -26,9 +26,8 @@ class Operator(metaclass=OperatorMeta):
 
     """
 
-    def __init__(self, input_type, output_type):
-        self._input_type = input_type
-        self._output_type = output_type
+    _input_type = None
+    _output_type = None
 
     def __eq__(self, other):
         self_attrs = (self._input_type, self._output_type)

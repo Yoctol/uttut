@@ -27,8 +27,8 @@ class StripAccentToken(Operator):
 
     """
 
-    def __init__(self):
-        super().__init__(input_type=str, output_type=str)
+    _input_type = str
+    _output_type = str
 
     def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
