@@ -122,8 +122,8 @@ class Pipe:
         intermediate.add(input_sequence)
         label_aligners = LabelAlignerSequence()
 
-        for step in self.steps:
-            input_sequence, label_aligner = step.transform(input_sequence)
+        for op in self.steps:
+            input_sequence, label_aligner = op.transform(input_sequence)
             intermediate.add(input_sequence)
             label_aligners.add(label_aligner)
 
