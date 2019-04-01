@@ -85,9 +85,7 @@ class Operator(ABC):
         return self._configs
 
     def __eq__(self, other):
-        self_attrs = (self._input_type, self._output_type)
-        other_attrs = (other._input_type, other._output_type)
-        return self_attrs == other_attrs
+        return type(self) == type(other) and self.configs == other.configs
 
     @property
     def input_type(self):

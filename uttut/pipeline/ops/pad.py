@@ -35,11 +35,6 @@ class Pad(Operator):
         self.pad_token = pad_token
         self.maxlen = maxlen
 
-    def __eq__(self, other):
-        same_pad_token = self.pad_token == other.pad_token
-        same_maxlen = self.maxlen == other.maxlen
-        return same_pad_token and same_maxlen and super().__eq__(other)
-
     def _transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
 
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)

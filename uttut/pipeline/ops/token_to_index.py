@@ -47,11 +47,6 @@ class Token2Index(Operator):
         self.token2index = token2index
         self.unk_token = unk_token
 
-    def __eq__(self, other):
-        same_token2index = self.token2index == other.token2index
-        same_unk_token = self.unk_token == other.unk_token
-        return same_token2index and same_unk_token and super().__eq__(other)
-
     def _validate_token2index(self, token2index: Dict[str, int], unk_token: str):
         validate_continuity(token2index)
         if unk_token not in token2index:

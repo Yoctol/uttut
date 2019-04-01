@@ -26,10 +26,6 @@ class PatternRecognizer(Operator):
             return
         cls.assert_has_class_attributes(['_label_aligner_class'])
 
-    def __eq__(self, other):
-        same_label_aligner_class = self._label_aligner_class == other._label_aligner_class
-        return same_label_aligner_class and super().__eq__(other)
-
     def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
         output_sequence = str2str.apply(input_sequence, forward_replacement_group)
