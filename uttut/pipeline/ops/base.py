@@ -70,8 +70,8 @@ class Operator(abc.ABC):
                 f"Concrete class: {cls} should declare `{attr_name}`!"
 
     @classmethod
-    def deserialize(cls, param_str: str):
-        params = json.loads(param_str)
+    def deserialize(cls, serialized_str: str):
+        params = json.loads(serialized_str)
         return cls.from_dict(params)
 
     @staticmethod

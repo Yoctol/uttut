@@ -1,4 +1,5 @@
 from typing import Dict, List
+import warnings
 
 import json
 
@@ -17,20 +18,22 @@ class Pipe:
         self._checkpoints = {}
 
     def add(self, op_name: str, op_kwargs: Dict = None, checkpoint: str = None):
-        """Add steps based on the operation name.
+        """Add step based on the operation name & kwargs.
 
         This method creates a step, which has an op. The op
-        is created.
+        is created by name & kwargs.
 
         Args:
-            op_name (str): the name of operator
-            op_kwargs (dict): the corresponding of keyword arguments
-            checkpoint (str): the name of checkpoint
+            op_name (str): the class name of operator.
+            op_kwargs (dict): the keyword arguments to create operator.
+            checkpoint (str): the name of checkpoint.
 
         Raises:
-            KeyError if the input checkpoint has existed in self._checkpoints
-
+            TypeError: If input_type of op isn't consistent with pipe's output_type.
+            KeyError: If the checkpoint name has already been added.
         """
+
+        warnings.warn("This method will be deprecated, please use `add_op`.", DeprecationWarning)
         if op_kwargs is None:
             op_kwargs = {}
 
@@ -38,6 +41,17 @@ class Pipe:
         self.add_op(op, checkpoint=checkpoint)
 
     def add_op(self, op: Operator, checkpoint: str = None):
+        """Add step with given op.
+
+        Args:
+            op (Operator): An operator instance to be added to steps.
+            checkpoint (str): the name of checkpoint
+
+        Raises:
+            TypeError: If input_type of operator isn't consistent with pipe's output_type.
+            KeyError: If the checkpoint name has already been added.
+        """
+
         step = Step(op)
 
         if self.steps:
@@ -81,7 +95,7 @@ class Pipe:
         Returns:
             output_sequence: transfromed sequence
             intent_labels (ints)
-            entity_labels (ints)W
+            entity_labels (ints)
             label_alingers: an instance of LabelAlignerSequence
             intermediate: an instance of Intermediate
 
@@ -119,19 +133,17 @@ class Pipe:
         return input_sequence, label_aligners, intermediate
 
     def serialize(self) -> str:
-        to_serialize = {
+        return json.dumps({
             'steps': [step.op.serialize() for step in self.steps],
             'checkpoints': self.checkpoints,
-        }
-        return json.dumps(to_serialize)
+        })
 
     @classmethod
     def deserialize(cls, serialized_str: str) -> 'Pipe':
         pipe = cls()
         pipe_bundle = json.loads(serialized_str)
         # restore steps
-        step_infos = pipe_bundle['steps']
-        for step_info in step_infos:
+        for step_info in pipe_bundle['steps']:
             op = Operator.deserialize(step_info)
             pipe.add_op(op)
         # restore checkpoints
