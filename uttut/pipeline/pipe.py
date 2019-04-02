@@ -4,10 +4,9 @@ import json
 
 from uttut.elements import Datum
 
-from .ops.base import LabelAligner
-from .step import Step
 from .intermediate import Intermediate
-from .ops import Operator
+from .ops.base import LabelAligner, Operator
+from .step import Step
 from .utils import unpack_datum
 
 
@@ -35,7 +34,10 @@ class Pipe:
         if op_kwargs is None:
             op_kwargs = {}
 
-        op = Operator.deserialize({'op_name': op_name, 'op_kwargs': op_kwargs})
+        op = Operator.from_dict({'op_name': op_name, 'op_kwargs': op_kwargs})
+        self.add_op(op, checkpoint=checkpoint)
+
+    def add_op(self, op: Operator, checkpoint: str = None):
         step = Step(op)
 
         if self.steps:
@@ -130,10 +132,8 @@ class Pipe:
         # restore steps
         step_infos = pipe_bundle['steps']
         for step_info in step_infos:
-            pipe.add(
-                op_name=step_info['op_name'],
-                op_kwargs=step_info['op_kwargs'],
-            )
+            op = Operator.deserialize(step_info)
+            pipe.add_op(op)
         # restore checkpoints
         pipe._checkpoints = pipe_bundle['checkpoints']
         return pipe
