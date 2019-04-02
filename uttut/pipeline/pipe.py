@@ -7,7 +7,6 @@ from uttut.elements import Datum
 
 from .intermediate import Intermediate
 from .ops.base import LabelAligner, Operator
-from .step import Step
 from .utils import unpack_datum
 
 
@@ -52,15 +51,13 @@ class Pipe:
             KeyError: If the checkpoint name has already been added.
         """
 
-        step = Step(op)
-
         if self.steps:
-            if step.input_type != self.output_type:
+            if op.input_type != self.output_type:
                 raise TypeError(
                     "InputType of the step op is not valid."
-                    f"Got {step.input_type}, but requires {self.output_type}",
+                    f"Got {op.input_type}, but requires {self.output_type}",
                 )
-        self._steps.append(step)
+        self._steps.append(op)
 
         if checkpoint is not None:
             if checkpoint in self.checkpoints:
