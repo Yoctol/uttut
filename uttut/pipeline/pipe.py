@@ -1,86 +1,88 @@
-from typing import List
+from typing import Dict, List
+import warnings
 
 import json
 
 from uttut.elements import Datum
 
-from .ops.base import LabelAligner
-from .step import Step
 from .intermediate import Intermediate
-from .ops import op_factory as default_factory
+from .ops.base import LabelAligner, Operator
+from .step import Step
 from .utils import unpack_datum
 
 
 class Pipe:
 
-    def __init__(self, operator_factory=None):
+    def __init__(self):
         self._steps = []
-        self._step_info = []
         self._checkpoints = {}
 
-        self.operator_factory = operator_factory
-        if self.operator_factory is None:
-            self.operator_factory = default_factory
-
-    def add(self, op_name: str, op_kwargs=None, checkpoint=None):
-        """Add steps based on the operation name.
+    def add(self, op_name: str, op_kwargs: Dict = None, checkpoint: str = None):
+        """Add step based on the operation name & kwargs.
 
         This method creates a step, which has an op. The op
-        is created.
+        is created by name & kwargs.
 
         Args:
-            op_name (str): the name of operator
-            op_kwargs (dict): the corresponding of keyword arguments
-            checkpoint (str): the name of checkpoint
+            op_name (str): the class name of operator.
+            op_kwargs (dict): the keyword arguments to create operator.
+            checkpoint (str): the name of checkpoint.
 
         Raises:
-            KeyError if the input checkpoint has existed in self._checkpoints
-
+            TypeError: If input_type of op isn't consistent with pipe's output_type.
+            KeyError: If the checkpoint name has already been added.
         """
+
+        warnings.warn("This method will be deprecated, please use `add_op`.", DeprecationWarning)
         if op_kwargs is None:
             op_kwargs = {}
 
-        op = self.operator_factory[op_name](**op_kwargs)
+        op = Operator.from_dict({'op_name': op_name, 'op_kwargs': op_kwargs})
+        self.add_op(op, checkpoint=checkpoint)
+
+    def add_op(self, op: Operator, checkpoint: str = None):
+        """Add step with given op.
+
+        Args:
+            op (Operator): An operator instance to be added to steps.
+            checkpoint (str): the name of checkpoint
+
+        Raises:
+            TypeError: If input_type of operator isn't consistent with pipe's output_type.
+            KeyError: If the checkpoint name has already been added.
+        """
+
         step = Step(op)
 
-        self._validate_steps(step)
-
-        self._push_step(step)
-        self._push_step_info(op_name, op_kwargs)
-        self._push_checkpoint(checkpoint)
-
-    def _validate_steps(self, step: Step):
-        if len(self._steps) > 0:
-            target_type = self._steps[-1].output_type
-            in_type = step.input_type
-            if in_type != target_type:
+        if self.steps:
+            if step.input_type != self.output_type:
                 raise TypeError(
                     "InputType of the step op is not valid."
-                    f"Got {in_type}, but requires {target_type}")
-
-    def _push_checkpoint(self, name: str):
-        if name is not None:
-            if name in self._checkpoints:
-                raise KeyError(f"duplicated checkpoints {name}")
-            self._checkpoints[name] = len(self._steps)
-
-    def _push_step(self, step: Step):
+                    f"Got {step.input_type}, but requires {self.output_type}",
+                )
         self._steps.append(step)
 
-    def _push_step_info(self, name: str, kwargs: dict):
-        self._step_info.append(
-            {  # for serialization
-                'op_name': name,
-                'op_kwargs': kwargs,
-            },
-        )
+        if checkpoint is not None:
+            if checkpoint in self.checkpoints:
+                raise KeyError(f"duplicated checkpoints: {checkpoint}")
+            self._checkpoints[checkpoint] = len(self.steps)
 
     def __eq__(self, other):
-        same_op_factory = self.operator_factory == other.operator_factory
-        same_steps = self._steps == other._steps
-        same_step_info = self._step_info == other._step_info
-        same_checkpoints = self._checkpoints == other._checkpoints
-        return same_op_factory and same_steps and same_step_info and same_checkpoints
+        return (self.steps, self._checkpoints) == (other.steps, other._checkpoints)
+
+    @property
+    def steps(self):
+        return self._steps
+
+    @property
+    def checkpoints(self):
+        return self._checkpoints
+
+    @property
+    def output_type(self):
+        if not self.steps:
+            raise IndexError("Pipe is empty!")
+        return self.steps[-1].output_type
 
     def transform(self, datum: Datum):
         """Process data based on Steps(Ops).
@@ -93,7 +95,7 @@ class Pipe:
         Returns:
             output_sequence: transfromed sequence
             intent_labels (ints)
-            entity_labels (ints)W
+            entity_labels (ints)
             label_alingers: an instance of LabelAlignerSequence
             intermediate: an instance of Intermediate
 
@@ -118,12 +120,12 @@ class Pipe:
             intermediate: an instance of Intermediate
 
         """
-        intermediate = Intermediate(self._checkpoints)
+        intermediate = Intermediate(self.checkpoints)
 
         intermediate.add(input_sequence)
         label_aligners = LabelAlignerSequence()
 
-        for step in self._steps:
+        for step in self.steps:
             input_sequence, label_aligner = step.transform(input_sequence)
             intermediate.add(input_sequence)
             label_aligners.add(label_aligner)
@@ -131,23 +133,19 @@ class Pipe:
         return input_sequence, label_aligners, intermediate
 
     def serialize(self) -> str:
-        to_serialize = {
-            'steps': self._step_info,
-            'checkpoints': self._checkpoints,
-        }
-        return json.dumps(to_serialize)
+        return json.dumps({
+            'steps': [step.op.serialize() for step in self.steps],
+            'checkpoints': self.checkpoints,
+        })
 
     @classmethod
-    def deserialize(cls, serialized_str: str, operator_factory=None) -> 'Pipe':
-        pipe = cls(operator_factory)
+    def deserialize(cls, serialized_str: str) -> 'Pipe':
+        pipe = cls()
         pipe_bundle = json.loads(serialized_str)
         # restore steps
-        step_infos = pipe_bundle['steps']
-        for step_info in step_infos:
-            pipe.add(
-                op_name=step_info['op_name'],
-                op_kwargs=step_info['op_kwargs'],
-            )
+        for step_info in pipe_bundle['steps']:
+            op = Operator.deserialize(step_info)
+            pipe.add_op(op)
         # restore checkpoints
         pipe._checkpoints = pipe_bundle['checkpoints']
         return pipe

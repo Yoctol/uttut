@@ -49,12 +49,6 @@ class SpanSubwords(Operator):
         self.unk_token = unk_token
         self.maxlen_per_token = maxlen_per_token
 
-    def __eq__(self, other):
-        same_vocab = self.vocab == other.vocab
-        same_unk_token = self.unk_token == other.unk_token
-        same_maxlen_per_token = self.maxlen_per_token == other.maxlen_per_token
-        return same_vocab and same_unk_token and same_maxlen_per_token and super().__eq__(other)
-
     def _transform(self, input_sequence: List[str]) -> Tuple[List[str], 'LabelAligner']:
         """
         # Requirement: All elements in input_sequence should not contain

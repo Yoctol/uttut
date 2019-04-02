@@ -38,10 +38,6 @@ class Token2IndexwithHash(Operator):
         self._validate_token2index(token2index)
         self.token2index = token2index
 
-    def __eq__(self, other):
-        same_token2index = self.token2index == other.token2index
-        return same_token2index and super().__eq__(other)
-
     def _validate_token2index(self, token2index: Dict[str, int]):
         validate_continuity(token2index)
 

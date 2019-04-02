@@ -1,5 +1,7 @@
-from abc import ABC, abstractmethod
-from typing import List, Tuple, Any
+import abc
+import json
+import inspect
+from typing import Any, List, Tuple
 
 from .factory import OperatorFactory
 
@@ -7,7 +9,7 @@ from .factory import OperatorFactory
 op_factory = OperatorFactory()
 
 
-class Operator(ABC):
+class Operator(abc.ABC):
 
     """Base class for Operators
 
@@ -30,6 +32,31 @@ class Operator(ABC):
         cls.assert_has_class_attributes(['_input_type', '_output_type'])
         op_factory.register(cls.__name__, cls)
 
+        original_init = cls.__init__
+
+        def __init__(self, *args, **kwargs):
+            original_init(self, *args, **kwargs)
+            argspec = inspect.getfullargspec(original_init)
+            self._configs = {
+                arg_name: val
+                for arg_name, val in zip(
+                    argspec.args[1:],  # omit `self`
+                    args,
+                )
+            }
+            self._configs.update(kwargs)
+            if argspec.defaults:
+                self._configs.update({
+                    arg_name: default_val
+                    for arg_name, default_val in zip(
+                        reversed(argspec.args),
+                        reversed(argspec.defaults),
+                    )
+                    if arg_name not in self._configs
+                })
+
+        cls.__init__ = __init__
+
     @classmethod
     def is_abstract(cls):
         if getattr(cls, '__abstractmethods__', None):
@@ -42,10 +69,29 @@ class Operator(ABC):
             assert getattr(cls, attr_name, None) is not None, \
                 f"Concrete class: {cls} should declare `{attr_name}`!"
 
+    @classmethod
+    def deserialize(cls, serialized_str: str):
+        params = json.loads(serialized_str)
+        return cls.from_dict(params)
+
+    @staticmethod
+    def from_dict(params):
+        cls_name = params['op_name']
+        kwargs = params['op_kwargs']
+        return op_factory[cls_name](**kwargs)
+
+    def serialize(self) -> str:
+        return json.dumps({
+            'op_name': self.__class__.__name__,
+            'op_kwargs': self.configs,
+        })
+
+    @property
+    def configs(self):
+        return self._configs
+
     def __eq__(self, other):
-        self_attrs = (self._input_type, self._output_type)
-        other_attrs = (other._input_type, other._output_type)
-        return self_attrs == other_attrs
+        return type(self) == type(other) and self.configs == other.configs
 
     @property
     def input_type(self):
@@ -83,12 +129,12 @@ class Operator(ABC):
         if not isinstance(output_sequence, self.output_type):
             raise TypeError('Invalid output type')
 
-    @abstractmethod
+    @abc.abstractmethod
     def _transform(self, input_sequence) -> Tuple[Any, 'LabelAligner']:
         pass
 
 
-class LabelAligner(ABC):
+class LabelAligner(abc.ABC):
 
     """Base class for LabelAligners
 
@@ -152,11 +198,11 @@ class LabelAligner(ABC):
         if len(labels) != self._output_length:
             raise ValueError('Invalid output labels')
 
-    @abstractmethod
+    @abc.abstractmethod
     def _transform(self, labels: List[int]) -> List[int]:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def _inverse_transform(self, labels: List[int]) -> List[int]:
         pass
 
