@@ -12,15 +12,24 @@ from .utils import unpack_datum
 
 class Pipe:
 
+    """Pipe is a container for a series of operators
+
+    Attributes:
+        _steps (Operators) : a list of operator instances
+        _checkpoints (strs): a list of checkpoints
+    """
+
     def __init__(self):
         self._steps = []
         self._checkpoints = {}
 
     def add(self, op_name: str, op_kwargs: Dict = None, checkpoint: str = None):
-        """Add step based on the operation name & kwargs.
+        """Add op into steps based on the operation name & kwargs.
 
-        This method creates a step, which has an op. The op
-        is created by name & kwargs.
+        This method creates an operator given name & kwargs, and then append it
+        to steps.
+
+        Warning: This method will be deprecated, please use `add_op`.
 
         Args:
             op_name (str): the class name of operator.
@@ -40,7 +49,9 @@ class Pipe:
         self.add_op(op, checkpoint=checkpoint)
 
     def add_op(self, op: Operator, checkpoint: str = None):
-        """Add step with given op.
+        """Add op into steps
+
+        Append the input op to steps.
 
         Args:
             op (Operator): An operator instance to be added to steps.
@@ -82,7 +93,7 @@ class Pipe:
         return self.steps[-1].output_type
 
     def transform(self, datum: Datum):
-        """Process data based on Steps(Ops).
+        """Process data based on steps
 
         This method processes datum according to the Pipe's steps.
 
@@ -104,7 +115,7 @@ class Pipe:
         return output_sequence, intent_labels, updated_entity_labels, label_aligners, intermediate
 
     def transform_sequence(self, input_sequence):
-        """Process input_sequence based on Steps(Ops).
+        """Process input_sequence based on steps
 
         This method processes input_sequence according to the Pipe's steps.
 
