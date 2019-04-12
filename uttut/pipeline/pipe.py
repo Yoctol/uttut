@@ -152,8 +152,15 @@ class Pipe:
         pipe_bundle = json.loads(serialized_str)
         # restore steps
         for step_info in pipe_bundle['steps']:
-            op = Operator.deserialize(step_info)
+            if isinstance(step_info, str):
+                op = Operator.deserialize(step_info)
+            # backward compatibility
+            elif isinstance(step_info, dict):
+                op = Operator.from_dict(step_info)
+            else:
+                raise TypeError("Invalid json string format!")
             pipe.add_op(op)
+
         # restore checkpoints
         pipe._checkpoints = pipe_bundle['checkpoints']
         return pipe
