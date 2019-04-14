@@ -99,3 +99,9 @@ def test_serialization_with_checkpoint(fake_pipe_with_checkpoints):
     serialized_str = fake_pipe_with_checkpoints.serialize()
     o_pipe = Pipe.deserialize(serialized_str)
     assert fake_pipe_with_checkpoints == o_pipe
+
+
+def test_deserialize_from_old_format(get_data_path):
+    path = get_data_path('zh_char_pipe_100_old_format.json')
+    with open(path, 'r') as f_in:
+        Pipe.deserialize(f_in.read())
