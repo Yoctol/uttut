@@ -90,7 +90,7 @@ else:
 
 setup(
     name="uttut",
-    version='1.4.0',
+    version='1.4.1',
     description="Yoctol Utterance processing utilities",
     license="MIT",
     author="cph",
