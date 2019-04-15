@@ -12,11 +12,12 @@ from .utils import unpack_datum
 
 class Pipe:
 
-    """Pipe is a container for a series of operators
+    """Pipe is a container for a series of operators.
 
-    Attributes:
-        _steps (Operators) : a list of operator instances
-        _checkpoints (strs): a list of checkpoints
+    Properties:
+        steps: a list of operator instances.
+        checkpoints: a mapping of checkpoints to index of steps.
+        output_type: type of transformed output.
     """
 
     def __init__(self):
