@@ -6,31 +6,16 @@ from typing import Any, List, Tuple
 from .factory import OperatorFactory
 
 
-op_factory = OperatorFactory()
+class Serializable(abc.ABC):
 
-
-class Operator(abc.ABC):
-
-    """Base class for Operators
-
-    Sub-classes should implement `_transform`
-
-    Attributes:
-        input_type: input type of sequence to transform
-        output_type: output type of transformed sequence
-
-    """
-
-    _input_type = None
-    _output_type = None
+    op_factory = OperatorFactory()
 
     @classmethod
     def __init_subclass__(cls):
         if cls.is_abstract():
             return
 
-        cls.assert_has_class_attributes(['_input_type', '_output_type'])
-        op_factory.register(cls.__name__, cls)
+        cls.op_factory.register(cls.__name__, cls)
 
         original_init = cls.__init__
 
@@ -59,26 +44,18 @@ class Operator(abc.ABC):
 
     @classmethod
     def is_abstract(cls):
-        if getattr(cls, '__abstractmethods__', None):
-            return True
-        return False
-
-    @classmethod
-    def assert_has_class_attributes(cls, attrs):
-        for attr_name in attrs:
-            assert getattr(cls, attr_name, None) is not None, \
-                f"Concrete class: {cls} should declare `{attr_name}`!"
+        return getattr(cls, '__abstractmethods__', None) is not None
 
     @classmethod
     def deserialize(cls, serialized_str: str):
         params = json.loads(serialized_str)
         return cls.from_dict(params)
 
-    @staticmethod
-    def from_dict(params):
+    @classmethod
+    def from_dict(cls, params):
         cls_name = params['op_name']
         kwargs = params['op_kwargs']
-        return op_factory[cls_name](**kwargs)
+        return cls.op_factory[cls_name](**kwargs)
 
     def serialize(self) -> str:
         return json.dumps({
@@ -90,8 +67,35 @@ class Operator(abc.ABC):
     def configs(self):
         return self._configs
 
-    def __eq__(self, other):
-        return type(self) == type(other) and self.configs == other.configs
+
+class Operator(Serializable):
+
+    """Base class for Operators
+
+    Sub-classes should implement `_transform`
+
+    Attributes:
+        input_type: input type of sequence to transform
+        output_type: output type of transformed sequence
+
+    """
+
+    _input_type = None
+    _output_type = None
+
+    @classmethod
+    def __init_subclass__(cls):
+        super().__init_subclass__()
+        if cls.is_abstract():
+            return
+
+        cls.assert_has_class_attributes('_input_type', '_output_type')
+
+    @classmethod
+    def assert_has_class_attributes(cls, *attrs):
+        for attr_name in attrs:
+            assert getattr(cls, attr_name, None) is not None, \
+                f"Concrete class: {cls} should declare `{attr_name}`!"
 
     @property
     def input_type(self):
@@ -114,24 +118,24 @@ class Operator(abc.ABC):
             output_sequence (output_type): the transformed result
             label_aligner (obj): an instance of LabelAligner
 
+        Raises:
+            TypeError: If input_type or output_type isn't correct.
         """
 
-        self._validate_input(input_sequence)
-        output_sequence, label_aligner = self._transform(input_sequence)
-        self._validate_output(output_sequence)
-        return output_sequence, label_aligner
-
-    def _validate_input(self, input_sequence):
         if not isinstance(input_sequence, self.input_type):
             raise TypeError('Invalid input type')
 
-    def _validate_output(self, output_sequence):
+        output_sequence, label_aligner = self._transform(input_sequence)
         if not isinstance(output_sequence, self.output_type):
             raise TypeError('Invalid output type')
+        return output_sequence, label_aligner
 
     @abc.abstractmethod
     def _transform(self, input_sequence) -> Tuple[Any, 'LabelAligner']:
         pass
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.configs == other.configs
 
 
 class LabelAligner(abc.ABC):

@@ -24,7 +24,7 @@ class Tokenizer(Operator):
         super().__init_subclass__()
         if cls.is_abstract():
             return
-        cls.assert_has_class_attributes(['_label_aligner_class'])
+        cls.assert_has_class_attributes('_label_aligner_class')
 
     def _transform(self, input_sequence: str) -> Tuple[List[str], 'LabelAligner']:
         tokens = self._tokenize(input_sequence)
