@@ -105,3 +105,7 @@ def test_deserialize_from_old_format(get_data_path):
     path = get_data_path('zh_char_pipe_100_old_format.json')
     with open(path, 'r') as f_in:
         Pipe.deserialize(f_in.read())
+
+
+def test_summary(fake_pipe):
+    fake_pipe.summary()

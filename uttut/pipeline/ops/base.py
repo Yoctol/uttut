@@ -1,6 +1,8 @@
 import abc
-import json
 import inspect
+import itertools
+import json
+import reprlib
 from typing import Any, List, Tuple
 
 from .factory import OperatorFactory
@@ -136,6 +138,23 @@ class Operator(Serializable):
 
     def __eq__(self, other):
         return type(self) == type(other) and self.configs == other.configs
+
+    def __str__(self):
+
+        def custom_repr(x, maxdict: int = 2):
+            if isinstance(x, dict):  # NOTE: since reprlib.repr(dict) ignores the order
+                body = ', '.join([
+                    f"{repr(key)}: {repr(val)}"
+                    for key, val in itertools.islice(x.items(), maxdict)
+                ])
+                return f"{{{body}, ...}}"
+            return reprlib.repr(x)
+
+        config_str = ', '.join([
+            f"{key}={custom_repr(val)}"
+            for key, val in self.configs.items()
+        ])
+        return f"{self.__class__.__name__}({config_str})"
 
 
 class LabelAligner(abc.ABC):
