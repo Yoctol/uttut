@@ -57,5 +57,8 @@ class OperatorTestTemplate(abc.ABC):
         output = label_aligner.inverse_transform(output_labels)
         assert input_labels == output
 
+    def test_str(self, op):
+        str(op)
+
 
 ParamTuple = OperatorTestTemplate.ParamTuple

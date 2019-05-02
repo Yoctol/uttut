@@ -21,7 +21,7 @@ class Pipe:
     """
 
     def __init__(self):
-        self._steps = []
+        self._steps: List[Operator] = []
         self._checkpoints = {}
 
     def add(self, op_name: str, op_kwargs: Dict = None, checkpoint: str = None):
@@ -88,10 +88,49 @@ class Pipe:
         return self._checkpoints
 
     @property
+    def input_type(self):
+        if not self.steps:
+            raise IndexError("Pipe is empty!")
+        return self.steps[0].input_type
+
+    @property
     def output_type(self):
         if not self.steps:
             raise IndexError("Pipe is empty!")
         return self.steps[-1].output_type
+
+    def summary(self):
+        print("_" * 80)
+        print("Type  Operator")
+        print("=" * 80)
+
+        if self.steps:
+            inverse_checkpoint = {
+                idx: ckpt_name
+                for ckpt_name, idx in self.checkpoints.items()
+            }
+            prev_type = self.input_type
+            print(prev_type.__name__)
+            print(" v")
+            for idx, step in enumerate(self.steps, 1):
+                print(" |   ", step)
+                cur_type = step.output_type
+                if cur_type != prev_type:
+                    print(" v")
+                    print(cur_type.__name__)
+                    print(" v")
+                prev_type = cur_type
+                if idx in inverse_checkpoint:
+                    print(" |")
+                    print(" @--> checkpoint:", repr(inverse_checkpoint[idx]))
+                    print(" |")
+            print(' v')
+            print("=" * 80)
+            print(f"{self.input_type.__name__} -> {self.output_type.__name__}")
+
+        print(f"Total operators: {len(self.steps)}")
+        print(f"Total checkpoints: {len(self.checkpoints)}")
+        print("_" * 80)
 
     def transform(self, datum: Datum):
         """Process data based on steps

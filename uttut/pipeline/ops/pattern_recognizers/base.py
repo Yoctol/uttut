@@ -24,7 +24,7 @@ class PatternRecognizer(Operator):
         super().__init_subclass__()
         if cls.is_abstract():
             return
-        cls.assert_has_class_attributes(['_label_aligner_class'])
+        cls.assert_has_class_attributes('_label_aligner_class')
 
     def _transform(self, input_sequence: str) -> Tuple[str, 'LabelAligner']:
         forward_replacement_group = self._gen_forward_replacement_group(input_sequence)
