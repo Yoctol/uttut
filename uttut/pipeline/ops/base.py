@@ -144,7 +144,7 @@ class Operator(Serializable):
         def custom_repr(x, maxdict: int = 2):
             if isinstance(x, dict):  # NOTE: since reprlib.repr(dict) ignores the order
                 body = ', '.join([
-                    f"{repr(key)}: {repr(val)}"
+                    f"{key!r}: {val!r}"
                     for key, val in itertools.islice(x.items(), maxdict)
                 ])
                 return f"{{{body}, ...}}"

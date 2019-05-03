@@ -122,7 +122,7 @@ class Pipe:
                 prev_type = cur_type
                 if idx in inverse_checkpoint:
                     print(" |")
-                    print(" @--> checkpoint:", repr(inverse_checkpoint[idx]))
+                    print(f" @--> checkpoint: {inverse_checkpoint[idx]!r}")
                     print(" |")
             print(' v')
             print("=" * 80)

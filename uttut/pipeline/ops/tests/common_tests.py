@@ -58,7 +58,7 @@ class OperatorTestTemplate(abc.ABC):
         assert input_labels == output
 
     def test_str(self, op):
-        str(op)
+        assert str(op).startswith(op.__class__.__name__)
 
 
 ParamTuple = OperatorTestTemplate.ParamTuple
