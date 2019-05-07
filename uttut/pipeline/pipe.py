@@ -22,7 +22,7 @@ class Pipe:
 
     def __init__(self):
         self._steps: List[Operator] = []
-        self._checkpoints = {}
+        self._checkpoints: Dict[str, int] = {}
 
     def add(self, op_name: str, op_kwargs: Dict = None, checkpoint: str = None):
         """Add op into steps based on the operation name & kwargs.
@@ -77,14 +77,57 @@ class Pipe:
             self._checkpoints[checkpoint] = len(self.steps)
 
     def __eq__(self, other):
-        return (self.steps, self._checkpoints) == (other.steps, other._checkpoints)
+        return (self.steps, self.checkpoints) == (other.steps, other.checkpoints)
+
+    def __add__(self, other):
+        concat_pipe = self.__copy__()
+        concat_pipe += other
+        return concat_pipe
+
+    def __iadd__(self, other):
+        if self.output_type != other.input_type:
+            raise TypeError(
+                "input/output type of two pipes are not valid. "
+                f"{self.output_type} != {other.input_type}",
+            )
+        if self.checkpoints.keys() & other.checkpoints.keys():
+            raise KeyError(
+                f"duplicated checkpoints between: {self.checkpoints}, {other.checkpoints}",
+            )
+        self._steps += other.steps
+        self.checkpoints.update({
+            ckpt_name: i + len(self.steps)  # since it's concated after self
+            for ckpt_name, i in other.checkpoints.items()
+        })
+        return self
+
+    def __copy__(self):
+        copy_pipe = Pipe()
+        copy_pipe._steps = self.steps.copy()
+        copy_pipe._checkpoints = self.checkpoints.copy()
+        return copy_pipe
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            sub_pipe = Pipe()
+            sub_pipe._steps = self.steps[key]
+            sub_pipe._checkpoints = {
+                ckpt_name: i - key.start
+                for ckpt_name, i in self.checkpoints.items() if i > key.start
+            }
+            return sub_pipe
+
+        return self.steps[key]
+
+    def __len__(self):
+        return len(self.steps)
 
     @property
-    def steps(self):
+    def steps(self) -> List[Operator]:
         return self._steps
 
     @property
-    def checkpoints(self):
+    def checkpoints(self) -> Dict[str, int]:
         return self._checkpoints
 
     @property

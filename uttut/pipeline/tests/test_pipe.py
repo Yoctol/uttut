@@ -4,17 +4,8 @@ from uttut.elements import Datum, Intent, Entity
 from ..pipe import Pipe
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def fake_pipe():
-    p_custom = Pipe()
-    p_custom.add('Str2Str', {'1': 1})
-    p_custom.add('Str2Lst', {})
-    p_custom.add('Lst2Lst', {})
-    return p_custom
-
-
-@pytest.fixture
-def fake_pipe_with_checkpoints():
     p_custom = Pipe()
     p_custom.add('Str2Str', {'1': 1}, checkpoint='1')
     p_custom.add('Str2Lst', {})
@@ -22,7 +13,7 @@ def fake_pipe_with_checkpoints():
     return p_custom
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def dummy_datum():
     return Datum(
         utterance='123',
@@ -35,14 +26,14 @@ def dummy_datum():
     )
 
 
-def test_pipe_has_invalid_op():
+def test_pipe_raise_invalid_io_type():
     p = Pipe()
     p.add('Lst2Lst')
     with pytest.raises(TypeError):
         p.add('Str2Str')
 
 
-def test_pipe_has_duplicated_checkpoints():
+def test_pipe_raise_duplicated_checkpoints():
     p = Pipe()
     p.add('Str2Str', checkpoint='1')
     with pytest.raises(KeyError):
@@ -56,20 +47,7 @@ def test_pipe_can_have_duplicated_ops():
 
 
 def test_transform(fake_pipe, dummy_datum):
-    output_seq, intent_labels, entity_labels, label_aligner, intermediate = fake_pipe.transform(
-        dummy_datum)
-
-    assert output_seq == ['1', '2', '3']
-    assert intent_labels == [1]
-    assert entity_labels == [1, 2, 3]
-    assert ['123', '123', ['1', '2', '3'], ['1', '2', '3']] == intermediate[:]
-
-    output = label_aligner.inverse_transform(entity_labels)
-    assert output == [1, 2, 3]
-
-
-def test_transform_with_checkpoints(fake_pipe_with_checkpoints, dummy_datum):
-    output = fake_pipe_with_checkpoints.transform(dummy_datum)
+    output = fake_pipe.transform(dummy_datum)
     output_seq, intent_labels, entity_labels, label_aligner, intermediate = output
 
     assert output_seq == ['1', '2', '3']
@@ -89,22 +67,48 @@ def test_transform_with_checkpoints(fake_pipe_with_checkpoints, dummy_datum):
     assert output == [1, 2, 3]
 
 
-def test_serialization(fake_pipe):
+def test_serialize(fake_pipe):
     serialized_str = fake_pipe.serialize()
     o_pipe = Pipe.deserialize(serialized_str)
     assert fake_pipe == o_pipe
-
-
-def test_serialization_with_checkpoint(fake_pipe_with_checkpoints):
-    serialized_str = fake_pipe_with_checkpoints.serialize()
-    o_pipe = Pipe.deserialize(serialized_str)
-    assert fake_pipe_with_checkpoints == o_pipe
 
 
 def test_deserialize_from_old_format(get_data_path):
     path = get_data_path('zh_char_pipe_100_old_format.json')
     with open(path, 'r') as f_in:
         Pipe.deserialize(f_in.read())
+
+
+def test_add(fake_pipe):
+    p2 = Pipe()
+    p2.add('Lst2Str', checkpoint='3')
+    concat_pipe = fake_pipe + p2
+    assert concat_pipe.steps == fake_pipe.steps + p2.steps
+    assert len(concat_pipe.checkpoints) == len(fake_pipe.checkpoints) + len(p2.checkpoints)
+    assert concat_pipe.input_type == fake_pipe.input_type
+    assert concat_pipe.output_type == p2.output_type
+
+
+def test_raise_invalid_add(fake_pipe):
+    p2 = Pipe()
+    p2.add('Str2Str')
+    with pytest.raises(TypeError):
+        fake_pipe + p2  # invalid io type
+
+    p3 = Pipe()
+    p3.add('Lst2Str', checkpoint='1')
+    with pytest.raises(KeyError):
+        fake_pipe + p3  # duplicated checkpoints
+
+
+def test_len(fake_pipe):
+    assert len(fake_pipe) == len(fake_pipe.steps)
+
+
+def test_getitem(fake_pipe):
+    sub_pipe = fake_pipe[1: -1]
+    assert sub_pipe.steps == fake_pipe.steps[1: -1]
+    assert sub_pipe.checkpoints == {'2': 2}
 
 
 def test_summary(fake_pipe):
