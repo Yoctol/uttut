@@ -83,7 +83,7 @@ def test_add(fake_pipe):
     p2 = Pipe()
     p2.add('Lst2Str', checkpoint='3')
     concat_pipe = fake_pipe + p2
-    assert len(concat_pipe.steps) == len(fake_pipe.steps) + len(p2.steps)
+    assert concat_pipe.steps == fake_pipe.steps + p2.steps
     assert len(concat_pipe.checkpoints) == len(fake_pipe.checkpoints) + len(p2.checkpoints)
     assert concat_pipe.input_type == fake_pipe.input_type
     assert concat_pipe.output_type == p2.output_type
@@ -99,6 +99,16 @@ def test_raise_invalid_add(fake_pipe):
     p3.add('Lst2Str', checkpoint='1')
     with pytest.raises(KeyError):
         fake_pipe + p3  # duplicated checkpoints
+
+
+def test_len(fake_pipe):
+    assert len(fake_pipe) == len(fake_pipe.steps)
+
+
+def test_getitem(fake_pipe):
+    sub_pipe = fake_pipe[1: -1]
+    assert sub_pipe.steps == fake_pipe.steps[1: -1]
+    assert sub_pipe.checkpoints == {'2': 2}
 
 
 def test_summary(fake_pipe):

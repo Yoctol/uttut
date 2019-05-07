@@ -107,6 +107,21 @@ class Pipe:
         copy_pipe._checkpoints = self.checkpoints.copy()
         return copy_pipe
 
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            sub_pipe = Pipe()
+            sub_pipe._steps = self.steps[key]
+            sub_pipe._checkpoints = {
+                ckpt_name: i - key.start
+                for ckpt_name, i in self.checkpoints.items() if i > key.start
+            }
+            return sub_pipe
+
+        return self.steps[key]
+
+    def __len__(self):
+        return len(self.steps)
+
     @property
     def steps(self) -> List[Operator]:
         return self._steps
