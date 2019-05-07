@@ -94,11 +94,12 @@ class Pipe:
             raise KeyError(
                 f"duplicated checkpoints between: {self.checkpoints}, {other.checkpoints}",
             )
-        self.steps += other.steps
+        self._steps += other.steps
         self.checkpoints.update({
             ckpt_name: i + len(self.steps)  # since it's concated after self
             for ckpt_name, i in other.checkpoints.items()
         })
+        return self
 
     def __copy__(self):
         copy_pipe = Pipe()

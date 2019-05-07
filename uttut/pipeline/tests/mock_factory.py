@@ -59,3 +59,20 @@ class Str2Lst(Operator):
             input_sequence=input_sequence,
             output_length=len(output_sequence),
         )
+
+
+class Lst2Str(Operator):
+
+    _input_type = list
+    _output_type = str
+
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
+    def _transform(self, input_sequence: List[str]):  # type: ignore
+        output_sequence = ''.join(input_sequence)
+        return output_sequence, MockLabelAligner(
+            edit={},
+            input_sequence=input_sequence,
+            output_length=len(output_sequence),
+        )

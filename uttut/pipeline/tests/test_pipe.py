@@ -79,5 +79,27 @@ def test_deserialize_from_old_format(get_data_path):
         Pipe.deserialize(f_in.read())
 
 
+def test_add(fake_pipe):
+    p2 = Pipe()
+    p2.add('Lst2Str', checkpoint='3')
+    concat_pipe = fake_pipe + p2
+    assert len(concat_pipe.steps) == len(fake_pipe.steps) + len(p2.steps)
+    assert len(concat_pipe.checkpoints) == len(fake_pipe.checkpoints) + len(p2.checkpoints)
+    assert concat_pipe.input_type == fake_pipe.input_type
+    assert concat_pipe.output_type == p2.output_type
+
+
+def test_raise_invalid_add(fake_pipe):
+    p2 = Pipe()
+    p2.add('Str2Str')
+    with pytest.raises(TypeError):
+        fake_pipe + p2  # invalid io type
+
+    p3 = Pipe()
+    p3.add('Lst2Str', checkpoint='1')
+    with pytest.raises(KeyError):
+        fake_pipe + p3  # duplicated checkpoints
+
+
 def test_summary(fake_pipe):
     fake_pipe.summary()
