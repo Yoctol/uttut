@@ -5,11 +5,6 @@ from pathlib import Path
 LINE_TRACE = bool(os.environ.get('LINE_TRACE', 0))
 
 
-try:
-    long_description = open("README.md").read()
-except IOError:
-    long_description = ""
-
 # a good way to structure python package with Cython
 # https://stackoverflow.com/questions/4505747/how-should-i-structure-a-python-package-that-contains-cython-code
 try:
@@ -78,12 +73,6 @@ readme = Path(__file__).parent.joinpath('README.md')
 if readme.exists():
     with readme.open() as f:
         long_description = f.read()
-        try:
-            from pypandoc import convert_text
-            long_description = convert_text(
-                long_description, 'rst', format='md')
-        except ImportError:
-            print("warning: pypandoc module not found, could not convert Markdown to RST")
 else:
     long_description = '-'
 
@@ -99,6 +88,7 @@ setup(
     install_requires=[
     ],
     long_description=long_description,
+    long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.5",

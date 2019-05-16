@@ -5,7 +5,7 @@ from uttut.elements import Datum
 
 def get_unique_entities(
         data: List[Datum],
-    )-> List:
+    ) -> List:
     unique_entities = []
     for datum in data:
         if datum.entities is not None:
