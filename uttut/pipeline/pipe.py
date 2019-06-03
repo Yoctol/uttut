@@ -224,10 +224,14 @@ class Pipe:
         return input_sequence, label_aligners, intermediate
 
     def serialize(self) -> str:
-        return json.dumps({
-            'steps': [op.serialize() for op in self.steps],
-            'checkpoints': self.checkpoints,
-        })
+        return json.dumps(
+            {
+                'steps': [op.serialize() for op in self.steps],
+                'checkpoints': self.checkpoints,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
 
     @classmethod
     def deserialize(cls, serialized_str: str) -> 'Pipe':
