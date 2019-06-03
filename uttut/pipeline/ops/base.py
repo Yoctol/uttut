@@ -60,10 +60,14 @@ class Serializable(abc.ABC):
         return cls.op_factory[cls_name](**kwargs)
 
     def serialize(self) -> str:
-        return json.dumps({
-            'op_name': self.__class__.__name__,
-            'op_kwargs': self.configs,
-        })
+        return json.dumps(
+            {
+                'op_name': self.__class__.__name__,
+                'op_kwargs': self.configs,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
 
     @property
     def configs(self):
