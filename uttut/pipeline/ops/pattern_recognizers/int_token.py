@@ -37,7 +37,7 @@ class IntToken(PatternRecognizer):
 
     _label_aligner_class = IntTokenAligner
 
-    REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+(?![\.\d])")
+    REGEX_PATTERN = re.compile(r"(?<![\.\d\uFF10-\uFF19])[\d\uFF10-\uFF19]+(?![\.\d\uFF10-\uFF19])")
     TOKEN = INT_TOKEN
 
     def _gen_forward_replacement_group(self, input_str: str):  # type: ignore

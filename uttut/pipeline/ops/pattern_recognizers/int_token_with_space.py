@@ -44,7 +44,7 @@ class IntTokenWithSpace(PatternRecognizer):
 
     """
 
-    REGEX_PATTERN = re.compile(r"(?<![\.\d])\d+(?![\.\d])")
+    REGEX_PATTERN = re.compile(r"(?<![\.\d\uFF10-\uFF19])[\d\uFF10-\uFF19]+(?![\.\d\uFF10-\uFF19])")
     TOKEN = INT_TOKEN_WITH_SPACE
     _label_aligner_class = IntTokenWithSpaceAligner
 
