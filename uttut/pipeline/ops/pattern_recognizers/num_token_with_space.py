@@ -28,7 +28,7 @@ class NumTokenWithSpace(PatternRecognizer):
 
     """
     Recognize integer (ex: 12, 10000) in the input string
-    and replace them with NUM_TOKEN_WTIH_SPACE ( _int_ )
+    and replace them with NUM_TOKEN_WTIH_SPACE ( _num_ )
 
     E.g.
     >>> from uttut.pipeline.ops.num_token_with_space import NumTokenWithSpace
