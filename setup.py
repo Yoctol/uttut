@@ -68,8 +68,9 @@ else:
                    'uttut/pipeline/ops/utils/MurmurHash3.cpp']),
     ]
 
+here = Path(__file__).parent
 
-readme = Path(__file__).parent.joinpath('README.md')
+readme = here.joinpath('README.md')
 if readme.exists():
     with readme.open() as f:
         long_description = f.read()
@@ -77,16 +78,19 @@ else:
     long_description = '-'
 
 
+about = {}
+with open(here.joinpath('uttut', '__version__.py'), 'r') as filep:
+    exec(filep.read(), about)
+
 setup(
-    name="uttut",
-    version='1.4.5',
-    description="Yoctol Utterance processing utilities",
-    license="MIT",
-    author="cph",
-    url='https://github.com/Yoctol/uttut',
+    name=about["__title__"],
+    version=about["__version__"],
+    description=about["__description__"],
+    license=about["__license__"],
+    author=about["__author__"],
+    url=about["__url__"],
     packages=find_packages(),
-    install_requires=[
-    ],
+    install_requires=[],
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
