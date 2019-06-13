@@ -13,6 +13,7 @@ from .pattern_recognizers import (
     FloatTokenWithSpace,
     MergeWhiteSpaceCharacters,
     StripWhiteSpaceCharacters,
+    StopwordsToWhitespace,
 )
 from .tokenizers import (
     CharTokenizer,
