@@ -11,6 +11,7 @@ from .pattern_recognizers import (
     FloatToken,
     IntTokenWithSpace,
     FloatTokenWithSpace,
+    NumTokenWithSpace,
     MergeWhiteSpaceCharacters,
     StripWhiteSpaceCharacters,
     StopwordsToWhitespace,
