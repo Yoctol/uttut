@@ -16,6 +16,9 @@
 
 UTTerance UTilities for dialogue system. This package provides some general utils when processing chatbot utterance data.
 
+# BERT Pipe
+
+To create a pipe for BERT preprocessing, please take a look at [BERT](https://github.com/Yoctol/uttut/tree/master/uttut/pipeline/bert).
 
 # Installation
 
