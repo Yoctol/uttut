@@ -21,20 +21,20 @@ class StopwordsToWhitespaceAligner(PatternRecognizerAligner):
 class StopwordsToWhitespace(PatternRecognizer):
 
     """
-    Recognize contiguous whitespace characters in the string
-    and replace it with a whitespace character (" ")
+    Recognize stopwords and replace it with a whitespace character (" ")
 
     E.g.
-    >>> from uttut.pipeline.ops.pattern_recognizer.remove_stopwords import RemoveStopwordsAligner
-    >>> op = RemoveStopwords()
-    >>> output_seq, label_aligner = op.transform("你好嗎")
-    >>> output_labels = label_aligner.transform([1, 2, 3])
+    >>> from uttut.pipeline.ops.pattern_recognizer.stopwords_to_whitespace
+    import StopwordsToWhitespace
+    >>> op = StopwordsToWhitespace()
+    >>> output_seq, label_aligner = op.transform("哎呀,你好嗎"")
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6])
     >>> output_seq
-    "你好"
+    " ,你好 "
     >>> output_labels
-    [1, 2]
+    [0, 3, 4, 5, 0]
     >>> label_aligner(output_labels)
-    [1, 2, 0]
+    [0, 0, 3, 4, 5, 0]
 
     """
 
@@ -43,6 +43,6 @@ class StopwordsToWhitespace(PatternRecognizer):
     with open(os.path.join(ROOT_DIR, 'stopwords.txt'), 'r') as reader:
         stopwords_str = reader.read()
     stopwords_str = stopwords_str.replace("\n", "|")
-    
+
     REGEX_PATTERN = re.compile(r"(" + stopwords_str + ")")
     TOKEN = " "
