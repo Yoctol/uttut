@@ -4,3 +4,4 @@ from .int_token_with_space import IntTokenWithSpace
 from .float_token_with_space import FloatTokenWithSpace
 from .merge_whitespace_characters import MergeWhiteSpaceCharacters
 from .strip_whitespace_characters import StripWhiteSpaceCharacters
+from .stopwords_to_whitespace import StopwordsToWhitespace
