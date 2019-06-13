@@ -1,5 +1,7 @@
 1.DEFAULT_GOAL := all
 
+TARGET = uttut
+
 .PHONY: installself
 installself:
 	python setup.py build_ext
@@ -19,7 +21,7 @@ lint:
 
 .PHONY: test
 test:
-	pytest --cov-report=term-missing --cov=uttut/ --cov-fail-under=80
+	pytest ${TARGET} --cov-report=term-missing --cov=uttut/ --cov-fail-under=80
 
 .PHONY: test-linetrace
 test-linetrace:
