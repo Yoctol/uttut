@@ -1,1 +1,3 @@
 recursive-include uttut *.c *.h *.pyx *.pxd *.pxi
+include uttut/pipeline/ops/pattern_recognizers/stopwords.txt
+include README.md
