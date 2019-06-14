@@ -99,6 +99,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Development Status :: 3 - Alpha",
     ],
+    include_package_data=True,
     ext_modules=ext_modules,
     python_requires='>=3.5',
 )
