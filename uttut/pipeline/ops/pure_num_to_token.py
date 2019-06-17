@@ -17,12 +17,13 @@ class PureNum2Token(Operator):
     def __init__(self, token: str = None):
         """
 
-        Recognize string in a list and replace it with a special token (_num_)
-        if the whole string are pure digits.
+        Given a list of strings, replace strings which have only
+        numeric characters with special tokens (`_num_`).
+        "Numeric characters" refers to 0-9, including full-width digits.
 
         E.g.
-        >>> from uttut.pipeline.ops.pure_num_to_token import PureNumtoToken
-        >>> op = PureNumtoToken()
+        >>> from uttut.pipeline.ops.pure_num_to_token import PureNum2Token
+        >>> op = PureNum2Token()
         >>> output_seq, output_labels, realigner = op.transform(
         ["I", "like", "10", "W9", "apples", "300g", "."])
         >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6, 7])
