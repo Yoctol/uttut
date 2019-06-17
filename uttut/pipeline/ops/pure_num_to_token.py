@@ -7,7 +7,7 @@ from ..edit.replacement import ReplacementGroup
 from .tokens import NUM_TOKEN
 
 
-class PureNumtoToken(Operator):
+class PureNum2Token(Operator):
 
     _input_type = list
     _output_type = list

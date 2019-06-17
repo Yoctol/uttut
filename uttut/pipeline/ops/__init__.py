@@ -29,4 +29,4 @@ from .pad import Pad
 from .token_to_index import Token2Index
 from .span_subwords import SpanSubwords
 from .token_to_index_with_hash import Token2IndexwithHash
-from .pure_num_to_token import PureNumtoToken
+from .pure_num_to_token import PureNum2Token

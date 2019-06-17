@@ -1,11 +1,11 @@
 import pytest
 
-from ..pure_num_to_token import PureNumtoToken
+from ..pure_num_to_token import PureNum2Token
 from .common_tests import OperatorTestTemplate, ParamTuple
 from ..tokens import NUM_TOKEN
 
 
-class TestPureNumtoTokenDefault(OperatorTestTemplate):
+class TestPureNum2TokenDefault(OperatorTestTemplate):
 
     params = [
         ParamTuple(
@@ -68,10 +68,10 @@ class TestPureNumtoTokenDefault(OperatorTestTemplate):
 
     @pytest.fixture(scope='class')
     def op(self):
-        return PureNumtoToken()
+        return PureNum2Token()
 
 
-class TestPureNumtoTokenCustom(OperatorTestTemplate):
+class TestPureNum2TokenCustom(OperatorTestTemplate):
 
     params = [
         ParamTuple(
@@ -106,4 +106,4 @@ class TestPureNumtoTokenCustom(OperatorTestTemplate):
 
     @pytest.fixture(scope='class')
     def op(self):
-        return PureNumtoToken(token='123')
+        return PureNum2Token(token='123')
