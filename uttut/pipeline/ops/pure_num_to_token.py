@@ -16,17 +16,22 @@ class PureNumtoToken(Operator):
 
     def __init__(self, token: str = None):
         """
+
+        Recognize string in a list and replace it with a special token (_num_)
+        if the whole string are pure digits.
+
         E.g.
-        >>> from uttut.pipeline.ops.span_subwords import SpanSubwords
-        >>> op = SpanSubwords(vocab={"I": 0, "apple": 1, "##s": 2}, unk='<unk>', maxlen_per_token=5)
-        >>> output_seq, output_labels, realigner = op.transform(["I", "like", "apples"])
-        >>> output_labels = label_aligner.transform([1, 2, 3])
+        >>> from uttut.pipeline.ops.pure_num_to_token import PureNumtoToken
+        >>> op = PureNumtoToken()
+        >>> output_seq, output_labels, realigner = op.transform(
+        ["I", "like", "10", "W9", "apples", "300g", "."])
+        >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6, 7])
         >>> output_seq
-        ["I", "<unk>", "apple", "##s"]
+        ["I", "like", "_num_", "W9", "apples", "300g", "."]
         >>> output_labels
-        [1, 2, 3, 3]
+        [1, 2, 3, 4, 5, 6, 7]
         >>> label_aligner.inverse_transform(output_labels)
-        [1, 2, 3]
+        [1, 2, 3, 4, 5, 6, 7]
 
         """
         if token is None:
