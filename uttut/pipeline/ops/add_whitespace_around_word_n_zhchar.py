@@ -11,6 +11,35 @@ from .utils.trie import Trie
 
 class AddWhitespaceAroundWordnZhChar(Operator):
 
+    """
+    Given list of words, add whitespace around indicated words and CJK characters.
+    Ignore characters which are not CJK.
+
+    E.g.
+    >>> from uttut.pipeline.ops.add_whitespace_around_word_n_zhchar import
+    AddWhitespaceAroundWordnZhChar
+    >>> op = AddWhitespaceAroundWordnZhChar(user_words=['珍奶', '珍奶去冰', '去冰'])
+    >>> output_seq, label_aligner = op.transform("GB要一杯珍奶去冰")
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    >>> output_seq
+    "GB 要  一  杯  珍奶去冰 "
+    >>> output_labels
+    [1, 2, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 7, 8, 9, 0]
+    >>> label_aligner.inverse_transform(output_labels)
+    [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    >>> op = AddWhitespaceAroundWordnZhChar(user_words=['珍奶', '珍奶去冰', '去冰'], shortest=True)
+    >>> output_seq, label_aligner = op.transform("GB要一杯珍奶去冰")
+    >>> output_labels = label_aligner.transform([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    >>> output_seq
+    "GB 要  一  杯  珍奶  去冰 "
+    >>> output_labels
+    [1, 2, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 7, 0, 0, 8, 9, 0]
+    >>> label_aligner.inverse_transform(output_labels)
+    [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    """
+
     _input_type = str
     _output_type = str
 
