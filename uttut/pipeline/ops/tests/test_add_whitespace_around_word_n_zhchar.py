@@ -58,3 +58,9 @@ class TestAddWhitespaceAroundWord(OperatorTestTemplate):
 
     def test_equal(self, op):
         assert op == AddWhitespaceAroundWordnZhChar(user_words=['alvin', '珍珠', '奶茶', '珍珠奶茶', '精緻'])
+
+    def test_invalid_op(self):
+        with pytest.raises(ValueError):
+            AddWhitespaceAroundWordnZhChar(user_words=[])
+        with pytest.raises(ValueError):
+            AddWhitespaceAroundWordnZhChar(user_words=None)
