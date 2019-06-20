@@ -1,5 +1,5 @@
 __title__ = 'uttut'
-__version__ = '1.4.9'
+__version__ = '1.4.10'
 __description__ = 'Yoctol Utterance processing utilities'
 __license__ = 'MIT'
 __author__ = 'cph'
