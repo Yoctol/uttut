@@ -16,6 +16,7 @@ from .pattern_recognizers import (
     MergeWhiteSpaceCharacters,
     StripWhiteSpaceCharacters,
     StopwordsToWhitespace,
+    ReplaceAwithB,
 )
 from .tokenizers import (
     CharTokenizer,
