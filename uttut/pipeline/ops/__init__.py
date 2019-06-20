@@ -3,6 +3,7 @@ from .base import Operator
 from .lowercase import Lowercase
 from .add_whitespace_around_cjk import AddWhitespaceAroundCJK
 from .add_whitespace_around_punctuation import AddWhitespaceAroundPunctuation
+from .add_whitespace_around_word_n_zhchar import AddWhitespaceAroundWordnZhChar
 from .strip_accent_token import StripAccentToken
 from .punctuation_except_endpoint_to_whitespace import PunctuationExceptEndpointToWhitespace
 
