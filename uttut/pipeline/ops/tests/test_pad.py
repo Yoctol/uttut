@@ -22,6 +22,13 @@ class TestPad(OperatorTestTemplate):
             [1, 0, 0, 0, 0],
             id='shorter',
         ),
+        ParamTuple(
+            [],
+            [],
+            [PAD_TOKEN, PAD_TOKEN, PAD_TOKEN, PAD_TOKEN, PAD_TOKEN],
+            [0, 0, 0, 0, 0],
+            id='empty',
+        ),
     ]
 
     @pytest.fixture(scope='class')
