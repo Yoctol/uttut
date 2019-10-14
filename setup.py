@@ -79,7 +79,7 @@ else:
 
 
 about = {}
-with open(here.joinpath('uttut', '__version__.py'), 'r') as filep:
+with here.joinpath('uttut', '__version__.py').open('r') as filep:
     exec(filep.read(), about)
 
 setup(
