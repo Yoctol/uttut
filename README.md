@@ -58,6 +58,33 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 )
 ```
 
+examine its summary
+
+```
+>>> p.summary()
+________________________________________________________________________________
+Type  Operator
+================================================================================
+str
+ v
+ |    IntTokenWithSpace()
+ |    FloatTokenWithSpace()
+ |    MergeWhiteSpaceCharacters()
+ |    StripWhiteSpaceCharacters()
+ |    EngTokenizer()
+ v
+list
+ v
+ |    AddSosEos(end_token='<eos>', start_token='<sos>')
+ |
+ @--> checkpoint: 'result_of_add_sos_eos'
+ |
+ |    Pad(maxlen=5, pad_token='<pad>')
+ |    Token2Index(token2index={'<sos>': 0, '<eos>': 1, ...}, unk_token='<unk>')
+ v
+================================================================================
+```
+
 ## transform
 
 ```python
