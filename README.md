@@ -32,6 +32,23 @@ Let's create a Pipe to preprocess a Datum with English utterance.
 
 ## Build a Pipe
 
+- Serializable 
+  * Operator 
+    - PatternRecognizer
+    - Lowercase
+    - Tokenizer
+    - AddEndToken
+    - AddWhitespaceAroundCharacter
+    - Token2Index
+    - Token2IndexwithHash
+    - PureNum2Token
+    - PunctuationExceptEndpointToWhitespace
+    - StripAccentToken
+    - AddSosEos
+    - Pad
+    - SpanSubwords
+    - AddWhitespaceAroundWordnZhChar
+
 ```python
 >>> from uttut.pipeline.pipe import Pipe
 
